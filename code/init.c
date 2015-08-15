@@ -247,17 +247,22 @@ void read_zlist(void)
      {
   	//convert AA[] into redshift - ZZ[]
        ZZ[i] = 1 / AA[i] - 1;
-       //printf("%f,",ZZ[i]);
-       //printf("z[%d]=%f\n",i,ZZ[i]);
-  	   //AA[i] = 1/(ZZ[i] + 1);
        //table with time in internal units (Mpc/Km/s/h)
 //       if(ZZ[i]>=0.0)
        Age[i] = time_to_present(ZZ[i]);
-//       else
+
+       double zplus1;
+       zplus1 = 1 + ZZ[i];
+      // printf("%d, %0.6f, %0.6f, %0.6f, %0.6f\n", i, AA[i], ZZ[i],
+      	//	 Hubble_h*sqrt(Omega * zplus1 * zplus1 * zplus1 + (1 - Omega - OmegaLambda) * zplus1 * zplus1 +
+      	//	     	 		  OmegaLambda), Age[i]* UnitTime_in_years / Hubble_h/1.e9);
+
+       //       else
 //      	 Age[i] = 0.0;
     	 //break;
      }
   //printf("\n");
+
 #ifndef MCMC
 #ifdef PARALLEL
   if(ThisTask == 0)
@@ -266,6 +271,7 @@ void read_zlist(void)
   printf("found %d defined times in zlist.\n", Zlistlen);
 #endif
 #endif
+
 }
 
 
@@ -355,6 +361,15 @@ void read_zlist_original_cosm(void)
 #endif
 }
 
+#ifdef READXFRAC
+/** 
+ * compare 2 integers for qsort 
+ */
+int intcmp (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
+#endif
+
 
 /**@brief Reads in the list of output snapshots from
  *        file /input/desired_output_snaps.txt*/
@@ -417,6 +432,12 @@ void read_output_snaps(void)
     ListOutputSnaps[i] = i;
   LastSnapShotNr=LastDarkMatterSnapShot;
 #endif
+
+  /* Sort */
+#ifdef READXFRAC
+  qsort(ListOutputSnaps, NOUT, sizeof(int), intcmp);
+#endif
+  
 }
 
 

@@ -29,9 +29,9 @@ endif
 
 ifeq ($(SYSTYPE),"Sussex")
 ifeq (PARALLEL,$(findstring PARALLEL,$(OPT)))
-CC       =   gcc -pg
+CC       =   mpicc 
 else
-CC       =   cc 
+CC       =   gcc 
 #CC       =   /opt/pgi/osx86/9.0-4/bin/pgcc
 endif
 GSL_INCL = -I/usr/local/include

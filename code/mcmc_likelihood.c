@@ -250,6 +250,15 @@ double get_likelihood()
 					}
 				}
 
+				if(strcmp(MCMC_Obs[i].TestType,"maxlike")==0)
+				{
+					if(strcmp(MCMC_Obs[i].Name,"BulgeFraction")==0)
+					{
+						bin_bulge_fraction(i, binsamdata, snap);
+						current_probability=maximum_likelihood_probability(i, binsamdata, snap);
+					}
+				}
+
 /******************************
  **    Binomial TESTS        **
  ******************************/
@@ -691,6 +700,69 @@ void bin_passive_fraction(int ObsNr, double *binpassivefraction, int snap)
       //printf("mass=%f obs =%f samcolors=%f\n",(MCMC_Obs[ObsNr].Bin_high[snap][i]-MCMC_Obs[ObsNr].Bin_low[snap][i])/2., MCMC_Obs[ObsNr].Obs[snap][i], binpassivefraction[i]);
     }
 }
+
+
+/**@brief Bin fraction of bulge galaxies.*/
+void bin_bulge_fraction(int ObsNr, double *binbulgefraction, int snap)
+{
+  int i, k, IsBulgeGalaxy;
+  double bulge, non_bulge;
+  //if (strcmp(cq,"Cold")==0) {
+  FILE *fa;
+  char buf[1000];
+
+#ifndef PARALLEL
+  sprintf(buf, "%s/mcmc_plus_obs%d_z%1.2f.txt",OutputDir,ObsNr,(double)((int)((MCMCConstraintsZZ[snap]*10)+0.5)/10.));
+ 	  if(!(fa = fopen(buf, "w")))
+ 	    {
+ 		  char sbuf[1000];
+ 		  sprintf(sbuf, "can't open file `%s'\n", buf);
+ 		  terminate(sbuf);
+ 	    }
+#endif
+
+  for(i = 0; i < Nbins[snap][ObsNr]; i++)
+    {
+      binbulgefraction[i] = 0.;
+      bulge = 0.;
+      non_bulge = 0.;
+
+      for(k=0;k<TotMCMCGals[snap];k++)
+      {
+      	//log10(0.7)=-0.154902
+      	IsBulgeGalaxy=((MCMC_GAL[k].BulgeMass[snap]-MCMC_GAL[k].StellarMass[snap]) > -0.154902);
+
+      	if(IsBulgeGalaxy == 1)
+    	  		{
+    	    		if(MCMC_GAL[k].StellarMass[snap]-2.*log10(Hubble_h)>=MCMC_Obs[ObsNr].Bin_low[snap][i]
+    	    			&& MCMC_GAL[k].StellarMass[snap]-2.*log10(Hubble_h) <= MCMC_Obs[ObsNr].Bin_high[snap][i]) bulge += MCMC_GAL[k].Weight[snap];
+    	  		}
+    	    else
+    	    	{
+    	    		if(MCMC_GAL[k].StellarMass[snap]-2.*log10(Hubble_h)>=MCMC_Obs[ObsNr].Bin_low[snap][i]
+    	    			&& MCMC_GAL[k].StellarMass[snap]-2.*log10(Hubble_h) <= MCMC_Obs[ObsNr].Bin_high[snap][i]) non_bulge += MCMC_GAL[k].Weight[snap];
+    	    	}
+      }
+
+      if((bulge + non_bulge) > 0)
+      	binbulgefraction[i] = bulge * 1.0 / (bulge * 1.0 + non_bulge * 1.0);
+      else
+      	binbulgefraction[i] = 0.;
+      //printf("mass=%f obs =%f samcolors=%f\n",(MCMC_Obs[ObsNr].Bin_high[snap][i]-MCMC_Obs[ObsNr].Bin_low[snap][i])/2., MCMC_Obs[ObsNr].Obs[snap][i], binpassivefraction[i]);
+
+#ifndef PARALLEL
+      fprintf(fa, "%g %g %g %g\n",  MCMC_Obs[ObsNr].Bin_low[snap][i]+(MCMC_Obs[ObsNr].Bin_high[snap][i]-MCMC_Obs[ObsNr].Bin_low[snap][i])/2., MCMC_Obs[ObsNr].Obs[snap][i],
+    		  	                   MCMC_Obs[ObsNr].Error[snap][i], binbulgefraction[i]);
+#endif
+
+    }
+
+#ifndef PARALLEL
+  fclose(fa);
+#endif
+}
+
+
 
 /**@brief Bin SAM colours according to observations of Baldry2004*/
 void bin_color_hist(int ObsNr, double *bincolorhist, int snap)

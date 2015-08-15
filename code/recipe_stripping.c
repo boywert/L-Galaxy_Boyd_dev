@@ -65,6 +65,7 @@ void deal_with_satellites(int centralgal, int ngal)
 			  /* Note: the original code transferrred from ejected to hot here, but had all other
 			   * such transfers between equivalent phases.  I have altered for consistency. */
 			  transfer_gas(centralgal,"Ejected",i,"Ejected",1.,"deal_with_satellites", __LINE__);
+			  transfer_gas(centralgal,"Excess",i,"Excess",1.,"deal_with_satellites", __LINE__);
 #ifdef TRACK_BURST
 			  /* Transfer burst component first */
 			  transfer_stars(centralgal,"Burst",i,"Burst",
@@ -87,6 +88,7 @@ void deal_with_satellites(int centralgal, int ngal)
 			  {
 				transfer_gas(Gal[i].CentralGal,"Hot",i,"Hot",1.,"deal_with_satellites", __LINE__);
 				transfer_gas(Gal[i].CentralGal,"Ejected",i,"Ejected",1.,"deal_with_satellites", __LINE__);
+				transfer_gas(Gal[i].CentralGal,"Excess",i,"Excess",1.,"deal_with_satellites", __LINE__);
 #ifdef TRACK_BURST
 				/* Transfer burst component first */
 				transfer_stars(Gal[i].CentralGal,"Burst",i,"Burst",
@@ -132,6 +134,8 @@ void deal_with_satellites(int centralgal, int ngal)
 			  	transfer_gas(Gal[i].CentralGal,"Hot",i,"Hot",gasfraction_intotype1,"deal_with_satellites", __LINE__);
 			  if(Gal[i].EjectedMass > 0.0)
 			  	transfer_gas(Gal[i].CentralGal,"Ejected",i,"Ejected",gasfraction_intotype1,"deal_with_satellites", __LINE__);
+			  if(Gal[i].ExcessMass > 0.0)
+			  	transfer_gas(Gal[i].CentralGal,"Excess",i,"Excess",gasfraction_intotype1,"deal_with_satellites", __LINE__);
 
 			  mass_checks("deal_with_satellites i #0",i);
 			  mass_checks("deal_with_satellites Gal[i].CentraGal #0",Gal[i].CentralGal);
@@ -155,6 +159,9 @@ void deal_with_satellites(int centralgal, int ngal)
 			    	transfer_gas(centralgal,"Hot",i,"Hot",1.,"deal_with_satellites", __LINE__);
 			    if(Gal[i].EjectedMass > 0.0)
 			    	transfer_gas(centralgal,"Ejected",i,"Ejected",1.,"deal_with_satellites", __LINE__);
+			    if(Gal[i].ExcessMass > 0.0)
+			        transfer_gas(centralgal,"Excess",i,"Excess",1.,"deal_with_satellites", __LINE__);
+			  	
 
 #ifdef TRACK_BURST
 				  /* Transfer burst component first */
@@ -199,6 +206,7 @@ void deal_with_satellites(int centralgal, int ngal)
 
 		  		transfer_gas(merger_centre,"Hot",i,"Hot",stripped_fraction,"deal_with_satellites", __LINE__);
 		  		transfer_gas(merger_centre,"Ejected",i,"Ejected",stripped_fraction,"deal_with_satellites", __LINE__);
+				transfer_gas(merger_centre,"Excess",i,"Excess",stripped_fraction,"deal_with_satellites", __LINE__);
 		  		mass_checks("deal_with_satellites #3",i);
 		  		mass_checks("deal_with_satellites #3",merger_centre);
 #ifdef TRACK_BURST

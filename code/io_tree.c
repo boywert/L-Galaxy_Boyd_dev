@@ -61,10 +61,18 @@
  *  (int). */
 void load_tree_table(int filenr)
 {
-  int i, n, totNHalos, SnapShotInFileName;
+  int i,j, n, totNHalos, SnapShotInFileName;
   char buf[1000];
-
-
+#ifdef READXFRAC
+  int cell,status,status_prev;
+  double meanxfrac;
+#ifdef DP_XFRAC
+  double *xfrac;
+#else
+  float *xfrac;
+#endif
+#endif
+  
 #ifdef  UPDATETYPETWO
   load_all_auxdata(filenr);
 #endif
@@ -214,7 +222,64 @@ void load_tree_table(int filenr)
   	printf("all tree data has now been broadcasted\n");
 #endif
 #endif
+#ifdef READXFRAC
+  Xfrac_Data = mymalloc("Xfrac_Data", sizeof(float) * totNHalos);
+  memset(Xfrac_Data, 10.0, sizeof(float) * totNHalos);
+  status_prev=0;
+#ifdef PARALLEL
+  MPI_Barrier(MPI_COMM_WORLD);
+#endif
+  if(ThisTask == 0){
+    for(i=0;i<NOUT;i++)
+      printf("ListOutputSnaps[%d] = %d\n",i,ListOutputSnaps[i]);
+  }
+  for(i=0;i<ListOutputSnaps[NOUT-1];i++){
+#ifdef DP_XFRAC
+    xfrac = mymalloc("Xfrac_Read",XfracMesh[0]*XfracMesh[1]*XfracMesh[2]*sizeof(double));
+    memset(xfrac, 0.0, sizeof(double)*XfracMesh[0]*XfracMesh[1]*XfracMesh[2]);
+#else
+    xfrac = mymalloc("Xfrac_Read",XfracMesh[0]*XfracMesh[1]*XfracMesh[2]*sizeof(float));
+    memset(xfrac, 0.0, sizeof(float)*XfracMesh[0]*XfracMesh[1]*XfracMesh[2]);
+#endif
+    if(ThisTask == 0) {
+      status = read_xfrac(i,xfrac);
+    }
+#ifdef PARALLEL
+    MPI_Barrier(MPI_COMM_WORLD);
+#ifdef DP_XFRAC
+    MPI_Bcast(xfrac, XfracMesh[0]*XfracMesh[1]*XfracMesh[2], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+#else
+    MPI_Bcast(xfrac, XfracMesh[0]*XfracMesh[1]*XfracMesh[2], MPI_FLOAT, 0, MPI_COMM_WORLD);
+#endif
+    MPI_Bcast(&status, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
+#endif
 
+    if(status == 1)  {
+      status_prev = 1;
+      for(j=0;j<totNHalos;j++) {
+	if(Halo_Data[j].SnapNum == i)  {
+	  cell = (int) (Halo_Data[j].Pos[0]/(BoxSize/XfracMesh[0]))
+	    + (int) (Halo_Data[j].Pos[1]/(BoxSize/XfracMesh[1]))*XfracMesh[0]
+	    + (int) (Halo_Data[j].Pos[2]/(BoxSize/XfracMesh[2]))*XfracMesh[0]*XfracMesh[1];
+	  Xfrac_Data[j] = xfrac[cell];				
+	}
+      }
+    }
+    else {
+      for(j=0;j<totNHalos;j++) {
+	if(Halo_Data[j].SnapNum == i)  {
+	  if(status_prev == 0)
+	    Xfrac_Data[j] = 0.;
+	  else
+	    Xfrac_Data[j] = 1.;
+	  // printf("xfrac: %lf\n",Xfrac_Data[j]);
+	}
+      }
+    }
+    myfree(xfrac);
+  }
+#endif 
 }
 
 
@@ -227,6 +292,9 @@ void load_tree_table(int filenr)
 void free_tree_table(void)
 {
 #ifdef PRELOAD_TREES
+#ifdef READXFRAC
+  myfree(Xfrac_Data);
+#endif
 #ifdef LOADIDS
   myfree(HaloIDs_Data);
 #endif
@@ -356,6 +424,9 @@ void free_galaxies_and_tree(void)
 #ifndef PRELOAD_TREES
 #ifdef LOADIDS
   myfree(HaloIDs);
+#endif
+#ifdef READXFRAC
+  myfree(Xfrac);
 #endif
   myfree(Halo);
 #endif

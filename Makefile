@@ -14,7 +14,7 @@ OBJS   = ./code/main.o ./code/io_tree.o ./code/init.o ./code/cool_func.o \
 	 ./code/recipe_misc.o \
 	 ./code/recipe_disrupt.o \
 	 ./code/recipe_stripping.o \
-	 ./code/scale_cosmology.o
+	 ./code/scale_cosmology.o 
 
 INCL   = ./code/allvars.h  ./code/proto.h  Makefile
 ifeq (ALL_SKY_LIGHTCONE,$(findstring ALL_SKY_LIGHTCONE,$(OPT)))

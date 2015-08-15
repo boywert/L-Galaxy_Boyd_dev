@@ -201,7 +201,7 @@ void save_galaxy_tree_finalize(int filenr, int tree)
   // BTW it is BETTER not to reorder galaxies if SFHBins are not also reordered,
   // if at least both are to be used in light cone post processing.
   // for easier to read
-  save_galaxy_tree_reorder_on_disk();
+  //save_galaxy_tree_reorder_on_disk();
 
   TotGalCount += NGalTree;
 

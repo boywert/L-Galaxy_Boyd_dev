@@ -51,7 +51,7 @@ void save_galaxy_for_mcmc(int gal_index)
 	{
 		//StellarMass=log10(1E10 * (HaloGal[gal_index].DiskMass+HaloGal[gal_index].BulgeMass)/Hubble_h);
 		//StellarMass=log10(1E10 * (HaloGal[gal_index].DiskMass+HaloGal[gal_index].BulgeMass)/Hubble_h)+ran3(&MCMCseed)*0.04*(1+MCMCConstraintsZZ[snap]);
-		StellarMass=log10(1E10 * (HaloGal[gal_index].DiskMass+HaloGal[gal_index].BulgeMass)/Hubble_h);
+		StellarMass=log10(1E10 * (HaloGal[gal_index].DiskMass+HaloGal[gal_index].BulgeMass)*Hubble_h);
 		StellarMass+=gassdev(&MCMCseed)*0.04*(1+MCMCConstraintsZZ[snap]);
 
 		for(fof=0;fof<NFofsInSample[snap]; fof++)
@@ -62,9 +62,9 @@ void save_galaxy_for_mcmc(int gal_index)
 		  	//if((double)((int)((MCMCConstraintsZZ[snap]*10)+0.5)/10.)>0.9)
 		  	//MCMC_GAL[TotMCMCGals[snap]].StellarMass[snap] += ran3(&MCMCseed)*0.04*(1+MCMCConstraintsZZ[snap]);
 				MCMC_GAL[TotMCMCGals[snap]].StellarMass[snap] = StellarMass;
-    		MCMC_GAL[TotMCMCGals[snap]].ColdGas[snap] = log10(1E10 * (HaloGal[gal_index].ColdGas*0.54/Hubble_h));
-    		MCMC_GAL[TotMCMCGals[snap]].BulgeMass[snap] = log10(1E10 * HaloGal[gal_index].BulgeMass);
-    		MCMC_GAL[TotMCMCGals[snap]].BlackHoleMass[snap] = log10(1E10 * HaloGal[gal_index].BlackHoleMass);
+    		MCMC_GAL[TotMCMCGals[snap]].ColdGas[snap] = log10(1E10 * (HaloGal[gal_index].ColdGas*0.54*Hubble_h));
+    		MCMC_GAL[TotMCMCGals[snap]].BulgeMass[snap] = log10(1E10 * HaloGal[gal_index].BulgeMass*Hubble_h);
+    		MCMC_GAL[TotMCMCGals[snap]].BlackHoleMass[snap] = log10(1E10 * HaloGal[gal_index].BlackHoleMass*Hubble_h);
     		//in units of Solar Masses per yr
     		MCMC_GAL[TotMCMCGals[snap]].Sfr[snap]
     		= HaloGal[gal_index].Sfr * UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS;

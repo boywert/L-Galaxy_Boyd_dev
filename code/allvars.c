@@ -135,6 +135,7 @@ int StarFormationRecipe;
 int FeedbackRecipe;
 int EjectionRecipe;
 int ReIncorporationRecipe;
+int InfallRecipe;
 int ReionizationOn;
 int BlackHoleGrowth;
 int AGNRadioModeModel;
@@ -290,6 +291,22 @@ FILE *FdGalTree;
 FILE *FdGalTreeSFH;
 FILE *FdGalDumps[NOUT];
 
+
+/* for reionization modelling */
+#ifdef READXFRAC
+float *Xfrac_Data;
+
+#ifdef DP_XFRAC
+double *Xfrac;
+#else
+float *Xfrac;
+#endif
+
+int XfracDataDone[MAXSNAPS];
+char XfracDir[1024];
+int XfracMesh[3];
+int XfracNGrids;
+#endif
 
 
 

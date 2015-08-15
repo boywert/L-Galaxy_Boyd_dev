@@ -20,6 +20,7 @@ double get_likelihood (void);
 void bin_function(int ObsNr, double *binsamdata, double *samdata, int snap);
 void bin_red_fraction(int ObsNr, double *binredfraction, int snap);
 void bin_passive_fraction(int ObsNr, double *binpassivefraction, int snap);
+void bin_bulge_fraction(int ObsNr, double *binbulgefraction, int snap);
 void bin_color_hist(int ObsNr, double *bincolorhist, int snap);
 void bin_bhbm(double *binblackholeup, double *binblackholedown, int snap);
 void correct_for_correlation(int snap);

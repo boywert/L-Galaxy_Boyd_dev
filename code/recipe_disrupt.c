@@ -229,94 +229,54 @@ double peri_radius(int p, int centralgal)
 }
 
 
+
+
+
 /** @brief Calculates the half mass radius of satellite galaxies */
 double sat_radius(int p)
 {
   double r, rd, rb, Mdisk, Sigma0, rmin, rmax, rbin, M;
   double Mgas, Mbulge, rgd, Sigma0_g, rmi, rma, dr, totmass, Mvir, Rvir, tmprmax;
-  int N = 100., i;
-  //disk profile, rd is known
+  int N = 100., ii;
+  #define SAT_RADIUS_RMIN 5e-7
+  #define SAT_RADIUS_N 100
+
+  r=0.;
+  rgd = Gal[p].GasDiskRadius/3.;
   rd=Gal[p].StellarDiskRadius/3.;
   rb=Gal[p].BulgeSize;
-  rgd = Gal[p].GasDiskRadius/3.;
+  Mgas = Gal[p].ColdGas;
   Mdisk=Gal[p].DiskMass;
   Mbulge = Gal[p].BulgeMass;
-  Mgas = Gal[p].ColdGas;
+  totmass = Mgas+Mdisk+Mbulge;
 
-  //set maximum search radius as the largest of the 4 components
-  rmax = (rd*1.68 > rb)? rd*1.68:rb;
-  rmax = (rmax > rgd * 1.68)? rmax:rgd * 1.68;
+  rmax=max(rb,1.68*max(rd,rgd));
+  if (rmax < 2.*SAT_RADIUS_RMIN)
+  	return(rmax);
+  dr=(rmax-SAT_RADIUS_RMIN)/(float)SAT_RADIUS_N;
 
-  totmass = Mdisk + Mbulge + Mgas;// + Mvir;
-  
-  i = 0;
-  rmin = 1.e-7;
-  //rmin = 0.0001*min(min(min(rb,rd),rgd),Rvir);
-#ifndef GUO10
-#ifndef GUO13
-  rmin= rgd;
-  if(rd > 0.0)
-  	rmin = min(rmin,rd);
-  if(rb > 0.0)
-  	rmin = min(rmin,rb);
-  rmin *= 0.001;
-#endif
-#endif
-
-  if (rmax == 0 || rmax < rmin)
-    return(rmax);
-  rbin=(rmax-rmin)/N;
-  
-  if (rd == 0 && rgd == 0)
-    return(rb);
-  if (rd ==0 && rb == 0)
-    return(rgd*1.68);
-  if (rb==0 && rgd==0)
-    return(rd*1.68);
-  
-  // Disk surface densities, used to calculate the total mass inside
-  // a certain radius.
-  Sigma0 = Mdisk / (2 * M_PI * rd *rd);
-  Sigma0_g = Mgas / (2 * M_PI *rgd * rgd);
-  if (rgd == 0) {
-    Sigma0_g =0;
-    rgd = 1.;
-  }
-  if (rd == 0) {
-    Sigma0 = 0;
-    rd = 1.;
-  }
-
-  // increases the search radius until it encompasses half the total mass taking
-  // into account the stellar disk, stellar bulge and cold gas disk.
-  M = 0.0;
+    /* increases the search radius until it encompasses half the total mass taking
+     * into account the stellar disk, stellar bulge and cold gas disk. */
+  ii = 0;
   do {
-    rmi = (rmin) + i* rbin;
-    rma = (rmin) + rbin * (i+1);
-    dr = rma - rmi;
-    r = (rma + rmi) /2; 
+      // Not sure that we need the 0.5 here - it's all a matter of definition
+  	r = (SAT_RADIUS_RMIN) + (ii+0.5)* dr;
+  	M = Mgas*diskmass(r/rgd)+Mdisk*diskmass(r/rd);
 
-    //printf("r=%0.3f ",r*1.e3);
 #ifndef GUO10
 #ifndef GUO13
-    if(Mbulge > 0.0 )
+  	if(Mbulge>0.)
 #endif
 #endif
-    	M += bulgemass_r(r,rb,Mbulge,dr);
+  		M +=Mbulge*bulgemass(r/rb);
 
-    M += diskmass_r(r,rd,Sigma0,dr)+diskmass_r(r,rgd,Sigma0_g,dr);
-    //if(i==0 && r>Rvir && Mvir > 0.0)
-    //	M += Mvir;
-    ///if(Mvir>0. && r<Rvir)
-    //	M += isothermal_mass(Mvir, Rvir, dr);
-    i++;
-    if(i>N*2)
-    	terminate("never reached half mass in function sat_radius");
+
+  	ii++;
+  	if(ii > 1000) terminate ("couldn't find half mass radius");
   }
   while(M < 0.5*totmass);
 
-  //if(Mbulge == 0.0)
-  //   	printf("r=%f rdisk=%f rbulge=%f rgas=%f\n",r,rd,rb,rgd);
+
   return (r);
 }
 
@@ -326,17 +286,33 @@ double isothermal_mass(double Mvir, double Rvir, double dr)
 	return Mvir/Rvir * dr;
 }
 
-/** @brief Returns the mass of a disk at a certain radius.
- *         Disk profile -> exponential */
-double diskmass_r(double r, double rd, double Sigma0, double dr)
-{
-  return 2 * M_PI * Sigma0 * dr * r * exp(-r / rd);
-}
 
+/** @brief Returns the mass of a disk within a given radius in units of the scale length
+ *         Disk profile -> exponential */
+double diskmass(double x)
+{
+  return 1.-(1.+x)*exp(-x);
+}
 
 /** @brief Returns the mass of a bulge at a certain radius.
  *         Bulge profile -> de Vaucouleurs type r^{1/4} law */
-double bulgemass_r(double r, double rb, double Mbulge,double dr)
+
+// The previous complicated expression seemed to be a long-winded way of saying that
+// the density varies as 1/x^2(1+x)^2, leading to
+double bulgemass(double x)
+{
+  return x/(1.+x);
+}
+
+/*double diskmass(double r, double rd, double Sigma0, double dr)
+{
+  return 2 * M_PI * Sigma0 * dr * r * exp(-r / rd);
+}
+double bulgemass(double r, double rb, double Mbulge,double dr)
 {
   return  Mbulge / (4 * M_PI * pow3(rb)) * 1 / pow2(r / rb) * 1 / pow2(1 + r/rb) * 4 * M_PI * r * r *dr;
-}
+}*/
+
+
+
+

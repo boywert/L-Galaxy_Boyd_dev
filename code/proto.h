@@ -118,13 +118,13 @@ void SN_feedback(int p, int centralgal, double stars, char feedback_location[]);
 void add_galaxies_together(int t, int p);
 void init_galaxy(int p, int halonr);
 double infall_recipe(int centralgal, int ngal, double Zcurr);
-void add_infall_to_hot(int centralgal, double infallingGas);
-double cooling_recipe(int centralgal, double dt);
-void cool_gas_onto_galaxy(int centralgal, double mcool);
+void add_infall_to_hot(int centralgal,int ngal, double infallingGas);
+void compute_cooling(int p, double dt, int ngal);
+void do_AGN_heating(double dt, int ngal);
+void cool_gas_onto_galaxy(int p, double dt);
 void reincorporate_gas(int p, double dt);
 void deal_with_galaxy_merger(int p, int merger_centralgal, int centralgal, double time, double deltaT, int nstep);
 double do_reionization(float Mvir, double Zcurr);
-double do_AGN_heating(double coolingGas, int centralgal, double dt, double x);
 double NumToTime(int snapnum);
 void update_from_star_formation(int p, double stars, bool flag_burst, int nstep);
 void update_massweightage(int p, double stars, double time);
@@ -277,8 +277,8 @@ double bulge_from_disk(double frac);
 double func_size(double x, double a);
 void bulgesize_from_merger(double mass_ratio, int merger_centralgal, int p, double Mcstar,double Mcbulge,double Mcgas, double Mpstar, double Mpbulge,double Mpgas, double frac);
 double isothermal_mass(double Mvir, double Rvir, double dr);
-double diskmass_r(double rmin, double rd, double Sigma0, double dr);
-double bulgemass_r(double rmin, double re, double Ie, double dr);
+double diskmass(double x);
+double bulgemass(double x);
 double sat_radius(int p);
 
 
@@ -399,3 +399,14 @@ void reset_ejection_rates(int i, int sfh_ibin,
 #endif
 
 #endif //DETAILED_METALS_AND_MASS_RETURN
+
+
+#ifdef READXFRAC
+void get_xfrac_mesh();
+#ifdef DP_XFRAC
+int read_xfrac(int snapnr, double* xfrac);
+#else
+int read_xfrac(int snapnr, float* xfrac);
+#endif
+void free_xfrac(int snapnr);
+#endif

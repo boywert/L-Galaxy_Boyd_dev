@@ -59,14 +59,15 @@ void dust_model(int p, int snap, int halonr)
   if(Gal[p].ColdGas > 0.0)
     {
 
-      /* 0.94 = 2.83/3. - 3 to get scale lenght and 2.83 = 1.68^2 */
+      /* 0.94 = 2.83/3. -> 3 to get scale lenght and 2.83 = 1.68^2 */
       nh = Gal[p].ColdGas / (M_PI * pow(Gal[p].GasDiskRadius * 0.94, 2) * 1.4);
       /* now convert from 10^10 M_sun/h / (Mpc/h)^2 to (2.1 10^21 atoms/cm^2) */
       nh = nh / 3252.37;	// 3252.37 = 10^(3.5122) ... ha ha ! 
 
-      /* redshift dependence (empirical) */
-      //nh = nh * pow(1 + ZZ[Halo[halonr].SnapNum], -0.4);
+      /*redshift dependence */
+     // nh = nh * pow(1 + ZZ[Halo[halonr].SnapNum], -0.4);
       nh = nh * pow(1 + ZZ[Halo[halonr].SnapNum], -1.0);
+
 
       Gal[p].CosInclination = fabs(Gal[p].StellarSpin[2]) /
                                   sqrt(Gal[p].StellarSpin[0]*Gal[p].StellarSpin[0]+

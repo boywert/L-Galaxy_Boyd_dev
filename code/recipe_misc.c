@@ -193,6 +193,10 @@ void init_galaxy(int p, int halonr)
   Gal[p].HaloVmax = Halo[halonr].Vmax;
 #endif
 
+#ifdef READXFRAC
+  Gal[p].Xfrac3d = Xfrac[halonr]; 		    
+#endif
+  
   for(j = 0; j < 3; j++)
     {
       Gal[p].Pos[j] = Halo[halonr].Pos[j];
@@ -223,6 +227,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].BulgeMass = 0.0;
   Gal[p].HotGas = 0.0;
   Gal[p].EjectedMass = 0.0;
+  Gal[p].ExcessMass = 0.0;
   Gal[p].ICM = 0.0;
 #ifdef TRACK_BURST
   Gal[p].BurstMass = 0.0;
@@ -243,6 +248,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].MetalsBulgeMass = metals_init();
   Gal[p].MetalsHotGas = metals_init();
   Gal[p].MetalsEjectedMass = metals_init();
+  Gal[p].MetalsExcessMass = metals_init();
   Gal[p].MetalsICM = metals_init();
 #ifdef METALS_SELF
   Gal[p].MetalsHotGasSelf = metals_init();
@@ -253,6 +259,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].MetalsBulgeMass = 0.0;
   Gal[p].MetalsHotGas = 0.0;
   Gal[p].MetalsEjectedMass = 0.0;
+  Gal[p].MetalsExcessMass = 0.0;
   Gal[p].MetalsICM = 0.0;
 #endif
   //inclination defined as the angle between galaxy spin and the z-axis
@@ -261,6 +268,12 @@ void init_galaxy(int p, int halonr)
    Gal[p].PrimordialAccretionRate = 0.0;
    Gal[p].CoolingRate = 0.0;
    Gal[p].CoolingRate_beforeAGN = 0.0;
+   Gal[p].CoolingRadius = 0.0;
+   Gal[p].CoolingGas = 0.0;
+   Gal[p].QuasarAccretionRate=0.0;
+   Gal[p].RadioAccretionRate=0.0;
+   Gal[p].AGNheatingFromCentral = 0.0;
+
 #ifdef SAVE_MEMORY
   Gal[p].Sfr = 0.0;
   Gal[p].SfrBulge = 0.0;
@@ -286,10 +299,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].OriMergRadius = 0.0;
   Gal[p].MergRadius = 0.0;
 #endif
-  Gal[p].CoolingRadius = 0.0;
 
-  Gal[p].QuasarAccretionRate=0.0;
-  Gal[p].RadioAccretionRate=0.0;
   for(outputbin = 0; outputbin < NOUT; outputbin++)
   	Gal[p].MassWeightAge[outputbin] = 0.0;
 #ifndef  POST_PROCESS_MAGS
@@ -349,6 +359,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].BulgeMass_elements = elements_init();
   Gal[p].HotGas_elements = elements_init();
   Gal[p].EjectedMass_elements = elements_init();
+  Gal[p].ExcessMass_elements = elements_init();
   Gal[p].ICM_elements = elements_init();
 #endif
 }
@@ -1109,6 +1120,7 @@ void transfer_gas(int p, char cp[], int q, char cq[], double fraction, char call
    *   Cold
    *   Hot
    *   Ejected
+   *   Excess
    */
   float Mass;
 
@@ -1155,6 +1167,12 @@ void transfer_gas(int p, char cp[], int q, char cq[], double fraction, char call
 #ifdef INDIVIDUAL_ELEMENTS
     Yield = elements_add(elements_init(),Gal[q].EjectedMass_elements,fraction);
 #endif
+  } else if (strcmp(cq,"Excess")==0) {
+     Mass=fraction*Gal[q].ExcessMass;
+     Metals = metals_add(metals_init(),Gal[q].MetalsExcessMass,fraction);
+    #ifdef INDIVIDUAL_ELEMENTS
+    Yield = elements_add(elements_init(),Gal[q].ExcessMass_elements,fraction);
+    #endif
   } else {
     printf("Unknown component type %s in call to transfer_gas\n",cq);
     exit(1);
@@ -1182,6 +1200,12 @@ void transfer_gas(int p, char cp[], int q, char cq[], double fraction, char call
 #ifdef INDIVIDUAL_ELEMENTS
     Gal[p].EjectedMass_elements = elements_add(Gal[p].EjectedMass_elements,Yield,1.);
 #endif
+  } else if (strcmp(cp,"Excess")==0) {
+    Gal[p].ExcessMass += Mass;
+    Gal[p].MetalsExcessMass = metals_add(Gal[p].MetalsExcessMass,Metals,1.);
+#ifdef INDIVIDUAL_ELEMENTS
+    Gal[p].ExcessMass_elements = elements_add(Gal[p].ExcessMass_elements,Yield,1.);
+#endif
   } else {
     printf("Unknown component type %s in call to transfer_gas\n",cp);
     exit(1);
@@ -1208,6 +1232,12 @@ void transfer_gas(int p, char cp[], int q, char cq[], double fraction, char call
     Gal[q].MetalsEjectedMass = metals_add(Gal[q].MetalsEjectedMass,Metals,-1.);
 #ifdef INDIVIDUAL_ELEMENTS
     Gal[q].EjectedMass_elements = elements_add(Gal[q].EjectedMass_elements,Yield,-1.);
+#endif
+  } else if (strcmp(cq,"Excess")==0) {
+    Gal[q].ExcessMass -= Mass;
+    Gal[q].MetalsExcessMass = metals_add(Gal[q].MetalsExcessMass,Metals,-1.);
+#ifdef INDIVIDUAL_ELEMENTS
+    Gal[q].ExcessMass_elements = elements_add(Gal[q].ExcessMass_elements,Yield,-1.);
 #endif
   } else {
     printf("Unknown component type %s in call to transfer_gas\n",cq);

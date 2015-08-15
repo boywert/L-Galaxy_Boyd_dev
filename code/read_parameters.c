@@ -53,7 +53,14 @@ void read_parameter_file(char *fname)
   strcpy(tag[nt], "SimulationDir");
   addr[nt] = SimulationDir;
   id[nt++] = STRING;
-
+#ifdef READXFRAC
+  strcpy(tag[nt], "XfracDir");
+  addr[nt] = XfracDir;
+  id[nt++] = STRING;
+  strcpy(tag[nt], "XfracNGrids");
+  addr[nt] = &XfracNGrids;
+  id[nt++] = INT;
+#endif
   strcpy(tag[nt], "FileWithOutputRedshifts");
   addr[nt] = FileWithOutputRedshifts;
   id[nt++] = STRING;
@@ -372,6 +379,10 @@ void read_parameter_file(char *fname)
 
   strcpy(tag[nt], "ReIncorporationRecipe");
   addr[nt] = &ReIncorporationRecipe;
+  id[nt++] = INT;
+
+  strcpy(tag[nt], "InfallRecipe");
+  addr[nt] = &InfallRecipe;
   id[nt++] = INT;
 
   strcpy(tag[nt], "ReionizationOn");

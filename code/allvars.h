@@ -50,6 +50,11 @@
 #define  MAXSNAPS  64
 #endif
 
+#ifdef CUSTOM_MAXSNAPS
+#undef MAXSNAPS
+#define MAXSNAPS CUSTOM_MAXSNAPS
+#endif
+
 #define  MAXGALFAC 2.3 /*1.5/2.3 - maximum fraction of satellite without a halo (for memory allocation)*/
 
 #define  STEPS 20		/* Number of integration intervals between two snapshots */
@@ -315,7 +320,6 @@ struct GALAXY_OUTPUT
   float DiskMass;
   float HotGas; // 10^10/h Msun - Mass in hot gas
   float BlackHoleMass; // 10^10/h Msun - Mass in black hole
-
   /* magnitudes in various bands */
 #ifdef COMPUTE_SPECPHOT_PROPERTIES
 #ifdef OUTPUT_OBS_MAGS
@@ -375,6 +379,7 @@ struct GALAXY_OUTPUT
   float LookBackTimeToSnap; //The time from a given snapshot to z=0, in years
   float CentralMvir; // 10^10/h Msun virial mass of background (FOF) halo containing this galaxy
   float CentralRvir; // Rvir of background (FOF) halo containing this galaxy
+  float DistanceToCentralGal[3];
   /* properties of subhalo at the last time this galaxy was a central galaxy */
   float Pos[3]; // 1/h Mpc - Galaxy Positions
   float Vel[3]; // km/s - Galaxy Velocities
@@ -398,7 +403,6 @@ struct GALAXY_OUTPUT
   float OriMergRadius;
   float MergRadius;
 #endif
-  float DistanceToCentralGal[3];
   /* baryonic reservoirs */
   float ColdGas; // 10^10/h Msun - Mass in cold gas.
   float StellarMass; // 10^10/h Msun - Disk+Bulge
@@ -406,8 +410,9 @@ struct GALAXY_OUTPUT
   float DiskMass;
   float HotGas; // 10^10/h Msun - Mass in hot gas
   float EjectedMass; // 10^10/h Msun - Mass in ejected gas
+  float ExcessMass;
   float BlackHoleMass; // 10^10/h Msun - Mass in black hole
-  //float BlackHoleGas; // 10^10/h Msun - Mass in BH accretion disk
+  float BlackHoleGas; // 10^10/h Msun - Mass in BH accretion disk
   /* ICL magnitude and mass*/
   float ICM;            // mass in intra-cluster stars, for type 0,1
 #ifdef DETAILED_METALS_AND_MASS_RETURN
@@ -416,16 +421,19 @@ struct GALAXY_OUTPUT
   struct metals MetalsDiskMass; // 10^10/h Msun -       Mass in metals in the disk
   struct metals MetalsHotGas; // 10^10/h Msun -	Mass in metals in the hot gas
   struct metals MetalsEjectedMass; // 10^10/h Msun -	Mass in metals in the ejected gas
+  struct metals MetalsExcessMass; // 10^10/h Msun -	Mass in metals in the excess gas
   struct metals MetalsICM;  // total mass in metals in intra-cluster stars, for type 0,1
 #ifdef METALS_SELF
   struct metals MetalsHotGasSelf; // hot gas metals that come from self
 #endif
 #else
   float MetalsColdGas; // 10^10/h Msun -	Mass in metals in cold gas.
+  float MetalsStellarMass; // 10^10/h Msun -	Mass in metals in the bulge+disk
   float MetalsBulgeMass; // 10^10/h Msun -	Mass in metals in the bulge
   float MetalsDiskMass; // 10^10/h Msun -       Mass in metals in the disk
   float MetalsHotGas; // 10^10/h Msun -	Mass in metals in the hot gas
   float MetalsEjectedMass; // 10^10/h Msun -	Mass in metals in the ejected gas
+  float MetalsExcessMass; // 10^10/h Msun -	Mass in metals in the excess gas
   float MetalsICM;  // total mass in metals in intra-cluster stars, for type 0,1
 #ifdef METALS_SELF
   float MetalsHotGasSelf; // hot gas metals that come from self
@@ -436,8 +444,11 @@ struct GALAXY_OUTPUT
 #endif
   /* misc */
   float PrimordialAccretionRate;
+  float CoolingRadius;  // Q: store this ? (was stored in Delucia20006a)
   float CoolingRate;
   float CoolingRate_beforeAGN;
+  float QuasarAccretionRate;
+  float RadioAccretionRate;
   float Sfr;
   float SfrBulge;
   float XrayLum;
@@ -449,41 +460,38 @@ struct GALAXY_OUTPUT
 #ifdef MERGE01
   int   MergeOn;   // 0: standard delucia-like merger behaviour for type 1 galaxy; 1: galaxy mass > halo mass, separate dynamical friction time calculated ....
 #endif  
-  float CoolingRadius;  // Q: store this ? (was stored in Delucia20006a)
-  float QuasarAccretionRate;
-  float RadioAccretionRate;
 #endif // NO_PROPS_OUTPUTS
   /* magnitudes in various bands */
 #ifdef COMPUTE_SPECPHOT_PROPERTIES
 #ifdef OUTPUT_REST_MAGS
+  float MagDust[NMAG]; // dust corrected, rest-frame absolute mags
   float Mag[NMAG]; // rest-frame absolute mags
   float MagBulge[NMAG]; // rest-frame absolute mags for the bulge
-  float MagDust[NMAG]; // dust corrected, rest-frame absolute mags
 #ifdef ICL
   float MagICL[NMAG];          // rest-frame absolute mags of ICL
 #endif
 #endif
 
 #ifdef OUTPUT_OBS_MAGS
+  float ObsMagDust[NMAG]; // dust-corrected, obs-frame absolute mags
   float ObsMag[NMAG]; // obs-frame absolute mags
   float ObsMagBulge[NMAG]; // obs-frame absolute mags for the bulge
-  float ObsMagDust[NMAG]; // dust-corrected, obs-frame absolute mags
 #ifdef ICL
   float ObsMagICL[NMAG];  // observer-frame absolute mags for intra-cluster light
 #endif
 #ifdef OUTPUT_MOMAF_INPUTS
   // define luminosities as if the galaxy were one snapshot earlier, i.e. higher redshift, than its actual snapshot
+  float dObsMagDust[NMAG]; 
   float dObsMag[NMAG];
   float dObsMagBulge[NMAG];
-  float dObsMagDust[NMAG];
 #ifdef ICL
   float dObsMagICL[NMAG];       
 #endif	//
 #ifdef KITZBICHLER
   // define luminosities as if the galaxy were one snapshot later, i.e. lower redshift, than its actual snapshot
+  float dObsMagDust_forward[NMAG];
   float dObsMag_forward[NMAG];
   float dObsMagBulge_forward[NMAG];
-  float dObsMagDust_forward[NMAG];
 #ifdef ICL
   float dObsMagICL_forward[NMAG];
 #endif	//
@@ -534,6 +542,7 @@ struct GALAXY_OUTPUT
   struct elements HotGas_elements;
   struct elements ICM_elements;
   struct elements EjectedMass_elements;
+  struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
 };
 
@@ -573,7 +582,13 @@ struct SFH_BIN {
   struct elements HotGas_elements;
   struct elements ICM_elements;
   struct elements EjectedMass_elements;
+  struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
+
+
+#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
+  float Xfrac3d;
+#endif
 };
 
 struct SFH_Time
@@ -647,7 +662,6 @@ struct GALAXY			/* Galaxy data */
   int InfallSnap;
   float InfallHotGas;
   float InfallHotGasRadius;
-  float CoolingGas;
   float HotRadius;
   /* baryonic reservoirs */
   float ColdGas;
@@ -655,6 +669,7 @@ struct GALAXY			/* Galaxy data */
   float DiskMass;
   float HotGas;
   float EjectedMass;
+  float ExcessMass;
   float BlackHoleMass;
   float BlackHoleGas;
   /* metals (a la Gabriella) */
@@ -664,6 +679,7 @@ struct GALAXY			/* Galaxy data */
   struct metals MetalsDiskMass;
   struct metals MetalsHotGas;
   struct metals MetalsEjectedMass;
+  struct metals MetalsExcessMass;
 #ifdef METALS_SELF
   struct metals MetalsHotGasSelf;
 #endif
@@ -673,6 +689,7 @@ struct GALAXY			/* Galaxy data */
   float MetalsDiskMass;
   float MetalsHotGas;
   float MetalsEjectedMass;
+  float MetalsExcessMass;
 #ifdef METALS_SELF
   float MetalsHotGasSelf;
 #endif
@@ -685,6 +702,11 @@ struct GALAXY			/* Galaxy data */
   float PrimordialAccretionRate;
   float CoolingRate;
   float CoolingRate_beforeAGN;
+  float CoolingRadius;
+  float CoolingGas;
+  float QuasarAccretionRate;
+  float RadioAccretionRate;
+  float AGNheatingFromCentral;
 #ifdef SAVE_MEMORY
   float Sfr;
   float SfrBulge;
@@ -716,9 +738,6 @@ struct GALAXY			/* Galaxy data */
   float MergeSat;
   float DistanceToCentralGal[3];
   int MergeOn;
-  float CoolingRadius;
-  float QuasarAccretionRate;
-  float RadioAccretionRate;
   float ICM;
  #ifdef DETAILED_METALS_AND_MASS_RETURN
    struct metals MetalsICM;
@@ -801,7 +820,13 @@ struct GALAXY			/* Galaxy data */
   struct elements HotGas_elements;
   struct elements ICM_elements;
   struct elements EjectedMass_elements;
+  struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
+
+#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
+  float Xfrac3d;
+#endif
+  
 } *Gal, *HaloGal;
 
 
@@ -995,6 +1020,7 @@ extern int StarFormationRecipe;
 extern int FeedbackRecipe;
 extern int EjectionRecipe;
 extern int ReIncorporationRecipe;
+extern int InfallRecipe;
 extern int ReionizationOn;
 extern int BlackHoleGrowth;
 extern int AGNRadioModeModel;
@@ -1178,5 +1204,18 @@ extern FILE *FdGalTreeSFH;
 extern FILE *FdGalDumps[NOUT];
 
 
+/* For Reionization data */
+#ifdef READXFRAC
+extern float *Xfrac_Data;
+#ifdef DP_XFRAC
+extern double *Xfrac;
+#else
+extern float *Xfrac;
+#endif
+extern int XfracDataDone[MAXSNAPS];;
+extern int XfracMesh[3];
+extern int XfracNGrids;
+extern char XfracDir[1024];
+#endif
 
 

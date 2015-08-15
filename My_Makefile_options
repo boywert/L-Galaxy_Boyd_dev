@@ -1,6 +1,7 @@
 # List of Makefile options
 # see also routine "check_options" in main.c...
 
+
 # Options that control the SA model
 # Ideally, these shoudl be set in the input parameter file
 OPT += -DUPDATETYPETWO       #  This updates the positions of type 2 galaxies when the galaxies are written to file
@@ -10,6 +11,13 @@ ifeq (HT09_DISRUPTION,$(findstring HT09_DISRUPTION,$(OPT)))
 OBJS  += ./code/recipe_HT09_disrupt.o
 endif
 OPT += -DMERGE01             # allows type 1s to merge with type 0s
+
+# Options to control simulation inputs
+OPT += -DCUSTOM_MAXSNAPS=76
+
+# Option to control external reionization process
+OPT += -DREADXFRAC
+
 
 # Options that control output
 OPT += -DOVERWRITE_OUTPUT    # overwrite output files if they exist (otherwise will quit without overwriting)
@@ -138,3 +146,8 @@ endif
 #OPT += -DDEBUG               # Switch on debug compilation flags
 #OPT += -DMASS_CHECKS         # Check for mass conservation at every stage of galaxy building
 
+# XFRAC Boyd
+ifeq (READXFRAC,$(findstring READXFRAC,$(OPT)))
+OPT += -DHALOPROPERTIES
+OBJS  += ./code/read_xfrac.o
+endif

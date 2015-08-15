@@ -52,12 +52,12 @@ void starformation(int p, int centralgal, double time, double dt, int nstep)
   if(Gal[p].Type == 0)
   {
   	tdyn = Gal[p].GasDiskRadius / Gal[p].Vmax;
-  	cold_crit = SfrColdCrit * Gal[p].Vmax * Gal[p].GasDiskRadius;
+  	cold_crit = SfrColdCrit * Gal[p].Vmax/200. * Gal[p].GasDiskRadius*100.;
   }
   else
   {
   	tdyn = Gal[p].GasDiskRadius / Gal[p].InfallVmax;
-  	cold_crit = SfrColdCrit * Gal[p].InfallVmax * Gal[p].GasDiskRadius;
+  	cold_crit = SfrColdCrit * Gal[p].InfallVmax/200. * Gal[p].GasDiskRadius*100.;
   }
 
   //standard star formation law (Croton2006, Delucia2007, Guo2010)

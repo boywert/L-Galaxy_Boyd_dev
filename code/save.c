@@ -208,6 +208,8 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
 
   o->BulgeSize = g->BulgeSize;
   o->EjectedMass = CORRECTDBFLOAT(g->EjectedMass);
+  //o->ExcessMass = CORRECTDBFLOAT(g->ExcessMass);
+  o->ExcessMass = g->ExcessMass;
   //o->BlackHoleGas = g->BlackHoleGas;
 
   for(j = 0; j < 3; j++)
@@ -238,8 +240,8 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
 
 #ifndef HT09_DISRUPTION
   if(g->Type == 2 || (g->Type == 1 && g->MergeOn == 1)) {
-    o->OriMergTime=g->OriMergTime;
-    o->MergTime = g->MergTime;
+    o->OriMergTime=g->OriMergTime*UnitTime_in_years/Hubble_h;
+    o->MergTime = g->MergTime*UnitTime_in_years/Hubble_h;
   }
   else {
     o->OriMergTime=0.0;
@@ -276,10 +278,12 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
 
   /**/
   o->MetalsColdGas = CORRECTDBFLOAT(g->MetalsColdGas);
+  o->MetalsStellarMass = CORRECTDBFLOAT(g->MetalsDiskMass)+ CORRECTDBFLOAT(g->MetalsBulgeMass);
   o->MetalsDiskMass = CORRECTDBFLOAT(g->MetalsDiskMass);
   o->MetalsBulgeMass = CORRECTDBFLOAT(g->MetalsBulgeMass);
   o->MetalsHotGas = CORRECTDBFLOAT(g->MetalsHotGas);
-  o->MetalsEjectedMass = CORRECTDBFLOAT(g->MetalsEjectedMass);   
+  o->MetalsEjectedMass = CORRECTDBFLOAT(g->MetalsEjectedMass);  
+  o->MetalsExcessMass = CORRECTDBFLOAT(g->MetalsExcessMass);
 #ifdef METALS_SELF
   o->MetalsHotGasSelf = CORRECTDBFLOAT(g->MetalsHotGasSelf);
 #endif
@@ -392,6 +396,7 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
   o->ColdGas_elements = g->ColdGas_elements;
   o->HotGas_elements = g->HotGas_elements;
   o->EjectedMass_elements = g->EjectedMass_elements;
+  o->ExcessMass_elements = g->ExcessMass_elements;
   o->ICM_elements = g->ICM_elements;
 #endif
 
@@ -511,6 +516,9 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
 #endif
     }
  
+#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
+  o->Xfrac3d = g->Xfrac3d;
+#endif
 
 #endif //OUTPUT_REST_MAGS
 #ifdef OUTPUT_OBS_MAGS
@@ -574,6 +582,7 @@ void fix_units_for_ouput(struct GALAXY_OUTPUT *o)
   o->DiskMass /= Hubble_h;
   o->BulgeMass /= Hubble_h;
   o->HotGas /= Hubble_h;
+  //o->ExcessMass /= Hubble_h;
   o->BlackHoleMass /= Hubble_h;
 
 }
@@ -615,6 +624,7 @@ void fix_units_for_ouput(struct GALAXY_OUTPUT *o)
   o->BulgeMass /= Hubble_h;
   o->HotGas /= Hubble_h;
   o->EjectedMass /= Hubble_h;
+  o->ExcessMass /= Hubble_h;
   o->BlackHoleMass /= Hubble_h;
   o->ICM /= Hubble_h;
   o->BulgeSize /= Hubble_h;
@@ -630,6 +640,7 @@ void fix_units_for_ouput(struct GALAXY_OUTPUT *o)
   o->MetalsBulgeMass=metals_add(metals_init(),o->MetalsBulgeMass,1./Hubble_h);
   o->MetalsHotGas=metals_add(metals_init(),o->MetalsHotGas,1./Hubble_h);
   o->MetalsEjectedMass=metals_add(metals_init(),o->MetalsEjectedMass,1./Hubble_h);
+  o->MetalsExcessMass=metals_add(metals_init(),o->MetalsExcessMass,1./Hubble_h);
   o->MetalsICM=metals_add(metals_init(),o->MetalsICM,1./Hubble_h);
 
 #ifdef STAR_FORMATION_HISTORY

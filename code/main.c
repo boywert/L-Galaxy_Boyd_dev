@@ -151,12 +151,17 @@ int main(int argc, char **argv)
 	  time_t current;
 	  do
 	  	time(&current);
-	  while(difftime(current, start) < 5.0 * ThisTask);
+	  //while(difftime(current, start) < 5.0 * ThisTask);
+	  while(difftime(current, start) < 1.0 * ThisTask);
 
 #endif
 #endif
-
-	  load_tree_table(filenr);
+	  
+#ifdef READXFRAC
+      get_xfrac_mesh();
+#endif
+      
+      load_tree_table(filenr);
 #ifdef MCMC
       Senna(); // run the model in MCMC MODE
 #else
@@ -259,7 +264,7 @@ void SAM(int filenr)
   //for(treenr = 0; treenr < NTrees_Switch_MR_MRII; treenr++)
   //for(treenr = NTrees_Switch_MR_MRII; treenr < Ntrees; treenr++)
   for(treenr = 0; treenr < Ntrees; treenr++)
-  //for(treenr = 0; treenr < 200;treenr++)
+  //for(treenr = 5829; treenr <5830;treenr++)
   {
   //printf("doing tree %d of %d (MR trees=%d)\n", treenr, Ntrees, NTrees_Switch_MR_MRII);
     //printf("doing tree %d of %d\n", treenr, Ntrees);
@@ -654,9 +659,7 @@ int join_galaxies_of_progenitors(int halonr, int ngalstart)
 	    }
     }
 
-  /* If the baryonic mass of a type 1 is comparable to its dark matter mass
-   * and its merging clock is switched on, its satelites (type 2's)
-   * will preferably merge onto this type 1 rather than the type 0 */
+  /* satelites (type 2's) will preferably merge onto this type 1 rather than the type 0 */
   for(i = ngalstart, centralgal = -1; i < ngal; i++)
 	  if(Gal[i].Type == 0 || Gal[i].Type == 1)
 	    {
@@ -729,7 +732,7 @@ int join_galaxies_of_progenitors(int halonr, int ngalstart)
 void evolve_galaxies(int halonr, int ngal, int treenr, int cenngal)
 {
   int p, q, nstep, centralgal, merger_centralgal, currenthalo, prevgal, start, i;
-  double infallingGas, coolingGas, deltaT, Zcurr;  
+  double infallingGas, deltaT, Zcurr;
   double time, previoustime, newtime;
   double AGNaccreted, t_Edd;
 #ifdef STAR_FORMATION_HISTORY
@@ -806,40 +809,52 @@ void evolve_galaxies(int halonr, int ngal, int treenr, int cenngal)
 	  /* Infall onto central galaxy only, if required to make up a baryon deficit */
 #ifndef GUO10
 #ifndef GUO13
-	  if (infallingGas > 0.)
+	  //if (infallingGas > 0.)
 #endif
 #endif
-	  	add_infall_to_hot(centralgal, infallingGas / STEPS);
-
+	    //	  {  
+	  add_infall_to_hot(centralgal, ngal, infallingGas / STEPS);
+	  //	  }
+	  //    	  else
+	  //	  {  
+	  //	add_infall_to_hot(centralgal, infallingGas / STEPS);
+      	  //      Gal[centralgal].HotGas = Gal[centralgal].HotGas - infallingGas;
+	  //	  }
+	  //	  endif
 	  mass_checks("Evolve_galaxies #0.5",centralgal);
 
 	  for (p = 0; p < ngal; p++)
-	    {
+	  {
 		  /* don't treat galaxies that have already merged */
-		  if(Gal[p].Type == 3)
+	  	if(Gal[p].Type == 3)
 			  continue;
+	  	mass_checks("Evolve_galaxies #1",p);
 
-		  mass_checks("Evolve_galaxies #1",p);
-
-		  if (Gal[p].Type == 0 || Gal[p].Type == 1)
+	  	if (Gal[p].Type == 0 || Gal[p].Type == 1)
 		  //if (Gal[p].Type == 0)
 		  {
 		  	if((ReIncorporationRecipe == 0 && Gal[p].Type==0) || ReIncorporationRecipe > 0)
 				  reincorporate_gas(p, deltaT / STEPS);
 			  /* determine cooling gas given halo properties and add it to the cold phase*/
 			  mass_checks("Evolve_galaxies #1.5",p);
-			  coolingGas = cooling_recipe(p, deltaT / STEPS);
-			  cool_gas_onto_galaxy(p, coolingGas);
+			  compute_cooling(p, deltaT / STEPS, ngal);
 		  }
-		           
-		  mass_checks("Evolve_galaxies #2",p);
+	  }
 
-		  /* stars form*/
-		  //if (Gal[p].Type == 0)
-		  starformation(p, centralgal, time, deltaT / STEPS, nstep);
+	  //this must be separated as now satellite AGN can heat central galaxies
+	  //therefore the AGN from all satellites must be computed, in a loop inside this function,
+	  //before gas is cooled into central galaxies (only suppress cooling, the gas is not actually heated)
 
+	  if(AGNRadioModeModel > 0)
+	  	do_AGN_heating(deltaT / STEPS, ngal);
+
+	  for (p = 0; p < ngal; p++)
+	  {
+	  	cool_gas_onto_galaxy(p, deltaT / STEPS);
+	  	mass_checks("Evolve_galaxies #2",p);
+	  	starformation(p, centralgal, time, deltaT / STEPS, nstep);
 		  mass_checks("Evolve_galaxies #3",p);
-	    }
+	  }
 
 	  /* Check for merger events */
 	  //if(Gal[p].Type == 1)
@@ -1186,7 +1201,13 @@ void evolve_galaxies(int halonr, int ngal, int treenr, int cenngal)
 #endif
 #endif //LIGHT_OUTPUT
 
-/* Description of the code to appear in the first page of the documentation. */
+#ifdef READXFRAC
+#ifndef HALOPROPERTIES
+    printf("> Error : option READXFRAC requires option HALOPROPERTIES \n");
+    exit(32);
+#endif  
+#endif
+    /* Description of the code to appear in the first page of the documentation. */
 
 }
 

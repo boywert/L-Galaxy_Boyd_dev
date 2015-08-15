@@ -1,5 +1,6 @@
 # 1 "./code/allvars.h"
-# 1 "/home/c/cs/cs390/L-Galaxies_Henriques2014a//"
+# 1 "/home/cpes/astr/petert/research/Peter/L-Galaxies_Henriques2014a//"
+# 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "./code/allvars.h"
 
@@ -37,8 +38,8 @@
 
 
 
-# 1 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 1 3 4
-# 212 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 1 3 4
+# 211 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 3 4
 typedef long unsigned int size_t;
 # 35 "/usr/include/stdio.h" 2 3 4
 
@@ -155,7 +156,7 @@ typedef struct _IO_FILE __FILE;
 # 32 "/usr/include/libio.h" 3 4
 # 1 "/usr/include/_G_config.h" 1 3 4
 # 15 "/usr/include/_G_config.h" 3 4
-# 1 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 1 3 4
 # 16 "/usr/include/_G_config.h" 2 3 4
 
 
@@ -195,8 +196,8 @@ typedef unsigned int _G_uint16_t __attribute__ ((__mode__ (__HI__)));
 typedef unsigned int _G_uint32_t __attribute__ ((__mode__ (__SI__)));
 # 33 "/usr/include/libio.h" 2 3 4
 # 53 "/usr/include/libio.h" 3 4
-# 1 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stdarg.h" 1 3 4
-# 40 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stdarg.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h" 3 4
 typedef __builtin_va_list __gnuc_va_list;
 # 54 "/usr/include/libio.h" 2 3 4
 # 170 "/usr/include/libio.h" 3 4
@@ -943,12 +944,12 @@ __attribute__ ((__nothrow__)) ferror_unlocked (FILE *__stream)
 # 938 "/usr/include/stdio.h" 3 4
 
 # 8 "./code/allvars.h" 2
-# 1 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 1 3
-# 22 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 3
+# 1 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 1 3
+# 22 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 3
 # 1 "/usr/include/stdlib.h" 1 3 4
 # 33 "/usr/include/stdlib.h" 3 4
-# 1 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 1 3 4
-# 324 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 1 3 4
+# 323 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 3 4
 typedef int wchar_t;
 # 34 "/usr/include/stdlib.h" 2 3 4
 
@@ -1246,7 +1247,7 @@ typedef __clockid_t clockid_t;
 typedef __timer_t timer_t;
 # 134 "/usr/include/sys/types.h" 2 3 4
 # 147 "/usr/include/sys/types.h" 3 4
-# 1 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 1 3 4
 # 148 "/usr/include/sys/types.h" 2 3 4
 
 
@@ -1740,7 +1741,7 @@ extern void cfree (void *__ptr) __attribute__ ((__nothrow__));
 
 # 1 "/usr/include/alloca.h" 1 3 4
 # 25 "/usr/include/alloca.h" 3 4
-# 1 "/cm/shared/apps/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h" 1 3 4
 # 26 "/usr/include/alloca.h" 2 3 4
 
 
@@ -1991,11 +1992,11 @@ extern int getloadavg (double __loadavg[], int __nelem)
      __attribute__ ((__nothrow__)) __attribute__ ((__nonnull__ (1)));
 # 964 "/usr/include/stdlib.h" 3 4
 
-# 23 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 2 3
-# 1 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_types.h" 1 3
-# 24 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 2 3
-# 1 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_errno.h" 1 3
-# 24 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_errno.h" 3
+# 23 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 2 3
+# 1 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_types.h" 1 3
+# 24 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 2 3
+# 1 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_errno.h" 1 3
+# 24 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_errno.h" 3
 # 1 "/usr/include/errno.h" 1 3 4
 # 32 "/usr/include/errno.h" 3 4
 
@@ -2023,8 +2024,8 @@ extern int *__errno_location (void) __attribute__ ((__nothrow__)) __attribute__ 
 # 37 "/usr/include/errno.h" 2 3 4
 # 59 "/usr/include/errno.h" 3 4
 
-# 25 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_errno.h" 2 3
-# 37 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_errno.h" 3
+# 25 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_errno.h" 2 3
+# 37 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_errno.h" 3
 
 
 enum {
@@ -2089,12 +2090,12 @@ gsl_stream_handler_t *
 gsl_set_stream_handler (gsl_stream_handler_t * new_handler);
 
 FILE * gsl_set_stream (FILE * new_stream);
-# 152 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_errno.h" 3
+# 152 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_errno.h" 3
 
-# 25 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 2 3
-# 1 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_inline.h" 1 3
-# 26 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 2 3
-# 37 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 3
+# 25 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 2 3
+# 1 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_inline.h" 1 3
+# 26 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 2 3
+# 37 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 3
 
 
 typedef struct
@@ -2213,7 +2214,7 @@ const gsl_rng_type * gsl_rng_env_setup (void);
  double gsl_rng_uniform (const gsl_rng * r);
  double gsl_rng_uniform_pos (const gsl_rng * r);
  unsigned long int gsl_rng_uniform_int (const gsl_rng * r, unsigned long int n);
-# 215 "/cm/shared/apps/gsl/gcc/1.15/include/gsl/gsl_rng.h" 3
+# 215 "/cm/shared/apps/gsl/gcc/1.16/include/gsl/gsl_rng.h" 3
 
 # 9 "./code/allvars.h" 2
 # 98 "./code/allvars.h"
@@ -2234,6 +2235,7 @@ struct GALAXY_OUTPUT
   float LookBackTimeToSnap;
   float CentralMvir;
   float CentralRvir;
+  float DistanceToCentralGal[3];
 
   float Pos[3];
   float Vel[3];
@@ -2257,7 +2259,6 @@ struct GALAXY_OUTPUT
 
 
 
-  float DistanceToCentralGal[3];
 
   float ColdGas;
   float StellarMass;
@@ -2265,21 +2266,27 @@ struct GALAXY_OUTPUT
   float DiskMass;
   float HotGas;
   float EjectedMass;
+  float ExcessMass;
   float BlackHoleMass;
-
+  float BlackHoleGas;
 
   float ICM;
 # 424 "./code/allvars.h"
   float MetalsColdGas;
+  float MetalsStellarMass;
   float MetalsBulgeMass;
   float MetalsDiskMass;
   float MetalsHotGas;
   float MetalsEjectedMass;
+  float MetalsExcessMass;
   float MetalsICM;
-# 438 "./code/allvars.h"
+# 439 "./code/allvars.h"
   float PrimordialAccretionRate;
+  float CoolingRadius;
   float CoolingRate;
   float CoolingRate_beforeAGN;
+  float QuasarAccretionRate;
+  float RadioAccretionRate;
   float Sfr;
   float SfrBulge;
   float XrayLum;
@@ -2291,17 +2298,14 @@ struct GALAXY_OUTPUT
 
   int MergeOn;
 
-  float CoolingRadius;
-  float QuasarAccretionRate;
-  float RadioAccretionRate;
 
 
 
 
-  float Mag[40];
-  float MagBulge[40];
-  float MagDust[40];
-# 496 "./code/allvars.h"
+  float MagDust[5];
+  float Mag[5];
+  float MagBulge[5];
+# 497 "./code/allvars.h"
   float MassWeightAge;
 
   float rbandWeightAge;
@@ -2324,7 +2328,7 @@ struct GALAXY_OUTPUT
   float sfh_MetalsDiskMass[20];
   float sfh_MetalsBulgeMass[20];
   float sfh_MetalsICM[20];
-# 538 "./code/allvars.h"
+# 539 "./code/allvars.h"
 };
 
 
@@ -2346,7 +2350,7 @@ struct SFH_BIN {
   float sfh_MetalsDiskMass;
   float sfh_MetalsBulgeMass;
   float sfh_MetalsICM;
-# 577 "./code/allvars.h"
+# 578 "./code/allvars.h"
 };
 
 struct SFH_Time
@@ -2420,7 +2424,6 @@ struct GALAXY
   int InfallSnap;
   float InfallHotGas;
   float InfallHotGasRadius;
-  float CoolingGas;
   float HotRadius;
 
   float ColdGas;
@@ -2428,6 +2431,7 @@ struct GALAXY
   float DiskMass;
   float HotGas;
   float EjectedMass;
+  float ExcessMass;
   float BlackHoleMass;
   float BlackHoleGas;
 # 671 "./code/allvars.h"
@@ -2436,10 +2440,16 @@ struct GALAXY
   float MetalsDiskMass;
   float MetalsHotGas;
   float MetalsEjectedMass;
+  float MetalsExcessMass;
 # 685 "./code/allvars.h"
   float PrimordialAccretionRate;
   float CoolingRate;
   float CoolingRate_beforeAGN;
+  float CoolingRadius;
+  float CoolingGas;
+  float QuasarAccretionRate;
+  float RadioAccretionRate;
+  float AGNheatingFromCentral;
 
   float Sfr;
   float SfrBulge;
@@ -2471,16 +2481,13 @@ struct GALAXY
   float MergeSat;
   float DistanceToCentralGal[3];
   int MergeOn;
-  float CoolingRadius;
-  float QuasarAccretionRate;
-  float RadioAccretionRate;
   float ICM;
 
 
 
    float MetalsICM;
-# 768 "./code/allvars.h"
-  float MassWeightAge[28];
+# 770 "./code/allvars.h"
+  float MassWeightAge[26];
 
   int sfh_ibin;
   double sfh_age;
@@ -2499,7 +2506,7 @@ struct GALAXY
   float sfh_MetalsDiskMass[20];
   float sfh_MetalsBulgeMass[20];
   float sfh_MetalsICM[20];
-# 805 "./code/allvars.h"
+# 807 "./code/allvars.h"
 } *Gal, *HaloGal;
 
 
@@ -2551,7 +2558,7 @@ extern struct halo_ids_data
  int PeanoKey;
  int dummy;
 } *HaloIDs, *HaloIDs_Data;
-# 865 "./code/allvars.h"
+# 867 "./code/allvars.h"
 struct halo_aux_data
 {
  int DoneFlag;
@@ -2627,8 +2634,8 @@ extern double ScaleMass;
 
 
 extern int TotHalos;
-extern int TotGalaxies[28];
-extern int *TreeNgals[28];
+extern int TotGalaxies[26];
+extern int *TreeNgals[26];
 
 extern int *FirstHaloInSnap;
 
@@ -2645,7 +2652,7 @@ extern size_t HighMarkBytes;
 extern size_t FreeBytes;
 
 extern int ThisTask, NTask;
-# 968 "./code/allvars.h"
+# 970 "./code/allvars.h"
 extern double BaryonFrac;
 extern double Sigma8;
 extern double Omega;
@@ -2659,11 +2666,12 @@ extern double PartMass;
 extern double BoxSize;
 extern double PartMass_OriginalCosm;
 extern double BoxSize_OriginalCosm;
-# 994 "./code/allvars.h"
+# 996 "./code/allvars.h"
 extern int StarFormationRecipe;
 extern int FeedbackRecipe;
 extern int EjectionRecipe;
 extern int ReIncorporationRecipe;
+extern int InfallRecipe;
 extern int ReionizationOn;
 extern int BlackHoleGrowth;
 extern int AGNRadioModeModel;
@@ -2733,8 +2741,8 @@ extern double
  Hubble,
  a0, ar;
 
-extern int ListOutputSnaps[28];
-extern float ListOutputRedshifts[28];
+extern int ListOutputSnaps[26];
+extern float ListOutputRedshifts[26];
 
 extern double ZZ[64];
 extern double AA[64];
@@ -2749,15 +2757,15 @@ extern gsl_rng *random_generator;
 
 
 extern int NumMergers;
-# 1116 "./code/allvars.h"
-extern float SSP_logMetalTab[4];
+# 1118 "./code/allvars.h"
+extern float SSP_logMetalTab[6];
 
-extern float SSP_logAgeTab[220];
+extern float SSP_logAgeTab[221];
 
 extern float RedshiftTab[64];
-extern float LumTables[40][4][64][220];
-extern float FilterLambda[40 +1];
-# 1135 "./code/allvars.h"
+extern float LumTables[5][6][64][221];
+extern float FilterLambda[5 +1];
+# 1137 "./code/allvars.h"
 extern long mu_seed;
 
 
@@ -2779,7 +2787,7 @@ extern float *PosList, *VelList;
 extern int Hashbits;
 extern int NumWrittenInParallel;
 extern double ScaleFactor;
-# 1168 "./code/allvars.h"
+# 1170 "./code/allvars.h"
 extern float Rho[101];
 extern float H2[101][13];
 
@@ -2790,4 +2798,4 @@ extern FILE *treeaux_file;
 extern FILE *treedbids_file;
 extern FILE *FdGalTree;
 extern FILE *FdGalTreeSFH;
-extern FILE *FdGalDumps[28];
+extern FILE *FdGalDumps[26];

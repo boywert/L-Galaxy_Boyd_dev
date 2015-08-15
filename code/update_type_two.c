@@ -56,9 +56,12 @@ void update_type_two_coordinate_and_velocity(int tree, int i, int centralgal)
 #endif
 
 //#ifdef SCALE_COSMOLOGY
-#ifndef GUO10
+#ifdef GUO10
         for(j = 0; j < 3; j++)
-        	Gal[i].Pos[j] *= ScalePos;
+        	HaloGal[i].Pos[j] *= ScalePos;
+#else
+        for(j = 0; j < 3; j++)
+               	Gal[i].Pos[j] *= ScalePos;
 #endif
 //#endif
 
@@ -93,18 +96,28 @@ void update_type_two_coordinate_and_velocity(int tree, int i, int centralgal)
         }
 #endif
 
-#ifndef GUO10
+#ifdef GUO10
 //#ifdef SCALE_COSMOLOGY
 	//add by Qi. 06/04/2012 to account for the scale of velocity field
 	Scale_V = scale_v_cen(Halo[HaloGal[centralgal].HaloNr].SnapNum);
 
 	for (j = 0; j < 3 ; j++)
 	  {
-	    dv = Gal[p].Vel[j] - Gal[centralgal].Vel[j]/Scale_V;
-	    dv *=sqrt(ScaleMass/ScalePos) * sqrt(AA_OriginalCosm[Halo[Gal[centralgal].HaloNr].SnapNum]/AA[Halo[Gal[centralgal].HaloNr].SnapNum]);
-	    Gal[p].Vel[j] = Gal[centralgal].Vel[j] + dv;
+	    dv = HaloGal[p].Vel[j] - HaloGal[centralgal].Vel[j]/Scale_V;
+	    dv *=sqrt(ScaleMass/ScalePos) * sqrt(AA_OriginalCosm[Halo[HaloGal[centralgal].HaloNr].SnapNum]/AA[Halo[HaloGal[centralgal].HaloNr].SnapNum]);
+	    HaloGal[p].Vel[j] = HaloGal[centralgal].Vel[j] + dv;
 	  }
 //#endif
+
+#else
+	Scale_V = scale_v_cen(Halo[Gal[centralgal].HaloNr].SnapNum);
+
+		for (j = 0; j < 3 ; j++)
+		  {
+		    dv = Gal[p].Vel[j] - Gal[centralgal].Vel[j]/Scale_V;
+		    dv *=sqrt(ScaleMass/ScalePos) * sqrt(AA_OriginalCosm[Halo[Gal[centralgal].HaloNr].SnapNum]/AA[Halo[Gal[centralgal].HaloNr].SnapNum]);
+		    Gal[p].Vel[j] = Gal[centralgal].Vel[j] + dv;
+		  }
 #endif
       }
 }

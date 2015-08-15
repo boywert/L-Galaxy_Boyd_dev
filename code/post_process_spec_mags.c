@@ -374,6 +374,7 @@ void dust_correction_for_post_processing(int nlum, int snap, double Zg, double C
 
   /* 0.94 = 2.83/3. - 3 to get scale lenght and 2.83 = 1.68^2 */
   nh = ColdGas / (M_PI * pow(GasDiskRadius * 0.94, 2) * 1.4);
+  //nh = ColdGas / (M_PI * pow(GasDiskRadius * 0.56, 2) * 1.4);
   /* now convert from 10^10 M_sun/h / (Mpc/h)^2 to (2.1 10^21 atoms/cm^2) */
   nh = nh / 3252.37;	// 3252.37 = 10^(3.5122)
 

@@ -68,7 +68,7 @@
 
 /** @brief main cooling recipe, where the cooling rates are calculated */
 
-double cooling_recipe(int p, double dt)
+void compute_cooling(int p, double dt, int ngal)
 {
   double Vvir, Rvir, x, lambda, tcool, rcool, temp, tot_hotMass, tot_metals, HotRadius;
   double coolingGas, logZ, rho_rcool, rho0;
@@ -78,19 +78,20 @@ double cooling_recipe(int p, double dt)
   tot_hotMass = Gal[p].HotGas;
   tot_metals = metals_total(Gal[p].MetalsHotGas);
 
-  if(tot_hotMass > 1.0e-6) {
-    /* TODO - Should Rvir be used at all in this recipe after Guo2010?
+  if(tot_hotMass > 1.0e-6)
+  {
+  	/* TODO - Should Rvir be used at all in this recipe after Guo2010?
      * probably always HotRadius*/
     Vvir = Gal[p].Vvir;
     Rvir = Gal[p].Rvir;
     
       
-      tcool = Rvir / Vvir; // tcool = t_dynamical = Rvir/Vvir
+    tcool = Rvir / Vvir; // tcool = t_dynamical = Rvir/Vvir
 
 
-      /* temp -> Temperature of the Gas in Kelvin, obtained from
-       * hidrostatic equilibrium KT=0.5*mu_p*(Vc)^2 assuming Vvir~Vc */
-      temp = 35.9 * Vvir * Vvir;
+    /* temp -> Temperature of the Gas in Kelvin, obtained from
+     * hidrostatic equilibrium KT=0.5*mu_p*(Vc)^2 assuming Vvir~Vc */
+    temp = 35.9 * Vvir * Vvir;
       
     if (Gal[p].Type == 0)
       HotRadius = Gal[p].Rvir;
@@ -133,35 +134,16 @@ double cooling_recipe(int p, double dt)
     else if(coolingGas < 0.0)
       coolingGas = 0.0;      
     
-    Gal[p].CoolingRate_beforeAGN += coolingGas / (dt * STEPS);
 
-    /*  Suppress cooling due to AGN feedback, the gas is not actually heated,
-     *  just the amount of cooling reduced. */
-  mass_checks("cooling_recipe #1.5",p);
-    if(AGNRadioModeModel > 0)
-      coolingGas -= do_AGN_heating(coolingGas, p, dt, x);
-  mass_checks("cooling_recipe #2",p);
-
-  Gal[p].CoolingRate += coolingGas / (dt * STEPS);
-
-
-  if(coolingGas < 0.0)
-  	coolingGas = 0.0;
   }
-  else {
+  else
+  {
     coolingGas = 0.0;
   }
-  
-  /* determine the xray luminosity of any cooling gas in this snapshot
-   * (White & Frenk 1991 eq21) */
-  if(coolingGas > 0.0)
-    Gal[p].XrayLum =
-      log10(2.5 * (coolingGas / dt) * 6.31 * Gal[p].Vvir * Gal[p].Vvir) + 35.0;
-  else
-    Gal[p].XrayLum = 0.0;
-  Gal[p].CoolingGas += coolingGas;
-  
-  return coolingGas;
+
+  Gal[p].CoolingGas = coolingGas;
+
+  mass_checks("cooling_recipe #1.5",p);
 
 }   
 
@@ -170,132 +152,218 @@ double cooling_recipe(int p, double dt)
 /** @brief calculates the energy released by black holes due to passive accretion,
   * that will be used to reduced the cooling.*/
 
-double do_AGN_heating(double coolingGas, int centralgal, double dt, double x)
+
+/** @brief do_AGN_heating calculates the amount of energy released by
+  * black holes due to passive accretion, Which is then used to reduce
+  * the cooling.
+  *
+  * There is one parameter, AgnEfficiency, which is the efficiency of AGN
+  * passive accretion and consequently of cooling flow reheating, Eqs. 10,
+  * 11 & 12 in Croton 2006. There is a AGNRadioModeModel =2 (empirical)
+  * with options 3 and 4 representing Bondi-Hoyle and cold cloud accretion.
+  * The three should be identical and the use of empirical avoids people
+  * shouting about duty-cycles being inconsistent with Bondi-Hoyle & etc.
+  */
+
+// AGN accretion and heating is assumed to go from the gas from the type 0
+// galaxy at the centre of the FOF group to the most massive black hole
+// inside Rvir. If the most massive black hole is in a type 1 this produces
+// all the heating affecting the type 0 galaxy and will add to the accretion
+//occuring on the type 1
+// this is done to account for the fact that the centres of FOF groups can
+//switch between galaxies. As a result a very small galaxy without a black hole
+//might be assigned the centre of a cluster leading to huge cooling. It is therefore
+//not necessary to do the same correction for satellites of subhalos.
+
+
+
+void do_AGN_heating(double dt, int ngal)
 {
   double AGNrate, AGNheating, AGNaccreted, AGNcoeff, fraction, EDDrate, FreeFallRadius;
+  double dist, HotGas, HotRadius, Rvir, Vvir, Mvir;
+  double LeftOverEnergy, CoolingGas, AGNAccretedFromCentral;
+  int p, FoFCentralGal;
 
-  /** @brief do_AGN_heating calculates the amount of energy released by
-    * black holes due to passive accretion, Which is then used to reduce
-    * the cooling.
-    *
-    * There is one parameter, AgnEfficiency, which is the efficiency of AGN
-    * passive accretion and consequently of cooling flow reheating, Eqs. 10,
-    * 11 & 12 in Croton 2006. The standard recipe is AGNRadioModeModel =1 (empirical)
-    * with options 2 and 3 representing Bondi-Hoyle and cold cloud accretion.
-    * The three should be identical and the use of empirical avoids people
-    * shouting about duty-cycles being inconsistent with Bondi-Hoyle & etc.
-    */
+	if(AGNRadioModeModel == 1)
+	{
+		for (p = 0; p < ngal; p++)
+			if(Gal[p].Type == 0)
+				FoFCentralGal=p;
+	}
 
-  AGNrate=0.;
-
-  if(Gal[centralgal].HotGas > 0.0)
+	for (p = 0; p < ngal; p++)
   {
 
-  	if(AGNRadioModeModel == 3)
+		Gal[p].CoolingRate_beforeAGN += Gal[p].CoolingGas / (dt*STEPS);
+
+		AGNrate=0.;
+		LeftOverEnergy = 0.;
+
+  	HotGas = Gal[p].HotGas;
+  	HotRadius = Gal[p].HotRadius;
+  	CoolingGas = Gal[p].CoolingGas;
+  	Mvir = Gal[p].Rvir;
+  	Rvir = Gal[p].Rvir;
+  	Vvir = Gal[p].Vvir;
+
+  	if(HotGas > 0.0)
   	{
-  		/* Bondi-Hoyle accretion recipe -- efficiency = 0.15
-  		 * Eq. 29 in Croton 2006 */
-  		AGNrate = (2.5 * M_PI * G) * (0.75 * 0.6 * x) * Gal[centralgal].BlackHoleMass * 0.15;
-  	}
-  	else if(AGNRadioModeModel == 4)
-  	{
-  		/* Cold cloud accretion recipe -- trigger: Rff = 50 Rdisk,
-  		 * and accretion rate = 0.01% cooling rate
-  		 * Eq. 25 in Croton 2006 */
-  		FreeFallRadius = Gal[centralgal].HotGas / (6.0 * 0.6 * x * Gal[centralgal].Rvir * Gal[centralgal].Vvir) /
-  					Gal[centralgal].HotRadius * Gal[centralgal].Rvir;
-  		if(Gal[centralgal].BlackHoleMass > 0.0 && FreeFallRadius < Gal[centralgal].GasDiskRadius * 50.0)
-  			AGNrate = 0.0001 * coolingGas / dt;
-  		else
-  			AGNrate = 0.0;
-  	}
-  	else if(AGNRadioModeModel == 2)
-  	{
-  		//empirical (standard) accretion recipe - Eq. 10 in Croton 2006
-  		AGNrate = AgnEfficiency / (UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS)
-  				* (Gal[centralgal].BlackHoleMass / 0.01) * pow3(Gal[centralgal].Vvir / 200.0)
-  				* ((Gal[centralgal].HotGas / Gal[centralgal].HotRadius * Gal[centralgal].Rvir / Gal[centralgal].Mvir) / 0.1);
-  	}
-  	else if(AGNRadioModeModel == 1)
-  	{
-  		AGNrate =	AgnEfficiency * (UnitTime_in_s*SOLAR_MASS)/(UnitMass_in_g*SEC_PER_YEAR)
-	  		 * Gal[centralgal].BlackHoleMass * (Gal[centralgal].HotGas * Gal[centralgal].Rvir/Gal[centralgal].HotRadius) * 10.;
 
-  		//AGNrate =	AgnEfficiency * (UnitTime_in_s*SOLAR_MASS)/(UnitMass_in_g*SEC_PER_YEAR)
-  		//	  		 *pow(Gal[centralgal].BlackHoleMass,0.5)*(Gal[centralgal].HotGas * Gal[centralgal].Rvir/Gal[centralgal].HotRadius)*0.1;
+  		if(AGNRadioModeModel == 1)
+  		{
+  			AGNrate =	AgnEfficiency * (UnitTime_in_s*SOLAR_MASS)/(UnitMass_in_g*SEC_PER_YEAR)
+  			  				 * Gal[p].BlackHoleMass/Hubble_h * (HotGas/Hubble_h) * 10.;
 
-  	/*	AGNrate =	AgnEfficiency / (UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS)
-  	     					* (Gal[centralgal].BlackHoleMass / 0.01)* (Gal[centralgal].BlackHoleMass / 0.01) * (Gal[centralgal].Mvir*0.01)
-  	     					* ((Gal[centralgal].HotGas / Gal[centralgal].HotRadius * Gal[centralgal].Rvir / Gal[centralgal].Mvir) / 0.1);*/
+  			//AGNrate =	AgnEfficiency * (UnitTime_in_s*SOLAR_MASS)/(UnitMass_in_g*SEC_PER_YEAR)
+  			//	  		 *pow(Gal[p].BlackHoleMass,0.5)*(Gal[p].HotGas * Gal[p].Rvir/Gal[p].HotRadius)*0.1;
+    	}
+  		else if(AGNRadioModeModel == 2)
+  	  	{
+  	  		//empirical (standard) accretion recipe - Eq. 10 in Croton 2006
+  	  		AGNrate = AgnEfficiency / (UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS)
+  	  				* (Gal[p].BlackHoleMass / 0.01) * pow3(Vvir / 200.0)
+  	  				* ((HotGas / HotRadius * Rvir / Mvir) / 0.1);
 
- /* AGNrate = AgnEfficiency / (UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS) *
-      	    pow(Gal[centralgal].BlackHoleMass / 0.01,1.4) * pow(Gal[centralgal].Vvir / 200.0,2.49) *
-      	    pow(((Gal[centralgal].HotGas / Gal[centralgal].HotRadius * Gal[centralgal].Rvir / Gal[centralgal].Mvir) / 0.1),0.571) *
-      	    pow((1+ZZ[Gal[centralgal].SnapNum]),-1.31);*/
-  	}
+  	  	}
+  		else if(AGNRadioModeModel == 3 || AGNRadioModeModel == 4)
+  		{
+  			double x, lambda, temp, logZ, tot_metals;
 
+  			tot_metals = metals_total(Gal[p].MetalsHotGas);
 
+  			/* temp -> Temperature of the Gas in Kelvin, obtained from
+  			 * hidrostatic equilibrium KT=0.5*mu_p*(Vc)^2 assuming Vvir~Vc */
+  			temp = 35.9 * Vvir * Vvir;
+  			if(tot_metals > 0)
+  				logZ = log10(tot_metals / HotGas);
+  			else
+  				logZ = -10.0;
+  			lambda = get_metaldependent_cooling_rate(log10(temp), logZ);
+  			x = PROTONMASS * BOLTZMANN * temp / lambda; // now this has units sec g/cm^3
+  			x /= (UnitDensity_in_cgs * UnitTime_in_s);  // now in internal units
+
+  			/* Bondi-Hoyle accretion recipe -- efficiency = 0.15
+  		  				 * Eq. 29 in Croton 2006 */
+  			if(AGNRadioModeModel == 3)
+  			{
+  				AGNrate = (2.5 * M_PI * G) * (0.75 * 0.6 * x) * Gal[p].BlackHoleMass * 0.15;
+  			}
+  			else if(AGNRadioModeModel == 4)
+  			{
+  				/* Cold cloud accretion recipe -- trigger: Rff = 50 Rdisk,
+  				 * and accretion rate = 0.01% cooling rate
+  				 * Eq. 25 in Croton 2006 */
+  				FreeFallRadius = HotGas / (6.0 * 0.6 * x * Rvir * Vvir) /	HotRadius * Rvir;
+  				if(Gal[p].BlackHoleMass > 0.0 && FreeFallRadius < Gal[p].GasDiskRadius * 50.0)
+  					AGNrate = 0.0001 * CoolingGas / dt;
+  				else
+  					AGNrate = 0.0;
+  			}
+  		}
 
       /* Eddington rate */
       /* Note that this assumes an efficiency of 50% 
        * - it ignores the e/(1-e) factor in L = e/(1-e) Mdot c^2 */
-      EDDrate = 1.3e48 * Gal[centralgal].BlackHoleMass / (UnitEnergy_in_cgs / UnitTime_in_s) / 9e10;
+      EDDrate = 1.3e48 * Gal[p].BlackHoleMass / (UnitEnergy_in_cgs / UnitTime_in_s) / 9e10;
 
       /* accretion onto BH is always limited by the Eddington rate */
       if(AGNrate > EDDrate)
         AGNrate = EDDrate;
 
-      /*  accreted mass onto black hole */
+      /*  accreted mass onto black hole the value of dt puts an h factor into AGNaccreted as required for code units */
       AGNaccreted = AGNrate * dt;
 
       /* cannot accrete more mass than is available! */
-      if(AGNaccreted > Gal[centralgal].HotGas)
-        AGNaccreted = Gal[centralgal].HotGas;
+      if(AGNaccreted > HotGas)
+        AGNaccreted = HotGas;
 
       /*  coefficient to heat the cooling gas back to the virial temperature of the halo */
       /*  1.34e5 = sqrt(2*eta*c^2), eta=0.1 (standard efficiency) and c in km/s
        *  Eqs. 11 & 12 in Croton 2006 */
-      AGNcoeff = (1.34e5 / Gal[centralgal].Vvir) * (1.34e5 / Gal[centralgal].Vvir);
+      AGNcoeff = (1.34e5 / Vvir) * (1.34e5 / Vvir);
 
       /*  cooling mass that can be suppressed from AGN heating */
       AGNheating = AGNcoeff * AGNaccreted;
 
+
+    	if(AGNRadioModeModel == 1 && Gal[p].Type==1)
+    	{
+    		//if(AGNRadioModeModel == 1)
+    	 //  	{
+    		if(dist < Gal[FoFCentralGal].Rvir)
+    		{
+    			if(AGNheating > (Gal[p].CoolingGas + Gal[FoFCentralGal].CoolingGas))
+    			{
+    				AGNheating = (Gal[p].CoolingGas + Gal[FoFCentralGal].CoolingGas);
+    				AGNaccreted = (Gal[p].CoolingGas + Gal[FoFCentralGal].CoolingGas) / AGNcoeff;
+    			}
+    			if(AGNheating > Gal[p].CoolingGas)
+      		LeftOverEnergy = AGNheating - Gal[p].CoolingGas;
+    		}
+    	}
+    	else
+    	{
+    		if(AGNheating > Gal[p].CoolingGas)
+    			AGNaccreted = Gal[p].CoolingGas / AGNcoeff;
+    	}
+
       /* limit heating to cooling rate */
-      if(AGNheating > coolingGas)
-        {
-          AGNaccreted = coolingGas / AGNcoeff;
-          AGNheating = coolingGas;
-        }
+     	if(AGNheating > Gal[p].CoolingGas)
+    		AGNheating = Gal[p].CoolingGas;
+
+
+
 
       /*  accreted mass onto black hole */
-      fraction=AGNaccreted/Gal[centralgal].HotGas;
-      Gal[centralgal].BlackHoleMass += AGNaccreted; //ROB: transfer_mass functions should be used here
-      Gal[centralgal].RadioAccretionRate += AGNaccreted / (dt*STEPS);
-      Gal[centralgal].HotGas -= AGNaccreted;
-      Gal[centralgal].MetalsHotGas = metals_add(Gal[centralgal].MetalsHotGas,Gal[centralgal].MetalsHotGas, -fraction);
+     	Gal[p].BlackHoleMass += AGNaccreted; //ROB: transfer_mass functions should be used here
+      Gal[p].RadioAccretionRate += AGNaccreted / (dt*STEPS);
+      fraction=AGNaccreted/Gal[p].HotGas;
+      Gal[p].HotGas -= AGNaccreted;
+      Gal[p].MetalsHotGas = metals_add(Gal[p].MetalsHotGas,Gal[p].MetalsHotGas, -fraction);
 
 #ifdef INDIVIDUAL_ELEMENTS
-      Gal[centralgal].HotGas_elements = elements_add(Gal[centralgal].HotGas_elements,Gal[centralgal].HotGas_elements,-fraction);
+      	Gal[p].HotGas_elements = elements_add(Gal[p].HotGas_elements,Gal[p].HotGas_elements,-fraction);
 #endif
-
 #ifdef METALS_SELF
-      Gal[centralgal].MetalsHotGasSelf = 	metals_add(Gal[centralgal].MetalsHotGasSelf,Gal[centralgal].MetalsHotGasSelf,-fraction);
+      	Gal[p].MetalsHotGasSelf = 	metals_add(Gal[p].MetalsHotGasSelf,Gal[p].MetalsHotGasSelf,-fraction);
 #endif	
-    }
 
-  else
-    AGNheating = 0.0;
+  	}
+  	else
+  		AGNheating = 0.0;
 
-  return AGNheating;
+  	Gal[p].CoolingGas -= AGNheating;
 
+  	if(Gal[p].CoolingGas < 0.0)
+  		Gal[p].CoolingGas = 0.0;
+
+  	Gal[p].CoolingRate += Gal[p].CoolingGas / (dt*STEPS);
+
+
+  	if(AGNRadioModeModel == 1 && LeftOverEnergy>0.)
+  	{
+  		Gal[FoFCentralGal].CoolingGas -= LeftOverEnergy;
+
+  		if(Gal[FoFCentralGal].CoolingGas < 0.0)
+  			Gal[FoFCentralGal].CoolingGas = 0.0;
+  		else
+  			Gal[FoFCentralGal].CoolingRate -= LeftOverEnergy / (dt*STEPS);
+  	}
+
+
+  	mass_checks("cooling_recipe #2.",p);
+
+
+
+  }
 }
 
 
 /** @brief updates the fractions of hot and cold gas due to cooling. */
 
-void cool_gas_onto_galaxy(int p, double mcool)
+void cool_gas_onto_galaxy(int p, double dt)
 {
-  double fraction,Mdisk;
+  double fraction,Mdisk,Mcool;
   int i;
 
   /** @brief cool_gas_onto_galaxy updates the fractions of hot and cold gas
@@ -303,23 +371,105 @@ void cool_gas_onto_galaxy(int p, double mcool)
     * spin components */
 
   Mdisk=Gal[p].ColdGas;
-  if (mcool>Gal[p].HotGas)
-    mcool = Gal[p].HotGas;
+  Mcool=Gal[p].CoolingGas;
+
+  if (Mcool>Gal[p].HotGas)
+  	Mcool = Gal[p].HotGas;
 
   /*  add the fraction 1/STEPS of the total cooling gas to the cold disk */
-  if(mcool > 0.0) { 
-     
+  if(Mcool > 0.0)
+  {
+  	//determine the xray luminosity of any cooling gas in this snapshot (White & Frenk 1991 eq21)
+  	Gal[p].XrayLum = log10(2.5 * (Mcool / dt) * 6.31 * Gal[p].Vvir * Gal[p].Vvir) + 35.0;
+
     // We already know that 0<mcool<=Gal[p].HotGas
-    fraction=((float)mcool)/Gal[p].HotGas;
+    fraction=((float)Mcool)/Gal[p].HotGas;
     transfer_gas(p,"Cold",p,"Hot",fraction,"cool_gas_onto_galaxy", __LINE__);
 
     if (DiskRadiusMethod == 2)
     {
       if (Gal[p].ColdGas != 0.0)
       	for (i=0;i<3;i++)
-      		Gal[p].GasSpin[i]=(Gal[p].GasSpin[i]*Mdisk+Gal[p].HaloSpin[i]*mcool)/(Gal[p].ColdGas);
+      		Gal[p].GasSpin[i]=(Gal[p].GasSpin[i]*Mdisk+Gal[p].HaloSpin[i]*Mcool)/(Gal[p].ColdGas);
       get_gas_disk_radius(p);
     }
   }
-  
+  else
+  	Gal[p].XrayLum = 0.0;
 }
+
+
+
+
+
+
+/*for (p = 0; p < ngal; p++)
+{
+		dist=separation_gal(p,FoFCentralGal)/(1+ZZ[Halo[Gal[FoFCentralGal].HaloNr].SnapNum]);
+		if ( dist < Gal[FoFCentralGal].Rvir)
+			TotHotGasInRvir += Gal[p].HotGas;
+}*/
+
+//printf("dist=%0.3e TotHotGasInRvir=%0.3e\n",dist,TotHotGasInRvir);
+
+
+	//AGNRadioModeModel == 1 black holes inside Rvir accrete from total amount of gas
+	//and produce heating that can affect themselves and type 0
+/*	if(AGNRadioModeModel == 1)
+	{
+
+		if(dist < Gal[FoFCentralGal].Rvir && (Gal[p].Type==1 || Gal[p].Type==0))
+		{
+			HotGas = TotHotGasInRvir;
+			HotRadius = Gal[FoFCentralGal].HotRadius;
+			CoolingGas = Gal[FoFCentralGal].CoolingGas;
+			Mvir = Gal[FoFCentralGal].Mvir;
+			Rvir = Gal[FoFCentralGal].Rvir;
+			Vvir = Gal[FoFCentralGal].Vvir;
+			centralgal = FoFCentralGal;
+		}
+		else
+		{
+			if(Gal[p].Type == 2)
+			{
+				HotGas = Gal[Gal[p].CentralGal].HotGas;
+				HotRadius = Gal[Gal[p].CentralGal].HotRadius;
+				CoolingGas = Gal[Gal[p].CentralGal].CoolingGas;
+				Mvir = Gal[Gal[p].CentralGal].Mvir;
+				Rvir = Gal[Gal[p].CentralGal].Rvir;
+				Vvir = Gal[Gal[p].CentralGal].Vvir;
+				centralgal = Gal[p].CentralGal;
+			}
+		}
+	}*/
+
+
+	/*if(AGNRadioModeModel == 1 && dist < Gal[FoFCentralGal].Rvir)
+	{
+		if(AGNheating > (Gal[p].CoolingGas + Gal[FoFCentralGal].CoolingGas))
+		{
+			AGNheating = (Gal[p].CoolingGas + CoolingGas);
+			AGNaccreted = (Gal[p].CoolingGas + CoolingGas) / AGNcoeff;
+		}
+		if(AGNheating > Gal[p].CoolingGas)
+		{
+			LeftOverEnergy = AGNheating - Gal[p].CoolingGas;
+			AGNAccretedFromCentral = LeftOverEnergy / AGNcoeff;
+		}
+	}*/
+
+
+
+/*  if(AGNRadioModeModel == 1 && AGNAccretedFromCentral>0.)
+      {
+      	fraction=AGNAccretedFromCentral/Gal[centralgal].HotGas;
+      	Gal[centralgal].HotGas -= AGNaccreted;
+      	Gal[centralgal].MetalsHotGas = metals_add(Gal[centralgal].MetalsHotGas,Gal[centralgal].MetalsHotGas, -fraction);
+
+#ifdef INDIVIDUAL_ELEMENTS
+      	Gal[centralgal].HotGas_elements = elements_add(Gal[centralgal].HotGas_elements,Gal[centralgal].HotGas_elements,-fraction);
+#endif
+#ifdef METALS_SELF
+      	Gal[centralgal].MetalsHotGasSelf = 	metals_add(Gal[centralgal].MetalsHotGasSelf,Gal[centralgal].MetalsHotGasSelf,-fraction);
+#endif
+      }*/
