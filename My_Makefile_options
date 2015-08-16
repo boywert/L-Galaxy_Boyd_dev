@@ -27,9 +27,9 @@ OPT += -DNOUT=28              #  This sets the number of galaxy output times. IG
 
 # Options that control speed and memory usage
 OPT += -DSAVE_MEMORY         # we do NOT use the 64/68-elements array Sfr/SfrBulge when calculating galaxy trees.
-#OPT += -DPRELOAD_TREES       # this will load all the trees of a file in memory, and cache them (useful for MCMC)
-#OPT += -DPARALLEL
-#OPT += -DLOADIDS             # Load dbids files
+OPT += -DPRELOAD_TREES       # this will load all the trees of a file in memory, and cache them (useful for MCMC)
+OPT += -DPARALLEL
+OPT += -DLOADIDS             # Load dbids files
 
 #OPT += -DMRII        
 
