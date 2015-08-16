@@ -21,7 +21,7 @@ OPT += -DREADXFRAC
 
 # Options that control output
 OPT += -DOVERWRITE_OUTPUT    # overwrite output files if they exist (otherwise will quit without overwriting)
-OPT += -DNOUT=28              #  This sets the number of galaxy output times. IGNORED IN GALAXYTREE MODE. VALUE CORRESPONDS TO NO. OF ROWS READ FROM desired_outputsnaps FILE
+OPT += -DNOUT=76              #  This sets the number of galaxy output times. IGNORED IN GALAXYTREE MODE. VALUE CORRESPONDS TO NO. OF ROWS READ FROM desired_outputsnaps FILE
 #OPT += -DGALAXYTREE          #  This will enable output of full galaxy merger trees, implicitly sets NOUT to maximum value
 #OPT += -DNO_PROPS_OUTPUTS    # only magnitudes outputted 
 
