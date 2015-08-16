@@ -13,5 +13,3 @@ else
 OPTIMIZE = -O3                  # optimization
 endif
 
-GSL_INCL = -I${GSL_INCL}
-GSL_LIBS = -L${GSL_LIBS}
