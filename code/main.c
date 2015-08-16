@@ -1205,6 +1205,10 @@ void evolve_galaxies(int halonr, int ngal, int treenr, int cenngal)
 #ifndef HALOPROPERTIES
     printf("> Error : option READXFRAC requires option HALOPROPERTIES \n");
     exit(32);
+#endif
+#ifndef PARALLEL
+    printf("> Error : option READXFRAC requires option PARALLEL \n");
+    exit(32);
 #endif  
 #endif
     /* Description of the code to appear in the first page of the documentation. */

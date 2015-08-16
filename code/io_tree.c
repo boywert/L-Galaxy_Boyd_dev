@@ -11,9 +11,7 @@
 #include "proto.h"
 
 #ifdef PARALLEL
-#ifdef MCMC
 #include <mpi.h>
-#endif
 #endif
 
 /**@file io_tree.c
