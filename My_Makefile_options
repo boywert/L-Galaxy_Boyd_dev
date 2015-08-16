@@ -66,9 +66,9 @@ OPT += -DM05 #use Maraston 2005 stellar populations need to change input.par
 #OPT += -DBC03 #use Bruzual & Charlot 2003 stellar populations need to change input.par
 #OPT += -DCB07 #use Charlot & Bruzual 2007 stellar populations need to change input.par
 
-OPT += -DPHOTTABLES_PRECOMPUTED     
+#OPT += -DPHOTTABLES_PRECOMPUTED     
    
-#OPT += -DSPEC_PHOTABLES_ON_THE_FLY
+OPT += -DSPEC_PHOTABLES_ON_THE_FLY
 ifeq (SPEC_PHOTABLES_ON_THE_FLY,$(findstring SPEC_PHOTABLES_ON_THE_FLY,$(OPT)))
 #OPT += -DFULL_SPECTRA
 OPT += -DAB    #AB MAGNITUDES
