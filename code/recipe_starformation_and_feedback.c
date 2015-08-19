@@ -83,7 +83,13 @@ void starformation(int p, int centralgal, double time, double dt, int nstep)
 	  			else
 					strdot = 0.0;*/
   }
-
+  /* Test no threshold - Boyd */
+  else if(StarFormationRecipe == 10) {
+    strdot = SfrEfficiency * Gal[p].ColdGas / tdyn * pow(Gal[p].Vvir / SfrLawPivotVelocity, SfrLawSlope);
+    if(strdot < 0.)
+      strdot = 0.;
+  }
+  
 #ifdef H2FORMATION
   /* use H2 formation model from Krumholz */
   Not yet implemented
@@ -567,7 +573,7 @@ void update_from_feedback(int p, int centralgal, double reheated_mass, double ej
 
   		if(Gal[p].Type ==0)
   		{
-  			transfer_gas(p,"Hot",p,"Cold",((float)reheated_mass)/Gal[p].ColdGas,"update_from_feedback", __LINE__);
+		  transfer_gas(p,"Hot",p,"Cold",(float)(reheated_mass/Gal[p].ColdGas),"update_from_feedback", __LINE__);
   		}
   		else
   		{
@@ -640,14 +646,14 @@ void update_from_feedback(int p, int centralgal, double reheated_mass, double ej
     		if (ejected_mass > Gal[Gal[p].CentralGal].HotGas)
     			ejected_mass = Gal[Gal[p].CentralGal].HotGas;  //either eject own gas or merger_centre gas for ttype 2's
 
-    		fraction=((float)ejected_mass)/Gal[Gal[p].CentralGal].HotGas;
+    		fraction=(float)(ejected_mass/Gal[Gal[p].CentralGal].HotGas);
     	}
     	else if(HotGasOnType2Galaxies==1)
     	{
     		if (ejected_mass > Gal[p].HotGas && HotGasOnType2Galaxies==1)
     			ejected_mass = Gal[p].HotGas;  //always eject own gas
 
-    		fraction=((float)ejected_mass)/Gal[p].HotGas;
+    		fraction=(float)(ejected_mass/Gal[p].HotGas);
     	}
 
 
