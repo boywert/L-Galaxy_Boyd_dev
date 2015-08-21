@@ -1,5 +1,5 @@
 #MCMCNConstraints //Nr of Observational Constraints
-1
+24
 #Number of snaps where there will be constraints
 #corresponding redshifts
 3
