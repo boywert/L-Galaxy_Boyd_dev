@@ -18,6 +18,10 @@
 
 int MCMCNpar; //Number of parameters to sample
 #define MCMCNConstraints 24  //Nr of Observational Constraints
+#ifdef custom_MCMCNConstraint
+#undef MCMCNConstraints
+#define MCMCNConstraints custom_MCMCNConstraint
+#endif
 #define MCMCMaxObsBins 100 //maximum number of bins per observation per redshift
 
 double MCMCConstraintsZZ[NOUT];
