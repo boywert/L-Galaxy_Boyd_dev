@@ -136,7 +136,7 @@ double get_likelihood()
 							samdata[j] = MCMC_GAL[j].StellarMass[snap];
 #ifdef BOYD
 						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) {
-						  samdata[j] =  log10(MCMC_GAL[j].StellarMass[snap]);
+						  samdata[j] =  log10(MCMC_GAL[j].Sfr[snap]);
 						  printf("j = %d, samdata = %f\n", j, (float)samdata[j]);
 						}
 #endif
