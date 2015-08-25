@@ -134,8 +134,10 @@ double get_likelihood()
 						samdata[j] = 0.; //initialize
 						if(strcmp(MCMC_Obs[i].Name,"StellarMassFunction")==0)
 							samdata[j] = MCMC_GAL[j].StellarMass[snap];
+#ifdef BOYD
 						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0)
 							samdata[j] = MCMC_GAL[j].log10SFR[snap]
+#endif
 						if(strcmp(MCMC_Obs[i].Name,"KBandLF")==0)
 							samdata[j] = MCMC_GAL[j].MagK[snap];
 						if(strcmp(MCMC_Obs[i].Name,"BBandLF")==0)
