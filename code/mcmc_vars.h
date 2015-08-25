@@ -98,6 +98,9 @@ struct MCMC_OBSCONSTRAINTS
 
 struct MCMC_GALAXY
 {
+#ifdef BOYD
+  float log10SFR;
+#endif
   float StellarMass[NOUT];
   float ColdGas[NOUT];
   float BulgeMass[NOUT];
