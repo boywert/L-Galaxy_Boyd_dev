@@ -854,6 +854,7 @@ double chi_square_probability(int ObsNr, double *samdata, int snap)
     	    }
 
           temp=samdata[i]-obs;
+	  printf("%g %g\n",samdata[i],obs);
           chsq += (temp*temp)/(obserror*obserror);
           //if(ObsNr==0)
           //printf("OBS[%d] snap=%d bin=%f sam=%f obs=%f error=%f chsq=%f\n",
