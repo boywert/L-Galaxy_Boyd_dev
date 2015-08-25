@@ -136,8 +136,8 @@ double get_likelihood()
 							samdata[j] = MCMC_GAL[j].StellarMass[snap];
 #ifdef BOYD
 						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) {
-						  samdata[j] =  log10(MCMC_GAL[j].Sfr[snap]);
-						  printf("j = %d, samdata = %f\n", j, (float)samdata[j]);
+						  samdata[j] =  MCMC_GAL[j].Sfr[snap];
+						  // printf("j = %d, samdata = %f\n", j, (float)samdata[j]);
 						}
 #endif
 						if(strcmp(MCMC_Obs[i].Name,"KBandLF")==0)
@@ -205,7 +205,7 @@ double get_likelihood()
 
 					}//end loop on number of galaxies
 					bin_function(i, binsamdata, samdata, snap);
-
+					
 					//SFRD only has one bin
 					if(strcmp(MCMC_Obs[i].Name,"SFRD")==0)
 					{
@@ -562,7 +562,7 @@ void bin_function(int ObsNr, double *binsamdata, double *samdata, int snap)
       //binsamdata[i]/=(BoxSize*BoxSize*BoxSize*Bin);
       binsamdata[i]/=(MCMC_Obs[ObsNr].Bin_high[snap][i]-MCMC_Obs[ObsNr].Bin_low[snap][i]);
 
-    	fprintf(FILE_MCMC_PredictionsPerStep[snap][ObsNr], " %0.5e", binsamdata[i]);
+      fprintf(FILE_MCMC_PredictionsPerStep[snap][ObsNr], " %0.5e", binsamdata[i]);
 
 #ifndef PARALLEL
       fprintf(fa, "%g %g %g %g\n", MCMC_Obs[ObsNr].Bin_low[snap][i]+(MCMC_Obs[ObsNr].Bin_high[snap][i]-MCMC_Obs[ObsNr].Bin_low[snap][i])/2., MCMC_Obs[ObsNr].Obs[snap][i],
