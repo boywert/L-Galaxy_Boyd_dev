@@ -69,7 +69,7 @@ void save_galaxy_for_mcmc(int gal_index)
     		MCMC_GAL[TotMCMCGals[snap]].Sfr[snap]
     		= HaloGal[gal_index].Sfr * UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS;
 #ifdef BOYD
-		MCMC_GAL[TotMCMCGals[snap]].log10SFR[snap] = log10(HaloGal[gal_index].Sfr)
+		MCMC_GAL[TotMCMCGals[snap]].log10SFR[snap] = log10(HaloGal[gal_index].Sfr);
 #endif
 #ifdef COMPUTE_SPECPHOT_PROPERTIES
 #ifdef POST_PROCESS_MAGS
