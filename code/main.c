@@ -142,7 +142,6 @@ int main(int argc, char **argv)
    * and the sampling for all the steps is done on it */
 
 	sprintf(SimulationDir, "%s/MergerTrees_%d/", SimulationDir, ThisTask);
-
 	for(filenr = MCMCTreeSampleFile; filenr <= MCMCTreeSampleFile; filenr++)
 	{
 #endif //MCMC
