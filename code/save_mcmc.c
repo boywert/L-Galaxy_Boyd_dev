@@ -41,7 +41,10 @@ void save_galaxy_for_mcmc(int gal_index)
 	high_mass_limit=11.27;
 #endif
 #endif
-
+#ifdef BOYD
+	low_mass_limit=1.0;
+	high_mass_limit=11.27;
+#endif
 
 	log10_Hubble_h=log10(Hubble_h);
 
@@ -55,12 +58,10 @@ void save_galaxy_for_mcmc(int gal_index)
 		StellarMass+=gassdev(&MCMCseed)*0.04*(1+MCMCConstraintsZZ[snap]);
 
 		for(fof=0;fof<NFofsInSample[snap]; fof++)
-#ifndef BOYD
+
 		  if( StellarMass > low_mass_limit &&  StellarMass < high_mass_limit &&
 					HaloIDs[HaloGal[gal_index].HaloNr].FirstHaloInFOFgroup == MCMC_FOF[fof].FoFID[snap])
-#else
-		     if(HaloIDs[HaloGal[gal_index].HaloNr].FirstHaloInFOFgroup == MCMC_FOF[fof].FoFID[snap])
-#endif
+
 			{
 			  //MCMC_GAL[TotMCMCGals[snap]].StellarMass[snap] = log10(1E10 * ((HaloGal[gal_index].DiskMass+HaloGal[gal_index].BulgeMass)/Hubble_h));
 		  	//if((double)((int)((MCMCConstraintsZZ[snap]*10)+0.5)/10.)>0.9)
