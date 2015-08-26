@@ -129,7 +129,7 @@ double get_likelihood()
 				{
 
 					//bin all the galaxie into binsamdata for properties that just require normal histograms
-					for(j = 0; j < TTotMCMCGals[snap]; j++)
+					for(j = 0; j < TotMCMCGals[snap]; j++)
 					{
 						samdata[j] = 0.; //initialize
 						if(strcmp(MCMC_Obs[i].Name,"StellarMassFunction")==0) 
