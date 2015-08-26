@@ -786,7 +786,6 @@ void read_sample_info (void)
 		for(i=0;i<NFofsInSample[snap];i++)
 		{
 			fscanf(fa, "%lld %d %d %lg\n", &MCMC_FOF[i].FoFID[snap], &DumbTreeNrColector, &DumbFileNrColector, &MCMC_FOF[i].Weight[snap]);
-			printf("boxsize = %g\n",BoxSize);
 			MCMC_FOF[i].Weight[snap]/=BoxSize*BoxSize*BoxSize;
 			MCMC_FOF[i].NGalsInFoF[snap]=0;
 			MCMC_FOF[i].IndexOfCentralGal[snap]=-1;
