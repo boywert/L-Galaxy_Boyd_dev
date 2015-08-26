@@ -138,7 +138,7 @@ double get_likelihood()
 #ifdef BOYD
 						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) {
 						  samdata[j] =  log10(MCMC_GAL[j].Sfr[snap]);
-						  printf("j = %d, log10(Sfr) = %f log10(M_star) = %f, \n", j, (float)samdata[j], (float)MCMC_GAL[j].StellarMass[snap]);
+						  // printf("j = %d, log10(Sfr) = %f log10(M_star) = %f, \n", j, (float)samdata[j], (float)MCMC_GAL[j].StellarMass[snap]);
 						}
 #endif
 						if(strcmp(MCMC_Obs[i].Name,"KBandLF")==0)
@@ -555,9 +555,10 @@ void bin_function(int ObsNr, double *binsamdata, double *samdata, int snap)
 
   for(i = 0; i < Nbins[snap][ObsNr]; i++)
     {
+      printf("%d : %g\t%g\n",i,MCMC_Obs[ObsNr].Bin_low[snap][i],MCMC_Obs[ObsNr].Bin_high[snap][i]);
       binsamdata[i] = 0;
 
-      for(k=0;k<TotMCMCGals[snap];k++)
+      for(k=0;k<TotMCMCGals[snap];k++) 
     	  	if(samdata[k]>=MCMC_Obs[ObsNr].Bin_low[snap][i] && samdata[k] <= MCMC_Obs[ObsNr].Bin_high[snap][i])
     	  		binsamdata[i]+=MCMC_GAL[k].Weight[snap];
       //binsamdata[i]/=(BoxSize*BoxSize*BoxSize*Bin);
