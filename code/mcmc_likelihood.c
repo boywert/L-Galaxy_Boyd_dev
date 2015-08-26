@@ -863,8 +863,7 @@ double chi_square_probability(int ObsNr, double *samdata, int snap)
         }
       
     }
-
-
+  printf("chsq = %g\n", chsq);
   prob=exp(-chsq/2.);
   return prob;
 }
