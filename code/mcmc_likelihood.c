@@ -853,15 +853,15 @@ double chi_square_probability(int ObsNr, double *samdata, int snap)
     		  //if(ObsNr==1)
     		  //	obserror=5.*MCMC_Minimum_Obs_Error*obs;
     	    }
-
           temp=samdata[i]-obs;
-	  printf("%g %g\n",samdata[i],obs);
+	  printf("%g\t%g\t%g\n",samdata[i],obs, obserror);
           chsq += (temp*temp)/(obserror*obserror);
           //if(ObsNr==0)
           //printf("OBS[%d] snap=%d bin=%f sam=%f obs=%f error=%f chsq=%f\n",
           //		ObsNr, snap, MCMC_Obs[ObsNr].Bin_low[snap][i]+(MCMC_Obs[ObsNr].Bin_high[snap][i]-MCMC_Obs[ObsNr].Bin_low[snap][i])/2.,
           //		samdata[i], obs, obserror,(temp*temp)/(obserror*obserror));
         }
+      
     }
 
 
