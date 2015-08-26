@@ -138,7 +138,7 @@ double get_likelihood()
 #ifdef BOYD
 						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) {
 						  samdata[j] =  log10(MCMC_GAL[j].Sfr[snap]);
-						  printf("j = %d, log10(Sfr) = %g log10M_star = %g, \n", j, (float)samdata[j], (float)MCMC_GAL[j].StellarMass[snap]);
+						  // printf("j = %d, log10(Sfr) = %g log10M_star = %g, \n", j, (float)samdata[j], (float)MCMC_GAL[j].StellarMass[snap]);
 						}
 #endif
 						if(strcmp(MCMC_Obs[i].Name,"KBandLF")==0)
