@@ -140,11 +140,9 @@ int main(int argc, char **argv)
 #else //MCMC
   /* In MCMC mode only one file is loaded into memory
    * and the sampling for all the steps is done on it */
-#ifdef BOYD
-	  sprintf(SimulationDir, "%s/MergerTrees_0/", SimulationDir);
-#else
+
 	sprintf(SimulationDir, "%s/MergerTrees_%d/", SimulationDir, ThisTask);
-#endif
+
 	for(filenr = MCMCTreeSampleFile; filenr <= MCMCTreeSampleFile; filenr++)
 	{
 #endif //MCMC
