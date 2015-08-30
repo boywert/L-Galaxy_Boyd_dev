@@ -146,7 +146,7 @@ void Senna()
 	  	AcceptanceProbability = qratio * (lhood2 / lhood1);
 	  else
 	  	AcceptanceProbability = 1.0;
-	  printf("AcceptanceProbability = %g\n",AcceptanceProbability);
+	  
 	  //generate random number to assess probability
 	  ran = ran3(&MCMCseed);
 
