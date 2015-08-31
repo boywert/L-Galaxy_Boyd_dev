@@ -198,7 +198,6 @@ void read_InputSSP_spectra(double LambdaInputSSP[SSP_NAGES][SSP_NLambda], double
   			SSP_logAgeTab[ageloop]=log10(age / 1.0e6 / UnitTime_in_Megayears * Hubble_h);
   		else 
   			SSP_logAgeTab[ageloop]=0.;
-		printf("Age = %g\n",SSP_logAgeTab[ageloop]);
 	}
   }
 
