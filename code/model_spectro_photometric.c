@@ -328,6 +328,7 @@ void setup_Spec_LumTables_onthefly(void)
 	      
 	    }  //end loop on metallicities
 	  printf("\nPhotTables Computed.\n\n");
+	  exit(1);
 
 }
 #endif //SPEC_PHOTABLES_ON_THE_FLY
