@@ -215,7 +215,9 @@ void setup_Spec_LumTables_onthefly(void)
 	      for(snap=0;snap<(LastDarkMatterSnapShot+1);snap++)
 	      {
 	      	redshift=RedshiftTab[(LastDarkMatterSnapShot+1)-snap-1];
+#ifdef OUTPUT_REST_MAGS
 		redshift = 0.0;
+#endif
 	      	//3rd loop on Age
 	      	for(AgeLoop=0;AgeLoop<SSP_NAGES;AgeLoop++)
 	      	{
@@ -319,8 +321,6 @@ void setup_Spec_LumTables_onthefly(void)
 	      			FilterLambda[band]=(1+redshift)*LambdaInputSSP[AgeLoop][band];
 	      			LumTables[band][MetalLoop][snap][AgeLoop] = (1.+redshift)*FluxInputSSP[AgeLoop][band];
 #endif
-				if(MetalLoop == 0 && band==5 && (snap==0) && AgeLoop==0 )
-				  printf("Redshift = %f Lumtables[%d][%d][%d][%d] = %0.10f\n",redshift,band,MetalLoop,snap,AgeLoop,LumTables[band][MetalLoop][snap][AgeLoop]);
 	      		}	// end age loop
 	      	}//end snap loop
 	      }//end Band loop
@@ -328,7 +328,6 @@ void setup_Spec_LumTables_onthefly(void)
 	      
 	    }  //end loop on metallicities
 	  printf("\nPhotTables Computed.\n\n");
-	  exit(1);
 
 }
 #endif //SPEC_PHOTABLES_ON_THE_FLY
