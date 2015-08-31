@@ -437,8 +437,11 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
     			                  fmet2 * (f1 * LumTables[j][metindex + 1][0][tabindex] +
 					                       f2 * LumTables[j][metindex + 1][0][tabindex + 1]));
     	  Gal[p].Lum[j][outputbin] += LuminosityToAdd;
-	  if(j ==5)
-	    printf("+%0.10f  = %0.10f\n", LuminosityToAdd,Gal[p].Lum[j][outputbin]);
+	  if(j ==5) {
+	    printf("metal = %0.10f\n",metallicity);
+	    printf("+Lum: %0.10f  = %0.10f\n", LuminosityToAdd,Gal[p].Lum[j][outputbin]);
+	    
+	  }
     	  /*luminosity used for extinction due to young birth clouds */
     	  if(age <= tbc)
 	        Gal[p].YLum[j][outputbin] += LuminosityToAdd;
