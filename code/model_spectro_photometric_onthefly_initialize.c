@@ -190,9 +190,6 @@ void read_InputSSP_spectra(double LambdaInputSSP[SSP_NAGES][SSP_NLambda], double
   	{
   		fscanf(fa,"%lf %lf %lf %lf\n" , &age, &Dumb1,
   				&LambdaInputSSP[ageloop][i], &FluxInputSSP[ageloop][i]);
-		if(ageloop == 0)
-		  printf("%lf %lf %lf %lf\n" , age, Dumb1,
-			 LambdaInputSSP[ageloop][i], FluxInputSSP[ageloop][i]);
   		FluxInputSSP[ageloop][i]=1e11*FluxInputSSP[ageloop][i]
   		                          *LambdaInputSSP[ageloop][i]*LambdaInputSSP[ageloop][i]/(C*1e8);
   	}
@@ -201,9 +198,8 @@ void read_InputSSP_spectra(double LambdaInputSSP[SSP_NAGES][SSP_NLambda], double
   			SSP_logAgeTab[ageloop]=log10(age / 1.0e6 / UnitTime_in_Megayears * Hubble_h);
   		else 
   			SSP_logAgeTab[ageloop]=0.;
-		printf("SSP_logAgeTab[%d] = %.10f\n",ageloop,SSP_logAgeTab[ageloop]);
+
 	}
   }
-  exit(1);
   fclose(fa);
 }
