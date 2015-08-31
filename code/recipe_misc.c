@@ -399,6 +399,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
   double f1, f2, fmet1, fmet2, LuminosityToAdd, dLuminosityToAdd;
   double X1, age;
   double tbc;
+  double factor;
 
   //TODO define elsewhere and maybe make the 10. an input parameter?
   /* Time bellow which the luminosities are corrected for extinction due to
@@ -436,9 +437,13 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
     			                           f2 * LumTables[j][metindex][0][tabindex + 1]) +
     			                  fmet2 * (f1 * LumTables[j][metindex + 1][0][tabindex] +
 					                       f2 * LumTables[j][metindex + 1][0][tabindex + 1]));
+	  factor = (fmet1 * (f1 * LumTables[j][metindex][0][tabindex] +
+    			                           f2 * LumTables[j][metindex][0][tabindex + 1]) +
+    			                  fmet2 * (f1 * LumTables[j][metindex + 1][0][tabindex] +
+					                       f2 * LumTables[j][metindex + 1][0][tabindex + 1]));
     	  Gal[p].Lum[j][outputbin] += LuminosityToAdd;
 	  if(j ==5) {
-	    printf("metal = %0.10f X1 = %0.10f\n",metallicity,X1);
+	    printf("metal = %0.10f X1 = %0.10f factor = %0.10f\n",metallicity,X1,factor);
 	    printf("+Lum: %0.10f  = %0.10f\n", LuminosityToAdd,Gal[p].Lum[j][outputbin]);
 	    
 	  }
