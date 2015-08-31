@@ -117,7 +117,6 @@ void starformation(int p, int centralgal, double time, double dt, int nstep)
   for(outputbin = 0; outputbin < NOUT; outputbin++) {
     if( Gal[p].SnapNum == ListOutputSnaps[outputbin]) {
       Gal[p].Sfr[outputbin] += stars / (dt * STEPS);
-      printf("Gal[%d].Sfr[%d] = %0.10f\n",p,outputbin,Gal[p].Sfr[outputbin]);
       break;
     }
   }

@@ -442,7 +442,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 					                       f2 * LumTables[j][metindex + 1][0][tabindex + 1]));
     	  Gal[p].Lum[j][outputbin] += LuminosityToAdd;
 	  if((j ==5) && (outputbin == NOUT-1) && (age >= 0.)) {
-	    printf("age = %0.10f metal = %0.10f\n",age,metallicity);
+	    printf("age = %0.10f metal = %0.10f SFR = %0.10f\n",age,metallicity,Gal[p].Sfr);
 	    printf("f1 = %0.10f f2 = %0.10f fmet1 = %0.10f fmet2 = %0.10f\n",f1,f2,fmet1,fmet2);
 	    printf("X1 = %0.10f factor = %0.10f\n",X1,factor);
 	    
