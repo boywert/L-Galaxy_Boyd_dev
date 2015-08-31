@@ -250,7 +250,6 @@ void read_zlist(void)
        //table with time in internal units (Mpc/Km/s/h)
 //       if(ZZ[i]>=0.0)
        Age[i] = time_to_present(ZZ[i]);
-       printf("Age[%d]  = %g\n",i,Age[i]);
        double zplus1;
        zplus1 = 1 + ZZ[i];
       // printf("%d, %0.6f, %0.6f, %0.6f, %0.6f\n", i, AA[i], ZZ[i],
