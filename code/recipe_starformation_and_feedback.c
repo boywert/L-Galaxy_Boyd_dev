@@ -163,7 +163,7 @@ void starformation(int p, int centralgal, double time, double dt, int nstep)
 #ifndef POST_PROCESS_MAGS
   /*  Update the luminosities due to the stars formed */
 	if (stars > 0.0) {
-	  printf("mass = %0.10f\n",star);
+	  printf("mass = %0.10f\n",stars);
 	  add_to_luminosities(p, stars, time, metallicitySF);
 	}
 #endif //NDEF POST_PROCESS_MAGS
