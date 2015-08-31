@@ -57,7 +57,7 @@
 
 #define  MAXGALFAC 2.3 /*1.5/2.3 - maximum fraction of satellite without a halo (for memory allocation)*/
 
-#define  STEPS 20		/* Number of integration intervals between two snapshots */
+#define  STEPS 5		/* Number of integration intervals between two snapshots */
 
 #define  ALLOCPARAMETER 50.  /* new definition !!! THIS HAS TO BE 50 !!! DONT EVER EVER EVER CHANGE !!! */
 
