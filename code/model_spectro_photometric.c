@@ -215,7 +215,7 @@ void setup_Spec_LumTables_onthefly(void)
 	      for(snap=0;snap<(LastDarkMatterSnapShot+1);snap++)
 	      {
 	      	redshift=RedshiftTab[(LastDarkMatterSnapShot+1)-snap-1];
-
+		redshift = 0.0;
 	      	//3rd loop on Age
 	      	for(AgeLoop=0;AgeLoop<SSP_NAGES;AgeLoop++)
 	      	{
