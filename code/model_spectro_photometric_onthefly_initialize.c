@@ -191,8 +191,8 @@ void read_InputSSP_spectra(double LambdaInputSSP[SSP_NAGES][SSP_NLambda], double
   		fscanf(fa,"%lf %lf %lf %lf\n" , &age, &Dumb1,
   				&LambdaInputSSP[ageloop][i], &FluxInputSSP[ageloop][i]);
 		if(ageloop == 0)
-		  printf("%lf %lf %lf %lf\n" , &age, &Dumb1,
-			 &LambdaInputSSP[ageloop][i], &FluxInputSSP[ageloop][i]);
+		  printf("%lf %lf %lf %lf\n" , age, Dumb1,
+			 LambdaInputSSP[ageloop][i], FluxInputSSP[ageloop][i]);
   		FluxInputSSP[ageloop][i]=1e11*FluxInputSSP[ageloop][i]
   		                          *LambdaInputSSP[ageloop][i]*LambdaInputSSP[ageloop][i]/(C*1e8);
   	}
