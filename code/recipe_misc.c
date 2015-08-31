@@ -427,7 +427,6 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 	    metindex = 4;		// reset met index to use only solar metallicity
      
       age = time - NumToTime(ListOutputSnaps[outputbin]);
-      printf("time = %0.10f\n",age);
       /* For rest-frame, there is no K-correction on magnitudes,
        * hence the 0 in LumTables[j][metindex][0][tabindex] */
       for(j = 0; j < NMAG; j++)
@@ -442,7 +441,8 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
     			                  fmet2 * (f1 * LumTables[j][metindex + 1][0][tabindex] +
 					                       f2 * LumTables[j][metindex + 1][0][tabindex + 1]));
     	  Gal[p].Lum[j][outputbin] += LuminosityToAdd;
-	  if(j ==5) {
+	  if((j ==5) && (outputbin == NOUT-1)) {
+	    printf("time = %0.10f\n",age);
 	    printf("metal = %0.10f X1 = %0.10f factor = %0.10f\n",metallicity,X1,factor);
 	    printf("+Lum: %0.10f  = %0.10f\n", LuminosityToAdd,Gal[p].Lum[j][outputbin]);
 	    
