@@ -162,7 +162,6 @@ void starformation(int p, int centralgal, double time, double dt, int nstep)
 #ifdef COMPUTE_SPECPHOT_PROPERTIES
 #ifndef POST_PROCESS_MAGS
   /*  Update the luminosities due to the stars formed */
-	printf("mstar = %0.10f time = %0.10f\n",stars,time);
   if (stars > 0.0)
     add_to_luminosities(p, stars, time, metallicitySF);
 #endif //NDEF POST_PROCESS_MAGS
