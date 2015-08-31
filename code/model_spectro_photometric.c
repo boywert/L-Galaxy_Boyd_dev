@@ -319,12 +319,13 @@ void setup_Spec_LumTables_onthefly(void)
 	      			FilterLambda[band]=(1+redshift)*LambdaInputSSP[AgeLoop][band];
 	      			LumTables[band][MetalLoop][snap][AgeLoop] = (1.+redshift)*FluxInputSSP[AgeLoop][band];
 #endif
-
+				if(MetalLoop == 0 && band==5 && snap==19)
+				  printf("Lumtables[%d][%d][%d][%d] = %0.10f\n",band,MetalLoop,snap,AgeLoop);
 	      		}	// end age loop
 	      	}//end snap loop
 	      }//end Band loop
-
-
+	      
+	      
 	    }  //end loop on metallicities
 	  printf("\nPhotTables Computed.\n\n");
 

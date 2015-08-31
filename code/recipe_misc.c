@@ -446,9 +446,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 	    printf("age = %0.10f metal = %0.10f SFR = %0.10f\n",age,metallicity,Gal[p].Sfr * UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS);
 	    printf("tabindex = %d metindex = %d\n",tabindex,metindex);
 	    printf("X1 = %0.10f factor = %0.10f\n",X1,factor);
-	    
-	    printf("+Lum: %0.10f  = %0.10f\n", LuminosityToAdd,Gal[p].Lum[j][outputbin]);
-	    
+	    printf("+Lum: %0.10f = %0.10f\n", LuminosityToAdd,Gal[p].Lum[j][outputbin]);
 	  }
     	  /*luminosity used for extinction due to young birth clouds */
     	  if(age <= tbc)
