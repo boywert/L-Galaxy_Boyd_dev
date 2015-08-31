@@ -424,7 +424,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 
       if(MetallicityOption == 0)
 	    metindex = 4;		// reset met index to use only solar metallicity
-
+     
       age = time - NumToTime(ListOutputSnaps[outputbin]);
       /* For rest-frame, there is no K-correction on magnitudes,
        * hence the 0 in LumTables[j][metindex][0][tabindex] */
