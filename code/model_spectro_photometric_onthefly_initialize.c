@@ -199,6 +199,7 @@ void read_InputSSP_spectra(double LambdaInputSSP[SSP_NAGES][SSP_NLambda], double
   		else 
   			SSP_logAgeTab[ageloop]=0.;
 		printf("Age = %g\n",SSP_logAgeTab[ageloop]);
+	}
   }
 
   fclose(fa);
