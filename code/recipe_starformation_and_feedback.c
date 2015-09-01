@@ -275,7 +275,7 @@ void update_from_star_formation(int p, double stars, bool flag_burst, int nstep)
 #endif //DETAILED_METALS_AND_MASS_RETURN
   
   if(Gal[p].StellarSpin[1] != Gal[p].StellarSpin[1]) {
-    printf("Stellar spin %f %f %f vmax=%f infallvmax=%f\n",Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
+    printf("%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   }
     /*  Update Gas and Metals from star formation */
 
