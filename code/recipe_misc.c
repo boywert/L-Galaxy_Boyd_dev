@@ -134,8 +134,7 @@ void get_stellar_disk_radius(int p)
 double get_initial_disk_radius(int halonr, int p)
 {
   double SpinParameter;
-
-  printf("spin  %f %f %f\n",Halo[halonr].Spin[0] , Halo[halonr].Spin[1] , Halo[halonr].Spin[2]);
+  
   if(DiskRadiusMethod == 1 || DiskRadiusMethod == 2)
     {
       /*spin parameter */
@@ -143,7 +142,10 @@ double get_initial_disk_radius(int halonr, int p)
 	sqrt(Halo[halonr].Spin[0] * Halo[halonr].Spin[0] + Halo[halonr].Spin[1] * Halo[halonr].Spin[1] +
 	     Halo[halonr].Spin[2] * Halo[halonr].Spin[2]) / (1.414 * Gal[p].Vvir * Gal[p].Rvir);
       /*Rdisk=3*Rd=3*spin*R_vir/sqrt(2)/ */
-      return 3.0 * (SpinParameter / 1.414) * Gal[p].Rvir;
+      if(SpinParameter > 0.)
+	return 3.0 * (SpinParameter / 1.414) * Gal[p].Rvir;
+      else
+	return Gal[p].Rvir / 10.0;
     }
   else
     /*  simpler prescription */
