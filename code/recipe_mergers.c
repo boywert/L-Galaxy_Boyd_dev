@@ -778,7 +778,7 @@ void  bulgesize_from_merger(double mass_ratio,int merger_centralgal,int p,
       Rc=(Gal[merger_centralgal].StellarDiskRadius/3.*1.68*(Mcstar-Mcbulge)+Gal[merger_centralgal].BulgeSize*Mcbulge+Gal[merger_centralgal].GasDiskRadius*frac*Mcgas/3.*1.68)/(Mcgas*frac+Mcstar);
     else
       Rc=0.0;
-    printf("Mcgas = %f Mcstar = %f\n",Mcgas,Mcstar);
+    printf("top = %f bottom = %f\n",(Gal[merger_centralgal].StellarDiskRadius/3.*1.68*(Mcstar-Mcbulge)+Gal[merger_centralgal].BulgeSize*Mcbulge+Gal[merger_centralgal].GasDiskRadius*frac*Mcgas/3.*1.68),(Mcgas*frac+Mcstar));
     /* and satellite Mp */
     Mp=Mpstar+frac*Mpgas;
     if (Mp > 0.0)
