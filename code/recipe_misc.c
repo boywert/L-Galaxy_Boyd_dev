@@ -159,7 +159,9 @@ double get_initial_disk_radius(int halonr, int p)
 void init_galaxy(int p, int halonr)
 {
   int j, outputbin;
-
+  int r;
+  srand((unsigned int)time(NULL));
+  
   /* make explicitly sure that the whole galaxy structure has defined 0 values */
   memset(&Gal[p], 0, sizeof(struct GALAXY));
 
@@ -215,7 +217,9 @@ void init_galaxy(int p, int halonr)
   Gal[p].InfallVmax = Halo[halonr].Vmax;
   Gal[p].InfallVmaxPeak = Gal[p].InfallVmax;
     if(Gal[p].StellarSpin[0] == 0. &&  Gal[p].StellarSpin[2] == 0. && Gal[p].StellarSpin[1] == 0.) {
-    printf("%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
+      for(i=0;i<;i++)
+	Gal[p].StellarSpin[i] = 0.000001*(rand()%10) 
+      printf("%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   }
 
   Gal[p].Vvir = get_virial_velocity(halonr);
