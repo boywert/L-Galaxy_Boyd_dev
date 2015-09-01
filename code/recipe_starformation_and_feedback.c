@@ -742,7 +742,7 @@ void check_disk_instability(int p)
   diskmass = Gal[p].DiskMass;
   stars = diskmass - Mcrit;
   fraction = stars / diskmass;
-
+  printf("BEFORE: %f Stellar spin %f %f %f vmax=%f infallvmax=%f\n",massfrac,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   /* add excess stars to the bulge */
   if(stars > 0.0) {
     /* to calculate the bulge size */
@@ -827,10 +827,10 @@ void update_bulge_from_disk(int p, double stars)
    * from disk to bulge changing the specific angular momentum for disk stars.
    * This should be done on the main routine, as this is update bulge.*/
   massfrac=stars/diskmass;
-  printf("BEFORE: %f Stellar spin %f %f %f vmax=%f infallvmax=%f\n",massfrac,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
+
   for (j = 0; j <3 ; j++)
     Gal[p].StellarSpin[j]=Gal[p].StellarSpin[j]/(1-massfrac);
-  printf("AFTER: %f Stellar spin %f %f %f vmax=%f infallvmax=%f\n",massfrac,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
+
   /* update disksize done, disk mass is automatically given by total-bulge*/
 
 //GET BULGE SIZE - Eq. 35 in Guo2010
