@@ -778,7 +778,7 @@ void  bulgesize_from_merger(double mass_ratio,int merger_centralgal,int p,
       Rc=(Gal[merger_centralgal].StellarDiskRadius/3.*1.68*(Mcstar-Mcbulge)+Gal[merger_centralgal].BulgeSize*Mcbulge+Gal[merger_centralgal].GasDiskRadius*frac*Mcgas/3.*1.68)/(Mcgas*frac+Mcstar);
     else
       Rc=0.0;
-    printf("top = %f bottom = %f\n",(Gal[merger_centralgal].StellarDiskRadius/3.*1.68*(Mcstar-Mcbulge)+Gal[merger_centralgal].BulgeSize*Mcbulge+Gal[merger_centralgal].GasDiskRadius*frac*Mcgas/3.*1.68),(Mcgas*frac+Mcstar));
+    printf("top = %f bottom = %f\n",Gal[merger_centralgal].StellarDiskRadius/3.*1.68*(Mcstar-Mcbulge)+Gal[merger_centralgal].BulgeSize*Mcbulge+Gal[merger_centralgal].GasDiskRadius*frac*Mcgas/3.*1.68),(Mcgas*frac+Mcstar));
     /* and satellite Mp */
     Mp=Mpstar+frac*Mpgas;
     if (Mp > 0.0)
@@ -810,6 +810,7 @@ void  bulgesize_from_merger(double mass_ratio,int merger_centralgal,int p,
   	  			Gal[p].GasDiskRadius,Gal[p].StellarDiskRadius, (Gal[merger_centralgal].DiskMass+Gal[merger_centralgal].BulgeMass),
   	  			Gal[merger_centralgal].BulgeMass,  Gal[merger_centralgal].BulgeSize,Gal[merger_centralgal].ColdGas,
 			Gal[merger_centralgal].GasDiskRadius, Gal[merger_centralgal].StellarDiskRadius, Halo[Gal[merger_centralgal].HaloNr].M_Crit200);
+		 printf("Stellar spin %f %f %f vmax=%f infallvmax=%f\n",Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   	  	terminate(sbuf);
    exit(0);
   }
