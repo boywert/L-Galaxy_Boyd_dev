@@ -265,7 +265,7 @@ void update_from_star_formation(int p, double stars, bool flag_burst, int nstep)
 
 
   /* Update the Stellar Spin when forming stars */ //ROB: This could be moved to after the yields, total metals and total ejected masses are updated.
-
+printf("BEFORE:%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
 #ifdef DETAILED_METALS_AND_MASS_RETURN
   if (Gal[p].DiskMass+stars > 1.e-8)
     for (i = 0; i < 3; i++)
@@ -275,7 +275,7 @@ void update_from_star_formation(int p, double stars, bool flag_burst, int nstep)
     for (i = 0; i < 3; i++)
       Gal[p].StellarSpin[i]=((Gal[p].StellarSpin[i])*(Gal[p].DiskMass)+stars_nett*Gal[p].GasSpin[i])/(Gal[p].DiskMass+stars_nett);
 #endif //DETAILED_METALS_AND_MASS_RETURN
-  
+  printf("AFTER: %d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
     /*  Update Gas and Metals from star formation */
 
   mass_checks("update_from_star_formation #0",p);
