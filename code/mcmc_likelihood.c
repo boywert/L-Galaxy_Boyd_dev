@@ -135,14 +135,13 @@ double get_likelihood()
 						if(strcmp(MCMC_Obs[i].Name,"StellarMassFunction")==0) 
 							samdata[j] = MCMC_GAL[j].StellarMass[snap];
 							
-#ifdef BOYD
-						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) {
+						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) 
 						  samdata[j] =  log10(MCMC_GAL[j].Sfr[snap]);
-						  //				  printf("j = %d, log10(Sfr) = %g log10M_star = %g, \n", j, (float)samdata[j], (float)MCMC_GAL[j].StellarMass[snap]);
-						}
-#endif
+						
 						if(strcmp(MCMC_Obs[i].Name,"KBandLF")==0)
 							samdata[j] = MCMC_GAL[j].MagK[snap];
+
+						
 						if(strcmp(MCMC_Obs[i].Name,"BBandLF")==0)
 						{
 							if((double)((int)((MCMCConstraintsZZ[snap]*10)+0.5)/10.)<0.2) //Bj band at z=0

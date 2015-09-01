@@ -803,7 +803,7 @@ void  bulgesize_from_merger(double mass_ratio,int merger_centralgal,int p,
 
   if ((Mp+Mc > 0.0 && Gal[merger_centralgal].BulgeSize == 0.0 )||(Mp+Mc == 0.0 && Gal[merger_centralgal].BulgeSize> 0.0)) {
   	char sbuf[1000];
-  	  	sprintf(sbuf, "bulgesize wrong in merger. bulgemass %f, bulgesize %f, Rp %f, Rc %f,Mp %f,Mc %f, mass ratio %f, halonr %d, merger_centralgal %d\n,   p: stellarmass %f, bulgemass %f, bulgesize %f, coldgas %f,gasdisk %f,stellardisk %f \n,   central: stellarmass %f, bulgemass %f, bulgesize %f, coldgas %f,gasdisk %f,stellardisk %f \n",
+  	  	sprintf(sbuf, "bulgesize wrong in merger. bulgemass %f, bulgesize %f, Rp %f, Rc %f,Mp %f,Mc %f, mass ratio %f, halonr %d, merger_centralgal %d\n,   p: stellarmass %f, bulgemass %f, bulgesize %f, coldgas %f,gasdisk %f,stellardisk %f \n,   central: stellarmass %f, bulgemass %f, bulgesize %f, coldgas %f, gasdisk %f, stellardisk %f \n",
   	  			Gal[merger_centralgal].BulgeMass, Gal[p].BulgeSize, Rp,Rc,Mp,Mc, mass_ratio, Gal[merger_centralgal].HaloNr,
   	  			merger_centralgal, (Gal[p].DiskMass+Gal[p].BulgeMass),Gal[p].BulgeMass, Gal[p].BulgeSize,Gal[p].ColdGas,
   	  			Gal[p].GasDiskRadius,Gal[p].StellarDiskRadius, (Gal[merger_centralgal].DiskMass+Gal[merger_centralgal].BulgeMass),

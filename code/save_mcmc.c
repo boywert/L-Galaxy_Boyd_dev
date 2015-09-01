@@ -71,11 +71,8 @@ void save_galaxy_for_mcmc(int gal_index)
     		MCMC_GAL[TotMCMCGals[snap]].BulgeMass[snap] = log10(1E10 * HaloGal[gal_index].BulgeMass*Hubble_h);
     		MCMC_GAL[TotMCMCGals[snap]].BlackHoleMass[snap] = log10(1E10 * HaloGal[gal_index].BlackHoleMass*Hubble_h);
     		//in units of Solar Masses per yr
-    		MCMC_GAL[TotMCMCGals[snap]].Sfr[snap]
-    		= HaloGal[gal_index].Sfr * UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS;
-#ifdef BOYD
-		MCMC_GAL[TotMCMCGals[snap]].log10SFR[snap] = log10(HaloGal[gal_index].Sfr);
-#endif
+    		MCMC_GAL[TotMCMCGals[snap]].Sfr[snap] = HaloGal[gal_index].Sfr * UnitMass_in_g / UnitTime_in_s * SEC_PER_YEAR / SOLAR_MASS;
+
 #ifdef COMPUTE_SPECPHOT_PROPERTIES
 #ifdef POST_PROCESS_MAGS
     		struct GALAXY_OUTPUT galaxy_output;
@@ -106,7 +103,9 @@ void save_galaxy_for_mcmc(int gal_index)
     		MCMC_GAL[TotMCMCGals[snap]].MagJ[snap] = lum_to_mag(HaloGal[gal_index].LumDust[2][snap])-5.*log10_Hubble_h;
     		MCMC_GAL[TotMCMCGals[snap]].Magu[snap] = lum_to_mag(HaloGal[gal_index].LumDust[3][snap])-5.*log10_Hubble_h;
     		MCMC_GAL[TotMCMCGals[snap]].Magr[snap] = lum_to_mag(HaloGal[gal_index].LumDust[4][snap])-5.*log10_Hubble_h;
-
+#ifdef UVLF
+		MCMC_GAL[TotMCMCGals[snap]].MagGFUV[snap] = lum_to_mag(HaloGal[gal_index].LumDust[5][snap]);
+#endif
     		//MCMC_GAL[TotMCMCGals[snap]].MagV[snap] = lum_to_mag(HaloGal[gal_index].LumDust[0][snap])-5.*log10_Hubble_h;
     		//MCMC_GAL[TotMCMCGals[snap]].MagB[snap] = lum_to_mag(HaloGal[gal_index].LumDust[1][snap])-5.*log10_Hubble_h;
     		//MCMC_GAL[TotMCMCGals[snap]].MagK[snap] = lum_to_mag(HaloGal[gal_index].LumDust[2][snap])-5.*log10_Hubble_h;
