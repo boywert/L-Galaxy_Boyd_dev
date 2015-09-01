@@ -34,7 +34,6 @@ double get_disk_radius(int halonr, int p)
       SpinParameter =
 	sqrt(Halo[halonr].Spin[0] * Halo[halonr].Spin[0] + Halo[halonr].Spin[1] * Halo[halonr].Spin[1] +
 	     Halo[halonr].Spin[2] * Halo[halonr].Spin[2]) / (1.414 * Gal[p].Vvir * Gal[p].Rvir);
-      printf("SpinParameter = %0.5f\n",SpinParameter);
       return 3.0 * (SpinParameter / 1.414) * Gal[p].Rvir;
     }
   else
@@ -566,6 +565,7 @@ double NumToTime(int num)
 
 double get_virial_mass(int halonr)
 {
+  printf("firstFOF = %lld mass = %f\n",Halo[halonr].FirstHaloInFOFgroup,Halo[halonr].M_Crit200);
   if(halonr == Halo[halonr].FirstHaloInFOFgroup && Halo[halonr].M_Crit200)
     return Halo[halonr].M_Crit200;	/* take spherical overdensity mass estimate */
   else
