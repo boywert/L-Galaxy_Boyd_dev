@@ -565,7 +565,7 @@ double NumToTime(int num)
 
 double get_virial_mass(int halonr)
 {
-  printf("firstFOF = %lld mass = %f\n",Halo[halonr].FirstHaloInFOFgroup,Halo[halonr].M_Crit200);
+  //printf("firstFOF = %lld mass = %f\n",Halo[halonr].FirstHaloInFOFgroup,Halo[halonr].M_Crit200);
   if(halonr == Halo[halonr].FirstHaloInFOFgroup && Halo[halonr].M_Crit200)
     return Halo[halonr].M_Crit200;	/* take spherical overdensity mass estimate */
   else
