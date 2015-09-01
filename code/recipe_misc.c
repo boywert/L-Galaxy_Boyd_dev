@@ -135,7 +135,7 @@ double get_initial_disk_radius(int halonr, int p)
 {
   double SpinParameter;
 
-
+  printf("spin  %f %f %f\n",Halo[halonr].Spin[0] , Halo[halonr].Spin[1] , Halo[halonr].Spin[2]);
   if(DiskRadiusMethod == 1 || DiskRadiusMethod == 2)
     {
       /*spin parameter */
