@@ -844,7 +844,9 @@ struct halo_data
 
   /* properties of halo */
 	int Len;
-	float M_Mean200, M_Crit200, M_TopHat;
+        float M_Mean200;
+        float M_Crit200;
+        float M_TopHat;
 	float Pos[3];
 	float Vel[3];
 	float VelDisp;
