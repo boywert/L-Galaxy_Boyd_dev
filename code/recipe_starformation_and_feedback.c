@@ -263,9 +263,6 @@ void update_from_star_formation(int p, double stars, bool flag_burst, int nstep)
   stars_nett=(1 - RecycleFraction) * stars; //ROB: No longer an assumed instantaneous recycled fraction. Mass is returned over time via SNe and AGB winds.
 #endif
 
-  if(Gal[p].StellarSpin[1] != Gal[p].StellarSpin[1]) {
-    printf("%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
-  }
 
   /* Update the Stellar Spin when forming stars */ //ROB: This could be moved to after the yields, total metals and total ejected masses are updated.
 
