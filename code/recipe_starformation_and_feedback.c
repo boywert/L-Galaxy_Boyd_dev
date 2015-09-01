@@ -808,14 +808,15 @@ void check_disk_instability(int p)
 
 void update_bulge_from_disk(int p, double stars)
 {      
-  double bulgesize, diskmass, fint, massfrac, orisize;
+  double bulgesize, diskmass, fint, massfrac, orisize,origasradius;
   int  j;
 
 /** @brief Updates bulge from disk instability -> stars represents the mass
   *        transfered to the bulge, which occupies a size in the bulge equal
   *        to the occupied in the disk. */
 
-
+  origasradius = Gal[p].GasDiskRadius;
+  oristarradius = Gal[p].StellarDiskRadius;
   orisize=Gal[p].BulgeSize; //remove, not used
   diskmass=(Gal[p].DiskMass);
 
@@ -862,9 +863,9 @@ void update_bulge_from_disk(int p, double stars)
       char sbuf[1000];
       sprintf
 	(sbuf,
-	 "bulgesize wrong in disk instablility. diskmass %f, bulgemass %f, bulgesize %f, coldgas %f,gasdisk %f,stellardisk %f masstransfer %f trassize %f, oribulgesize %f\n",
+	 "bulgesize wrong in disk instablility. diskmass %f, bulgemass %f, bulgesize %f, coldgas %f,gasdisk %f,stellardisk %f masstransfer %f trassize %f, oribulgesize %f, oristellar_r %f, origas_r %f\n",
 	 Gal[p].DiskMass, Gal[p].BulgeMass, Gal[p].BulgeSize, Gal[p].ColdGas, Gal[p].GasDiskRadius,
-	 Gal[p].StellarDiskRadius, stars, bulgesize, orisize);
+	 Gal[p].StellarDiskRadius, stars, bulgesize, orisize,oristarradius,origasradius);
       terminate(sbuf);
     }
 
