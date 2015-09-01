@@ -216,7 +216,6 @@ void init_galaxy(int p, int halonr)
   Gal[p].InfallVmaxPeak = Gal[p].InfallVmax;
     if(Gal[p].StellarSpin[0] == 0. &&  Gal[p].StellarSpin[2] == 0. && Gal[p].StellarSpin[1] == 0.) {
     printf("%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
-    exit(1);
   }
 
   Gal[p].Vvir = get_virial_velocity(halonr);
