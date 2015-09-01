@@ -209,7 +209,7 @@ void init_galaxy(int p, int halonr)
       Gal[p].HaloVel[j] = Halo[halonr].Vel[j];
 #endif
     }
-
+  
   Gal[p].Len = Halo[halonr].Len;
   Gal[p].Vmax = Halo[halonr].Vmax;
   Gal[p].InfallVmax = Halo[halonr].Vmax;
@@ -219,7 +219,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].Rvir = get_virial_radius(halonr);
   Gal[p].MergeSat = 0.0;
   Gal[p].InfallSnap = Halo[halonr].SnapNum;
-
+  printf("Stellar spin %f %f %f vmax=%f infallvmax=%f\n",Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   Gal[p].ColdGas = 0.0;
   Gal[p].DiskMass = 0.0;
   Gal[p].BulgeMass = 0.0;
