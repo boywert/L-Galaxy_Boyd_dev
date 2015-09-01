@@ -745,7 +745,7 @@ void check_disk_instability(int p)
 
   /* add excess stars to the bulge */
   if(stars > 0.0) {
-    printf("BEFORE: %lf Stellar spin %f %f %f vmax=%f infallvmax=%f\n",fraction,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
+    printf("BEFORE: %lf Stellar spin %f %f %f vmax=%f infallvmax=%f disk_R = %f\n",fraction,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax, Gal[p].StellarDiskRadius);
     /* to calculate the bulge size */
     update_bulge_from_disk(p,stars);      
     transfer_stars(p,"Bulge",p,"Disk",fraction);
