@@ -338,8 +338,8 @@ void deal_with_galaxy_merger(int p, int merger_centralgal, int centralgal, doubl
   	/* All star formation happens in the disk, but in a major merger this will then
   	 * be destroyed with everything moved to the bulge. */
     frac=collisional_starburst_recipe(mass_ratio, merger_centralgal, centralgal, time, deltaT);
-    bulgesize_from_merger(mass_ratio,merger_centralgal,p,Mcstar,Mcbulge,Mcgas,
-			  Mpstar,Mpbulge,Mpgas,frac);
+    
+    bulgesize_from_merger(mass_ratio,merger_centralgal,p,Mcstar,Mcbulge,Mcgas,Mpstar,Mpbulge,Mpgas,frac);
 
     mass_checks("deal_with_galaxy_merger #3.5",p);
     mass_checks("deal_with_galaxy_merger #3.5",merger_centralgal);
@@ -778,6 +778,7 @@ void  bulgesize_from_merger(double mass_ratio,int merger_centralgal,int p,
       Rc=(Gal[merger_centralgal].StellarDiskRadius/3.*1.68*(Mcstar-Mcbulge)+Gal[merger_centralgal].BulgeSize*Mcbulge+Gal[merger_centralgal].GasDiskRadius*frac*Mcgas/3.*1.68)/(Mcgas*frac+Mcstar);
     else
       Rc=0.0;
+    printf("Rc = %f\n",Rc);
     /* and satellite Mp */
     Mp=Mpstar+frac*Mpgas;
     if (Mp > 0.0)
