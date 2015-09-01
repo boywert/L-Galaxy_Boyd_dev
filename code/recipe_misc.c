@@ -217,7 +217,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].InfallVmax = Halo[halonr].Vmax;
   Gal[p].InfallVmaxPeak = Gal[p].InfallVmax;
     if(Gal[p].StellarSpin[0] == 0. &&  Gal[p].StellarSpin[2] == 0. && Gal[p].StellarSpin[1] == 0.) {
-      for(i=0;i<3;i++)
+      for(j=0; j<3; j++)
 	Gal[p].StellarSpin[i] = 0.000001*(rand()%10);
       printf("%d Stellar spin %f %f %f vmax=%f infallvmax=%f\n",p,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   }
