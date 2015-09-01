@@ -808,7 +808,7 @@ void check_disk_instability(int p)
 
 void update_bulge_from_disk(int p, double stars)
 {      
-  double bulgesize, diskmass, fint, massfrac, orisize,origasradius;
+  double bulgesize, diskmass, fint, massfrac, orisize,origasradius,oristarradius;
   int  j;
 
 /** @brief Updates bulge from disk instability -> stars represents the mass
