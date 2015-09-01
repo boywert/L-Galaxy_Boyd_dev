@@ -112,7 +112,7 @@ void get_stellar_disk_radius(int p)
       3.0 * sqrt(Gal[p].StellarSpin[0] * Gal[p].StellarSpin[0] +
 		 Gal[p].StellarSpin[1] * Gal[p].StellarSpin[1] +
 		 Gal[p].StellarSpin[2] * Gal[p].StellarSpin[2]) / 2.0 / Gal[p].InfallVmax;
-
+  printf("Stellar spin %f %f %f vmax=%f infallvmax=%f\n",Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].Vmax,Gal[p].InfallVmax);
   Gal[p].StellarDiskRadius = dstar;
 
 }
