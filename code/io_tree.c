@@ -153,8 +153,7 @@ void load_tree_table(int filenr)
   /*   printf("\t NextProgenitor: %d\n",Halo_Data[i].NextProgenitor); */
   /*   sleep(1); */
   /*  } */
-  for(i=0;i<totNHalos;i++)
-  	printf("id=%lld\n",Halo_Data[i].FirstHaloInFOFgroup);
+
 #ifdef PARALLEL
   printf("\nTask %d done loading trees_%d\n", ThisTask, filenr);
 #endif
