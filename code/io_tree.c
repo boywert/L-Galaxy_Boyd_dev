@@ -151,7 +151,7 @@ void load_tree_table(int filenr)
     printf("ID:%d\n",i);
     printf("\t FirstProgenitor: %d\n",Halo_Data[i].FirstProgenitor);
     printf("\t NextProgenitor: %d\n",Halo_Data[i].NextProgenitor);
-    printf("\t M200c: %d\n",Halo_Data[i].M_Crit200); 
+    printf("\t M200c: %0.8f\n",Halo_Data[i].M_Crit200); 
     sleep(1);
    }
 
