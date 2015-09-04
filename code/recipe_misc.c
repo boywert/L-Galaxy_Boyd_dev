@@ -116,7 +116,7 @@ void get_stellar_disk_radius(int p)
 		 Gal[p].StellarSpin[2] * Gal[p].StellarSpin[2]) / 2.0 / Gal[p].InfallVmax;
   Gal[p].StellarDiskRadius = dstar;
   if(dstar != dstar)
-    printf("StellarDiskRadius = %0.8f\n",dstar);
+    printf("StellarDiskRadius = %0.8f StellarSpin %f %f %f InfallVmax %f\n",dstar,Gal[p].StellarSpin[0],Gal[p].StellarSpin[1],Gal[p].StellarSpin[2],Gal[p].InfallVmax);
 }
 
 /** @brief Initiates the value of the disk radius.
