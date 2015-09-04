@@ -229,6 +229,10 @@ void init_galaxy(int p, int halonr)
     printf("Spin2 input NaN\n");
     exit(1);
   }
+  if(Halo[halonr].Spin[0] ==0. &&  Halo[halonr].Spin[1] ==0. && Halo[halonr].Spin[2] == 0.) {
+    printf("Spin zero\n");
+    exit(1);
+  }
   Gal[p].Len = Halo[halonr].Len;
   Gal[p].Vmax = Halo[halonr].Vmax;
   Gal[p].InfallVmax = Halo[halonr].Vmax;
