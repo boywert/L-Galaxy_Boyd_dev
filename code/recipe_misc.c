@@ -222,12 +222,9 @@ void init_galaxy(int p, int halonr)
   Gal[p].Vvir = get_virial_velocity(halonr);
   Gal[p].Mvir = get_virial_mass(halonr);
   Gal[p].Rvir = get_virial_radius(halonr);
-  if(Gal[p].StellarSpin[0] == 0. &&  Gal[p].StellarSpin[2] == 0. && Gal[p].StellarSpin[1] == 0.) {
-    for(j=0; j<3; j++)
-      Gal[p].StellarSpin[j] = 0.000001 + (float)rand()/(float)(RAND_MAX)*0.02*sqrt(2.*G_GADGET* Gal[p].Mvir* Gal[p].Rvir);
-  }
-
-
+  if(Gal[p].Vmax == 0.)
+    printf("found vmax = 0, mass Vvir %f Mvir %f Rvir %f\n",Gal[p].Vvir, Gal[p].Mvir, Gal[p].Rvir);
+  
   Gal[p].MergeSat = 0.0;
   Gal[p].InfallSnap = Halo[halonr].SnapNum;
   Gal[p].ColdGas = 0.0;
