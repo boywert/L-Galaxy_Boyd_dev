@@ -273,9 +273,9 @@ void update_from_star_formation(int p, double stars, bool flag_burst, int nstep)
 #else
   if (Gal[p].DiskMass+stars_nett > 1.e-8)
     for (i = 0; i < 3; i++) {
-      Gal[p].StellarSpin[i]=((Gal[p].StellarSpin[i])*(Gal[p].DiskMass)+stars_nett*Gal[p].GasSpin[i])/(Gal[p].DiskMass+stars_nett);
+      Gal[p].StellarSpin[i]=( Gal[p].StellarSpin[i]*Gal[p].DiskMass + stars_nett*Gal[p].GasSpin[i]) / (Gal[p].DiskMass+stars_nett);
       if(Gal[p].StellarSpin[i] != Gal[p].StellarSpin[i])
-	printf("After update: spin %f gasspin %f diskmass %0.10f star_nett %0.10f\n",Gal[p].StellarSpin[i],Gal[p].GasSpin[i],Gal[p].DiskMass, stars_nett);
+	printf("After update: top %0.10f bottom %0.10f spin %f gasspin %f diskmass %0.10f star_nett %0.10f\n",( Gal[p].StellarSpin[i]*Gal[p].DiskMass + stars_nett*Gal[p].GasSpin[i]) ,(Gal[p].DiskMass+star_nett),Gal[p].StellarSpin[i],Gal[p].GasSpin[i],Gal[p].DiskMass, stars_nett);
     }
 #endif //DETAILED_METALS_AND_MASS_RETURN
 
