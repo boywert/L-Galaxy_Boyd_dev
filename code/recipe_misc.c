@@ -74,6 +74,7 @@ void get_gas_disk_radius(int p)
     dgas =
       3.0 * sqrt(Gal[p].GasSpin[0] * Gal[p].GasSpin[0] + Gal[p].GasSpin[1] * Gal[p].GasSpin[1] +
 		 Gal[p].GasSpin[2] * Gal[p].GasSpin[2]) / 2.0 / Gal[p].InfallVmax;
+  printf("dgas = %0.8f\n",dgas);
   Gal[p].GasDiskRadius = dgas;
 
 }
