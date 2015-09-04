@@ -217,22 +217,22 @@ void init_galaxy(int p, int halonr)
       Gal[p].HaloVel[j] = Halo[halonr].Vel[j];
 #endif
     }
-  if(Halo[halonr].Spin[0] != Halo[halonr].Spin[0]) {
-    printf("Spin0 input NaN\n");
-    exit(1);
-  }
-  if(Halo[halonr].Spin[1] != Halo[halonr].Spin[1]) {
-    printf("Spin1 input NaN\n");
-    exit(1);
-    }
-  if(Halo[halonr].Spin[2] != Halo[halonr].Spin[2]) {
-    printf("Spin2 input NaN\n");
-    exit(1);
-  }
-  if(Halo[halonr].Spin[0] ==0. &&  Halo[halonr].Spin[1] ==0. && Halo[halonr].Spin[2] == 0.) {
-    printf("Spin zero\n");
-    exit(1);
-  }
+  /* if(Halo[halonr].Spin[0] != Halo[halonr].Spin[0]) { */
+  /*   printf("Spin0 input NaN\n"); */
+  /*   exit(1); */
+  /* } */
+  /* if(Halo[halonr].Spin[1] != Halo[halonr].Spin[1]) { */
+  /*   printf("Spin1 input NaN\n"); */
+  /*   exit(1); */
+  /*   } */
+  /* if(Halo[halonr].Spin[2] != Halo[halonr].Spin[2]) { */
+  /*   printf("Spin2 input NaN\n"); */
+  /*   exit(1); */
+  /* } */
+  /* if(Halo[halonr].Spin[0] ==0. &&  Halo[halonr].Spin[1] ==0. && Halo[halonr].Spin[2] == 0.) { */
+  /*   printf("Spin zero\n"); */
+  /*   exit(1); */
+  /* } */
   Gal[p].Len = Halo[halonr].Len;
   Gal[p].Vmax = Halo[halonr].Vmax;
   Gal[p].InfallVmax = Halo[halonr].Vmax;

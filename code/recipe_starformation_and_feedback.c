@@ -273,11 +273,7 @@ void update_from_star_formation(int p, double stars, bool flag_burst, int nstep)
 #else
   if (Gal[p].DiskMass+stars_nett > 1.e-8)
     for (i = 0; i < 3; i++) {
-      /* if(Gal[p].StellarSpin[i] != Gal[p].StellarSpin[i]) */
-      /* 	printf("BEFORE:first %0.10f second %0.10f\n",Gal[p].StellarSpin[i],Gal[p].DiskMass); */
       Gal[p].StellarSpin[i]=( Gal[p].StellarSpin[i]*Gal[p].DiskMass + stars_nett*Gal[p].GasSpin[i]) / (Gal[p].DiskMass+stars_nett);
-      /* if(Gal[p].StellarSpin[i] != Gal[p].StellarSpin[i]) */
-      /* 	printf("AFTER:first %0.10f second %0.10f\n",Gal[p].StellarSpin[i],Gal[p].DiskMass); */
     }
 #endif //DETAILED_METALS_AND_MASS_RETURN
 
@@ -837,11 +833,7 @@ void update_bulge_from_disk(int p, double stars)
   massfrac=stars/diskmass;
   
   for (j = 0; j <3 ; j++) {
-    if(Gal[p].StellarSpin[j] != Gal[p].StellarSpin[j])
-      printf("BEFORE: spin = %0.10f mfrac %0.10f\n",Gal[p].StellarSpin[j],massfrac);
     Gal[p].StellarSpin[j]=Gal[p].StellarSpin[j]/(1-massfrac);
-    if(Gal[p].StellarSpin[j] != Gal[p].StellarSpin[j])
-      printf("AFTER: spin = %0.10f mfrac %0.10f\n",Gal[p].StellarSpin[j],massfrac);
   }
   /* update disksize done, disk mass is automatically given by total-bulge*/
 
