@@ -218,7 +218,15 @@ void init_galaxy(int p, int halonr)
 #endif
     }
   if(Halo[halonr].Spin[0] != Halo[halonr].Spin[0]) {
-    printf("Spin input NaN\n");
+    printf("Spin0 input NaN\n");
+    exit(1);
+  }
+  if(Halo[halonr].Spin[1] != Halo[halonr].Spin[1]) {
+    printf("Spin1 input NaN\n");
+    exit(1);
+    }
+  if(Halo[halonr].Spin[2] != Halo[halonr].Spin[2]) {
+    printf("Spin2 input NaN\n");
     exit(1);
   }
   Gal[p].Len = Halo[halonr].Len;
