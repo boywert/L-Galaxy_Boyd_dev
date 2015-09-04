@@ -831,7 +831,7 @@ void update_bulge_from_disk(int p, double stars)
 
   for (j = 0; j <3 ; j++)
     Gal[p].StellarSpin[j]=Gal[p].StellarSpin[j]/(1-massfrac);
-  printf("massfrac = %f\n",massfrac);
+
   /* update disksize done, disk mass is automatically given by total-bulge*/
 
 //GET BULGE SIZE - Eq. 35 in Guo2010
