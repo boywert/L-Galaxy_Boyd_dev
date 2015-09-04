@@ -149,7 +149,7 @@ void load_tree_table(int filenr)
   myfread(Halo_Data, totNHalos, sizeof(struct halo_data), tree_file);
 
   for(i=0;i<totNHalos;i++)
-    if(Halo_Data[i].Vmax == 0){
+    if(Halo_Data[i].Vmax == 0.0){
       printf("ID:%d\n",i);
       printf("\t FirstProgenitor: %d\n",Halo_Data[i].FirstProgenitor);
       printf("\t NextProgenitor: %d\n",Halo_Data[i].NextProgenitor);
