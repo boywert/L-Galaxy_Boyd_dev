@@ -745,7 +745,7 @@ void check_disk_instability(int p)
   else
     Mcrit = Gal[p].Vmax * Gal[p].Vmax * Gal[p].StellarDiskRadius / G;
   if(Mcrit == 0.0)
-    printf("Vmax = %0.10f StellarDiskRadius = %0.10f\n",Gal[p].Vmax, Gal[p].StellarDiskRadius);
+    printf("Vmax = %0.10f StellarDiskRadius = %0.10f Sspin %g %g %g\n",Gal[p].Vmax, Gal[p].StellarDiskRadius, Gal[p].StellarSpin[0],Gal[p].StellarSpin[0],Gal[p].StellarSpin[0]);
   diskmass = Gal[p].DiskMass;
   stars = diskmass - Mcrit;
   fraction = stars / diskmass;
