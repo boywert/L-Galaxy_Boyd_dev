@@ -66,12 +66,11 @@ double get_disk_radius(int halonr, int p)
 void get_gas_disk_radius(int p)
 {
   double dgas;
-  if(Gal[p].Type == 0) {
+  if(Gal[p].Type == 0) 
     dgas =
       3.0 * sqrt(Gal[p].GasSpin[0] * Gal[p].GasSpin[0] + Gal[p].GasSpin[1] * Gal[p].GasSpin[1] +
 		 Gal[p].GasSpin[2] * Gal[p].GasSpin[2]) / 2.0 / Gal[p].Vmax;
-    printf("dgas = %0.8f vmax=%0.8f \n",dgas,Gal[p].Vmax);
-  }
+
   else
     dgas =
       3.0 * sqrt(Gal[p].GasSpin[0] * Gal[p].GasSpin[0] + Gal[p].GasSpin[1] * Gal[p].GasSpin[1] +
