@@ -855,9 +855,7 @@ void update_bulge_from_disk(int p, double stars)
     Gal[p].BulgeSize=(Gal[p].BulgeMass+stars)*(Gal[p].BulgeMass+stars)/
       (Gal[p].BulgeMass*Gal[p].BulgeMass/Gal[p].BulgeSize+stars*stars/bulgesize+fint*Gal[p].BulgeMass*stars/(Gal[p].BulgeSize+bulgesize));
   }
-  //  printf("diskmass %f, bulgemass %f, bulgesize %f, coldgas %f,gasdisk %f,stellardisk %f masstransfer %f trassize %f, oribulgesize %f, oristellar_r %f, origas_r %f\n",
-	 Gal[p].DiskMass, Gal[p].BulgeMass, Gal[p].BulgeSize, Gal[p].ColdGas, Gal[p].GasDiskRadius,
-	 Gal[p].StellarDiskRadius, stars, bulgesize, orisize,oristarradius,origasradius);
+
   // TODO - check why we need it
   if((Gal[p].BulgeMass + stars > 1.e-8 && Gal[p].BulgeSize == 0.0)
      || (Gal[p].BulgeMass + stars == 0 && Gal[p].BulgeSize > 1.e-8))
