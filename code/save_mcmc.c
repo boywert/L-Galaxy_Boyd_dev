@@ -104,6 +104,7 @@ void save_galaxy_for_mcmc(int gal_index)
     		MCMC_GAL[TotMCMCGals[snap]].Magu[snap] = lum_to_mag(HaloGal[gal_index].LumDust[3][snap])-5.*log10_Hubble_h;
     		MCMC_GAL[TotMCMCGals[snap]].Magr[snap] = lum_to_mag(HaloGal[gal_index].LumDust[4][snap])-5.*log10_Hubble_h;
 		MCMC_GAL[TotMCMCGals[snap]].MagGFUV[snap] = lum_to_mag(HaloGal[gal_index].LumDust[5][snap]);
+		printf("%g\n",MCMC_GAL[TotMCMCGals[snap]].MagGFUV[snap]);
     		//MCMC_GAL[TotMCMCGals[snap]].MagV[snap] = lum_to_mag(HaloGal[gal_index].LumDust[0][snap])-5.*log10_Hubble_h;
     		//MCMC_GAL[TotMCMCGals[snap]].MagB[snap] = lum_to_mag(HaloGal[gal_index].LumDust[1][snap])-5.*log10_Hubble_h;
     		//MCMC_GAL[TotMCMCGals[snap]].MagK[snap] = lum_to_mag(HaloGal[gal_index].LumDust[2][snap])-5.*log10_Hubble_h;
