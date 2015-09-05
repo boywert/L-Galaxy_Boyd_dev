@@ -909,6 +909,7 @@ void read_observations (void)
   			//Read observational data
   			for(j = 0; j < Nbins[snap][i]; j++)
   			{
+			  
   				//Chi_Sq and Maximum Likelihood TESTS
 			  if(strcmp(MCMC_Obs[i].TestType,"chi_sq")==0 || strcmp(MCMC_Obs[i].TestType,"maxlike")==0) {
   					fscanf(fa, "%lg %lg %lg %lg", &MCMC_Obs[i].Bin_low[snap][j], &MCMC_Obs[i].Bin_high[snap][j],
