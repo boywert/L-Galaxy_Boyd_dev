@@ -900,6 +900,7 @@ void read_observations (void)
   			/* This values will give the size of the observational arrays
   			 * They will be used in get_likelihood. */
   			fscanf(fa, "%d", &Nbins[snap][i]);
+			printf("nbin = %d\n",&Nbins[snap][i]);
   			if(Nbins[snap][i]>MCMCMaxObsBins)
   			{
   				sprintf(sbuf, "NBins for Obs[%d] Snap[%d] > MCMCMaxObsBins", i,snap);
