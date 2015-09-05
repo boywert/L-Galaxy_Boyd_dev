@@ -916,7 +916,7 @@ void read_observations (void)
 			    fscanf(fa, "%lg %lg %lg %lg", &MCMC_Obs[i].Bin_low[snap][j], &MCMC_Obs[i].Bin_high[snap][j],
 				   &MCMC_Obs[i].Obs[snap][j], &MCMC_Obs[i].Error[snap][j]);
 			    printf("%g %g %g %g\n", MCMC_Obs[i].Bin_low[snap][j], MCMC_Obs[i].Bin_high[snap][j],
-				   MC&MC_Obs[i].Obs[snap][j], M&CMC_Obs[i].Error[snap][j]);
+				   MCMC_Obs[i].Obs[snap][j], MCMC_Obs[i].Error[snap][j]);
 			  }
   				//Binomial TESTS
   				else if(strcmp(MCMC_Obs[i].TestType,"binomial")==0)
