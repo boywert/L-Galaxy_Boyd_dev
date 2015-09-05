@@ -113,9 +113,7 @@ struct MCMC_GALAXY
   float Magr[NOUT];
   float Magi[NOUT];
   float Magz[NOUT];
-#ifdef UVLF
   float MagGFUV[NOUT];
-#endif
   float Weight[NOUT];
 #ifdef HALOMODEL
   int fofid[NOUT];
