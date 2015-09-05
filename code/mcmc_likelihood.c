@@ -554,7 +554,7 @@ void bin_function(int ObsNr, double *binsamdata, double *samdata, int snap)
  		  terminate(sbuf);
  	    }
 #endif
-	 
+	 printf("data = %lf\n",samdata);
   for(i = 0; i < Nbins[snap][ObsNr]; i++)
     {
       binsamdata[i] = 0;
