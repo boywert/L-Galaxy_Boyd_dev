@@ -876,7 +876,7 @@ void read_observations (void)
    fclose(fa);
 
 
-
+   printf("read observations\n");
   //now read the observations
   for(snap=0;snap<NOUT;snap++)
   {
@@ -889,6 +889,7 @@ void read_observations (void)
 
   			sprintf(buf, "%s/%s_z%1.2f.txt",ObsConstraintsDir,MCMC_Obs[i].Name,
   					(double)((int)((MCMCConstraintsZZ[snap]*10)+0.5)/10.) );
+			printf("open %s\n",buf);
   			if((fa=fopen(buf,"r"))==NULL)
   			{
   				sprintf(sbuf, "can't open file `%s'\n", buf);
