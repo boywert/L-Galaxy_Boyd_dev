@@ -914,7 +914,7 @@ void read_observations (void)
   				//Chi_Sq and Maximum Likelihood TESTS
 			  if(strcmp(MCMC_Obs[i].TestType,"chi_sq")==0 || strcmp(MCMC_Obs[i].TestType,"maxlike")==0) {
 			    fgets(buf,1024,fa);
-			    printf("%s",buf);
+			    printf("kk\n%s",buf);
 			    /* fscanf(fa, "%lg %lg %lg %lg", &MCMC_Obs[i].Bin_low[snap][j], &MCMC_Obs[i].Bin_high[snap][j], */
 			    /* 		       &MCMC_Obs[i].Obs[snap][j], &MCMC_Obs[i].Error[snap][j]); */
 			    /* printf("%g %g %g %g\n", MCMC_Obs[i].Bin_low[snap][j], MCMC_Obs[i].Bin_high[snap][j], */
