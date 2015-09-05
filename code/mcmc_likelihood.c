@@ -138,7 +138,7 @@ double get_likelihood()
 						if(strcmp(MCMC_Obs[i].Name,"SFRFunction")==0) 
 						  samdata[j] =  log10(MCMC_GAL[j].Sfr[snap]);
 
-						if(strcmp(MCMC_Obs[i].Name,"GFUVBanLF")==0) 
+						if(strcmp(MCMC_Obs[i].Name,"GFUVBandLF")==0) 
 						  samdata[j] =  MCMC_GAL[j].MagGFUV[snap];
 						
 						if(strcmp(MCMC_Obs[i].Name,"KBandLF")==0)
