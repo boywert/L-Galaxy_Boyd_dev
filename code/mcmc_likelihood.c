@@ -560,10 +560,8 @@ void bin_function(int ObsNr, double *binsamdata, double *samdata, int snap)
       binsamdata[i] = 0;
 
       for(k=0;k<TotMCMCGals[snap];k++) {
-	printf("data = %lf k =%d\n",samdata[k],k);
 	if(samdata[k]>=MCMC_Obs[ObsNr].Bin_low[snap][i] && samdata[k] <= MCMC_Obs[ObsNr].Bin_high[snap][i]) {
 	  binsamdata[i]+=MCMC_GAL[k].Weight[snap];
-	  printf("data = %lf block = %d\n",samdata,k);
 	}
       }
       //binsamdata[i]/=(BoxSize*BoxSize*BoxSize*Bin);
