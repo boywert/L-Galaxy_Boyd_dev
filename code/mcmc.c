@@ -909,9 +909,12 @@ void read_observations (void)
   			for(j = 0; j < Nbins[snap][i]; j++)
   			{
   				//Chi_Sq and Maximum Likelihood TESTS
-  				if(strcmp(MCMC_Obs[i].TestType,"chi_sq")==0 || strcmp(MCMC_Obs[i].TestType,"maxlike")==0)
+			  if(strcmp(MCMC_Obs[i].TestType,"chi_sq")==0 || strcmp(MCMC_Obs[i].TestType,"maxlike")==0) {
   					fscanf(fa, "%lg %lg %lg %lg", &MCMC_Obs[i].Bin_low[snap][j], &MCMC_Obs[i].Bin_high[snap][j],
-  								                        &MCMC_Obs[i].Obs[snap][j], &MCMC_Obs[i].Error[snap][j]);
+					       &MCMC_Obs[i].Obs[snap][j], &MCMC_Obs[i].Error[snap][j]);
+					printf("%lg %lg %lg %lg", MCMC_Obs[i].Bin_low[snap][j], MCMC_Obs[i].Bin_high[snap][j],
+					       MCMC_Obs[i].Obs[snap][j], MCMC_Obs[i].Error[snap][j]);
+			  }
   				//Binomial TESTS
   				else if(strcmp(MCMC_Obs[i].TestType,"binomial")==0)
   					fscanf(fa, "%f %lg %lg", &BinValueColector, &MCMC_Obs[i].ObsUp[snap][j], &MCMC_Obs[i].ObsDown[snap][j]);
