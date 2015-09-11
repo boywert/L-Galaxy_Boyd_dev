@@ -334,12 +334,6 @@ struct GALAXY_OUTPUT
 #pragma pack(1)  //structure alignment for 1 Byte.
 struct GALAXY_OUTPUT
 {
-#ifdef REIONIZEPHOTON
-  float NPhotReion;
-#endif
-#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
-  float Xfrac3d;
-#endif
 #ifdef NO_PROPS_OUTPUTS
 #ifdef GALAXYTREE
   long long GalID;		// ID of galaxy, unique within simulation and SAM run.
@@ -593,7 +587,12 @@ struct SFH_BIN {
   struct elements EjectedMass_elements;
   struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
-
+#ifdef REIONIZEPHOTON
+  float NPhotReion;
+#endif
+#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
+  float Xfrac3d;
+#endif
 
 };
 
