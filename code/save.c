@@ -10,7 +10,7 @@
 /**@file save.c
  * @brief Copies the relevant properties in Galaxy structure into
  *        Galaxy_Output structure and saves them into the output
- *        files (SA_z**_**) - redshift/filenr.
+ *        files (SA_z**_**) - redเนshift/filenr.
  *
  *        There are two distinct procedures to write the output depending
  *        on whether GALAXY_TREE option is turned on or off. If it is on
@@ -515,7 +515,9 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
 	  o->MagICL[j] = lum_to_mag(g->ICLLum[j][n]);
 #endif
     }
- 
+#ifdef REIONIZEPHOTON
+  o->NPhotReion = log10(g->ReionizePhot[n]);
+#endif 
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   o->Xfrac3d = g->Xfrac3d;
 #endif
