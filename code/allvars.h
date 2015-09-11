@@ -587,6 +587,9 @@ struct SFH_BIN {
   struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
 
+#ifdef REIONIZEPHOTON
+  float NPhotReion;
+#endif
 
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   float Xfrac3d;
@@ -824,7 +827,11 @@ struct GALAXY			/* Galaxy data */
   struct elements EjectedMass_elements;
   struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
-
+  
+#ifdef REIONIZEPHOTON
+  double ReionizePhot[NOUT];
+#endif
+  
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   float Xfrac3d;
 #endif
@@ -1150,6 +1157,10 @@ extern float SSP_logAgeTab[SSP_NAGES];
 extern float RedshiftTab[MAXSNAPS];
 extern float LumTables[NMAG][SSP_NMETALLICITES][MAXSNAPS][SSP_NAGES];
 extern float FilterLambda[NMAG+1];//wavelength of each filter + 1 for V-band
+
+#ifdef REIONIZEPHOTON
+extern double NPhotTables[SSP_NMETALLICITES][SSP_NAGES];
+#endif
 
 #ifdef SPEC_PHOTABLES_ON_THE_FLY
 #define MAX_NLambdaFilter 1000

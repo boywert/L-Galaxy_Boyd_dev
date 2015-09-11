@@ -246,6 +246,9 @@ float LumTables[NMAG][SSP_NMETALLICITES][MAXSNAPS][SSP_NAGES];
 float FilterLambda[NMAG+1];	//wavelength of each filter + 1 for V-band
 #ifdef SPEC_PHOTABLES_ON_THE_FLY
 int NLambdaFilter[NMAG];
+#ifdef REIONIZEPHOTON
+double NPhotTables[SSP_NMETALLICITES][SSP_NAGES];
+#endif
 #endif
 
 

@@ -327,6 +327,12 @@ void init_galaxy(int p, int halonr)
   for(outputbin = 0; outputbin < NOUT; outputbin++)
   	Gal[p].MassWeightAge[outputbin] = 0.0;
 #ifndef  POST_PROCESS_MAGS
+  
+#ifdef REIONIZEPHOTON
+  for(outputbin = 0; outputbin < NOUT; outputbin++)
+    Gal[p].ReionizePhot[outputbin] = 0.0;
+#endif // REIONIZEPHOTON
+
 #ifdef OUTPUT_REST_MAGS
   for(outputbin = 0; outputbin < NOUT; outputbin++) {
     for(j = 0; j < NMAG; j++) {
@@ -476,7 +482,16 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
     	  if(age <= tbc)
 	        Gal[p].YLum[j][outputbin] += LuminosityToAdd;
         }
+#ifdef REIONIZEPHOTON
+      
+      PhotonsToAdd = X1 * (fmet1 * (f1 * NPhotTables[metindex][tabindex] +
+				    f2 * NPhotTables[metindex][tabindex + 1]) +
+			   fmet2 * (f1 * NPhotTables[metindex + 1][tabindex] +
+				    f2 * NPhotTables[metindex + 1][tabindex + 1]));
 
+      Gal[p].ReionizePhot[outputbin] += PhotonsToAdd;
+   
+#endif // REIONIZEPHOTON
     }
 #endif //OUTPUT_REST_MAGS
 
