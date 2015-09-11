@@ -531,6 +531,7 @@ struct GALAXY_OUTPUT
   float sfh_BurstMass[SFH_NBIN]; // Mass formed in starbursts
 #endif
 #endif //NORMALIZEDDB
+
 #endif //STAR_FORMATION_HISTORY
 #ifdef REIONIZEPHOTON
   float NPhotReion;

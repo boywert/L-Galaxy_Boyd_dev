@@ -426,7 +426,7 @@ void init_galaxy(int p, int halonr)
 void add_to_luminosities(int p, double mstars, double time, double metallicity)
 {
   int outputbin, metindex, tabindex, j;
-  double f1, f2, fmet1, fmet2, LuminosityToAdd, dLuminosityToAdd;
+  double f1, f2, fmet1, fmet2, LuminosityToAdd, dLuminosityToAdd, PhotonsToAdd;
   double X1, age;
   double tbc;
   double factor;
