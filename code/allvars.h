@@ -532,7 +532,14 @@ struct GALAXY_OUTPUT
 #endif
 #endif //NORMALIZEDDB
 #endif //STAR_FORMATION_HISTORY
+#ifdef REIONIZEPHOTON
+  float NPhotReion;
+#endif
+#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
+  float Xfrac3d;
+#endif
 
+  
 #ifdef INDIVIDUAL_ELEMENTS
   struct elements sfh_ElementsDiskMass[SFH_NBIN];
   struct elements sfh_ElementsBulgeMass[SFH_NBIN];
@@ -587,12 +594,7 @@ struct SFH_BIN {
   struct elements EjectedMass_elements;
   struct elements ExcessMass_elements;
 #endif //INDIVIDUAL_ELEMENTS
-#ifdef REIONIZEPHOTON
-  float NPhotReion;
-#endif
-#if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
-  float Xfrac3d;
-#endif
+
 
 };
 
