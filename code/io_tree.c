@@ -238,7 +238,6 @@ void load_tree_table(int filenr)
   memset(Xfrac_Data, 10.0, sizeof(float) * totNHalos);
   status_prev=0;
 #ifdef PARALLEL
-  MPI_Barrier(MPI_COMM_WORLD);
 #endif
   if(ThisTask == 0){
     for(i=0;i<NOUT;i++)
@@ -256,14 +255,12 @@ void load_tree_table(int filenr)
       status = read_xfrac(i,xfrac);
     }
 #ifdef PARALLEL
-    MPI_Barrier(MPI_COMM_WORLD);
 #ifdef DP_XFRAC
     MPI_Bcast(xfrac, XfracMesh[0]*XfracMesh[1]*XfracMesh[2], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 #else
     MPI_Bcast(xfrac, XfracMesh[0]*XfracMesh[1]*XfracMesh[2], MPI_FLOAT, 0, MPI_COMM_WORLD);
 #endif
     MPI_Bcast(&status, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 #endif
 
     if(status == 1)  {
