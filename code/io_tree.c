@@ -143,10 +143,7 @@ void load_tree_table(int filenr)
   for(i = 1; i < Ntrees; i++) {
     TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
   }
-  for(i = 0; i < 20; i++) {
-    printf("Tree:%d n= %d\n",i,TreeNHalos[i]);
-  }
-  exit(1);
+
 #ifdef PRELOAD_TREES
   Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
   myfseek(tree_file, sizeof(int) * (2 + Ntrees), SEEK_SET);
