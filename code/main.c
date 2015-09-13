@@ -267,6 +267,7 @@ void SAM(int filenr)
   for(treenr = 0; treenr < Ntrees; treenr++)
   //for(treenr = 5829; treenr <5830;treenr++)
   {
+    exit(1);
   //printf("doing tree %d of %d (MR trees=%d)\n", treenr, Ntrees, NTrees_Switch_MR_MRII);
     //printf("doing tree %d of %d\n", treenr, Ntrees);
 #ifdef MR_PLUS_MRII
@@ -314,7 +315,6 @@ void SAM(int filenr)
     	  		construct_galaxies(filenr, treenr, halonr);
 
   }
-      exit(1);
       /* output remaining galaxies as needed */
       while(NHaloGal)
       	output_galaxy(treenr, 0);
