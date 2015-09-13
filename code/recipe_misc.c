@@ -198,9 +198,9 @@ void init_galaxy(int p, int halonr)
   Gal[p].HaloVelDisp = Halo[halonr].VelDisp;
   Gal[p].HaloVmax = Halo[halonr].Vmax;
 #endif
-  exit(1);
+  
 #ifdef READXFRAC
-  Gal[p].Xfrac3d = Xfrac[halonr]; 		    
+  // Gal[p].Xfrac3d = Xfrac[halonr]; 		    
 #endif
 
   for(j = 0; j < 3; j++)
