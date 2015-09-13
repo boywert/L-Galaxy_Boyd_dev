@@ -264,7 +264,6 @@ void SAM(int filenr)
 
   //for(treenr = 0; treenr < NTrees_Switch_MR_MRII; treenr++)
   //for(treenr = NTrees_Switch_MR_MRII; treenr < Ntrees; treenr++)
-  exit(1);
   for(treenr = 0; treenr < Ntrees; treenr++)
   //for(treenr = 5829; treenr <5830;treenr++)
   {
@@ -276,6 +275,7 @@ void SAM(int filenr)
 #endif
 
   	load_tree(treenr);
+	exit(1);
 #ifdef MCMC
 #ifdef PRELOAD_TREES
       if(Sample_Cosmological_Parameters==1 || CurrentMCMCStep==1)
