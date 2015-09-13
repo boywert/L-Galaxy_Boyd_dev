@@ -202,7 +202,7 @@ void init_galaxy(int p, int halonr)
 #ifdef READXFRAC
   Gal[p].Xfrac3d = Xfrac[halonr]; 		    
 #endif
-  
+  exit(1);
   for(j = 0; j < 3; j++)
     {
       Gal[p].Pos[j] = Halo[halonr].Pos[j];

@@ -533,6 +533,7 @@ struct GALAXY_OUTPUT
 #endif //NORMALIZEDDB
 
 #endif //STAR_FORMATION_HISTORY
+  
 #ifdef REIONIZEPHOTON
   float NPhotReion;
 #endif
