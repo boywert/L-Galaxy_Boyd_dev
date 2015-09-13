@@ -267,7 +267,6 @@ void SAM(int filenr)
   for(treenr = 0; treenr < Ntrees; treenr++)
   //for(treenr = 5829; treenr <5830;treenr++)
   {
-    exit(1);
   //printf("doing tree %d of %d (MR trees=%d)\n", treenr, Ntrees, NTrees_Switch_MR_MRII);
     //printf("doing tree %d of %d\n", treenr, Ntrees);
 #ifdef MR_PLUS_MRII
@@ -433,6 +432,7 @@ void construct_galaxies(int filenr, int treenr, int halonr)
 
 
   fofhalo = Halo[halonr].FirstHaloInFOFgroup;
+  return;
   if(HaloAux[fofhalo].HaloFlag == 1)	//If it is marked as an halo to do
     {
       ngal = 0;
@@ -452,7 +452,6 @@ void construct_galaxies(int filenr, int treenr, int halonr)
 #endif
     	  fofhalo = Halo[fofhalo].NextHaloInFOFgroup;
         }
-
 
       /*Evolve the Galaxies -> SAM! */
       evolve_galaxies(Halo[halonr].FirstHaloInFOFgroup, ngal, treenr, cenngal);
