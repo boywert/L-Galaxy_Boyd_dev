@@ -275,7 +275,7 @@ void SAM(int filenr)
 #endif
 
   	load_tree(treenr);
-	exit(1);
+
 #ifdef MCMC
 #ifdef PRELOAD_TREES
       if(Sample_Cosmological_Parameters==1 || CurrentMCMCStep==1)
@@ -313,7 +313,7 @@ void SAM(int filenr)
     	  	if(HaloAux[halonr].DoneFlag == 0 && Halo[halonr].SnapNum == snapnum)
     	  		construct_galaxies(filenr, treenr, halonr);
       }
-
+      exit(1);
       /* output remaining galaxies as needed */
       while(NHaloGal)
       	output_galaxy(treenr, 0);
