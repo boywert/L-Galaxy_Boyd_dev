@@ -314,11 +314,11 @@ void SAM(int filenr)
     	  		construct_galaxies(filenr, treenr, halonr);
 
   }
-
+      exit(1);
       /* output remaining galaxies as needed */
       while(NHaloGal)
       	output_galaxy(treenr, 0);
-      exit(1);
+
 
 #ifndef MCMC
 #ifdef GALAXYTREE
