@@ -14,42 +14,10 @@
 #include "allvars.h"
 #include "proto.h"
 
-void get_xfrac_mesh()
-{
-  FILE* fp;
-  char buf[1024],sbuf[1024];
-  float redshift;
-  int dummy;
-
-#ifdef PARALLEL
-  if(ThisTask == 0)
-    {
-#endif
-      redshift = ZZ[MAXSNAPS-1];
-      sprintf(buf, "%s/xfrac3d_%2.3f.bin", XfracDir, redshift);
-      if((fp = fopen(buf,"r")) == NULL)
-	{
-	  char sbuf[1000];
-	  printf("can't open file `%s'\n", buf);
-	  // terminate(sbuf);
-	  XfracMesh[0] = XfracNGrids;
-	  XfracMesh[1] = XfracNGrids;
-	  XfracMesh[2] = XfracNGrids;
-	}
-      else {
-	fread(&dummy, 1, sizeof(int),fp);
-	myfread(XfracMesh, 3, sizeof(int),fp);
-	fread(&dummy, 1, sizeof(int),fp);
-	fclose(fp);
-      }
-#ifdef PARALLEL
-    }
-  MPI_Barrier(MPI_COMM_WORLD);
-  MPI_Bcast(XfracMesh, 3, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(ThisTask == 0) printf("Task:%d => %d %d %d\n",ThisTask,XfracMesh[0],XfracMesh[1],XfracMesh[2]);
-#endif
-
+void get_xfrac_mesh() {
+  XfracMesh[0] = XfracNGrids;
+  XfracMesh[1] = XfracNGrids;
+  XfracMesh[2] = XfracNGrids;
 }
 
 /*  @file read_xfrac.c
