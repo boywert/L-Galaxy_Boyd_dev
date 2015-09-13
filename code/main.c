@@ -312,13 +312,13 @@ void SAM(int filenr)
     	  for(halonr = 0; halonr < TreeNHalos[treenr]; halonr++)
     	  	if(HaloAux[halonr].DoneFlag == 0 && Halo[halonr].SnapNum == snapnum)
     	  		construct_galaxies(filenr, treenr, halonr);
-	  exit(1);
+
   }
 
       /* output remaining galaxies as needed */
       while(NHaloGal)
       	output_galaxy(treenr, 0);
-
+      exit(1);
 
 #ifndef MCMC
 #ifdef GALAXYTREE
