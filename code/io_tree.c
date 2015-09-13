@@ -289,6 +289,7 @@ void load_tree_table(int filenr)
     }
     myfree(xfrac);
   }
+  exit(1);
 #endif 
 }
 
