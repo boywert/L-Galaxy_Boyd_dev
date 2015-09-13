@@ -432,7 +432,6 @@ void construct_galaxies(int filenr, int treenr, int halonr)
 
 
   fofhalo = Halo[halonr].FirstHaloInFOFgroup;
-  return;
   if(HaloAux[fofhalo].HaloFlag == 1)	//If it is marked as an halo to do
     {
       ngal = 0;
@@ -454,7 +453,7 @@ void construct_galaxies(int filenr, int treenr, int halonr)
         }
 
       /*Evolve the Galaxies -> SAM! */
-      evolve_galaxies(Halo[halonr].FirstHaloInFOFgroup, ngal, treenr, cenngal);
+      //evolve_galaxies(Halo[halonr].FirstHaloInFOFgroup, ngal, treenr, cenngal);
 
       for (p =0;p<ngal;p++)
 	    mass_checks("Construct_galaxies #1",p);
