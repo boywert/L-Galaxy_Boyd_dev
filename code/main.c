@@ -21,7 +21,7 @@
 #include "lightcone.h"
 #endif
 
-
+#define NODEDELAY 0.0
 /**@file main.c
  * @brief Controlling function of L-Galaxies plus SAM Construct Galaxies,
  *        Join Galaxies of progenitors, Evolve Galaxies and check
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 	  do
 	  	time(&current);
 	  //while(difftime(current, start) < 5.0 * ThisTask);
-	  while(difftime(current, start) < 1.0 * ThisTask);
+	  while(difftime(current, start) < NODEDELAY * ThisTask);
 
 #endif
 #endif
