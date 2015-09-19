@@ -402,13 +402,13 @@ void read_output_snaps(void)
 
       //find the snapshot corresponding to the desired output redshift in ListOutputRedshifts[]
       for(j = 0; j < LastDarkMatterSnapShot+1; j++)
-      	if(ListOutputRedshifts[i]>=ZZ[j])
-      	{
-      		if((ZZ[j-1]-ListOutputRedshifts[i])<(ListOutputRedshifts[i]-ZZ[j]) || ZZ[j]< 0.0)
-      			ListOutputSnaps[i]=j-1;
-    		  else
-    		    ListOutputSnaps[i]=j;
-    		  break;
+      	if(ListOutputRedshifts[i]>=ZZ[j]) {
+	  if( (ZZ[j-1]-ListOutputRedshifts[i]) < (ListOutputRedshifts[i]-ZZ[j]) || ZZ[j]< 0.0)
+	    ListOutputSnaps[i]=j-1;
+	  else
+	    ListOutputSnaps[i]=j;
+	  break;
+	  ListOutputSnaps[i]=j;
       	}
 
 
