@@ -408,8 +408,11 @@ void read_output_snaps(void)
 	  else
 	    ListOutputSnaps[i]=j;
 	  break;
-	  ListOutputSnaps[i]=j;
-      	}
+      	} else {
+	  if(j == LastDarkMatterSnapShot)
+	    ListOutputSnaps[i] = j;
+	}
+      
 
 
 #ifdef MCMC
