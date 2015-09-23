@@ -407,10 +407,15 @@ void setup_Spec_NPhotTables_onthefly(void)
 	       * CONVOLUTION: direct (configuration) space
 	       * simply multiply filter*spectrum it's a convolution in Fourier space */
 	      FluxInputSSPConv = malloc(sizeof(double) * Grid_Length);
-	      for(i=0;i<Grid_Length;i++)
-		{
-		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e7));
+	      for(i=0;i<Grid_Length;i++) {
+		if(i != Grid_Length-1) {
+		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e7))
+		    * fabs((double)C/(lgrid[i]*1e7)-(double)C/(lgrid[i+1]*1e7));
+		} else {
+		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e7))
+		    * fabs((double)C/(lgrid[i]*1e7)-(double)C/(lgrid[i-1]*1e7));
 		}
+	      }
 	      
 	      
 	      //INTEGRATE/

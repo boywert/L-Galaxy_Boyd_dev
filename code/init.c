@@ -409,7 +409,7 @@ void read_output_snaps(void)
 	    ListOutputSnaps[i]=j;
 	  break;
       	} else {
-	  if(j == LastDarkMatterSnapShot)
+	  if((j == LastDarkMatterSnapShot))
 	    ListOutputSnaps[i] = j;
 	}
       
