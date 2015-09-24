@@ -155,7 +155,10 @@ double infall_recipe(int centralgal, int ngal, double Zcurr)
 	reionization_modifier = 1.0;
     }
     else{
-      reionization_modifier = 1.0;
+      if(Gal[centralgal].HaloM_Crit200 < m1)
+	reionization_modifier = 0.;
+      else
+	reionization_modifier = 1.0;
     }
     infallingMass = reionization_modifier * (BaryonFrac * Gal[centralgal].Mvir) - tot_mass;
   }
