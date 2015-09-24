@@ -484,7 +484,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
         }
 #ifdef REIONIZEPHOTON
       
-      PhotonsToAdd = X1 * (fmet1 * (f1 * NPhotTables[metindex][tabindex] +
+      PhotonsToAdd = (fmet1 * (f1 * NPhotTables[metindex][tabindex] +
 				    f2 * NPhotTables[metindex][tabindex + 1]) +
 			   fmet2 * (f1 * NPhotTables[metindex + 1][tabindex] +
 				    f2 * NPhotTables[metindex + 1][tabindex + 1]));
