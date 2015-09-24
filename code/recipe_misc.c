@@ -488,7 +488,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 				    f2 * NPhotTables[metindex][tabindex + 1]) +
 			   fmet2 * (f1 * NPhotTables[metindex + 1][tabindex] +
 				    f2 * NPhotTables[metindex + 1][tabindex + 1]));
-      printf ("mass = %lg X1 = %lg, factor = %lg\n",0.1*Gal[p].HaloM_Crit200,X1,(fmet1 * (f1 * NPhotTables[metindex][tabindex] +
+      printf ("mass = %lg X1 = %lg, factor = %lg\n",(double)0.1*Gal[p].HaloM_Crit200,X1,(fmet1 * (f1 * NPhotTables[metindex][tabindex] +
 				    f2 * NPhotTables[metindex][tabindex + 1]) +
 			   fmet2 * (f1 * NPhotTables[metindex + 1][tabindex] +
 				    f2 * NPhotTables[metindex + 1][tabindex + 1])));
