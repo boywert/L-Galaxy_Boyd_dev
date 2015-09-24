@@ -440,11 +440,11 @@ void setup_Spec_NPhotTables_onthefly(void)
 	  
 	  free(lgrid);
 	  
-	  printf("NPhotTables[%d][%d] = %lg\n",MetalLoop,AgeLoop,NPhotTables[MetalLoop][AgeLoop] );
+	  // printf("NPhotTables[%d][%d] = %lg\n",MetalLoop,AgeLoop,NPhotTables[MetalLoop][AgeLoop] );
 	} // end age loop
       
     }  //end loop on metallicities
-  exit(1);
+  // exit(1);
   if(ThisTask == 0) printf("\n NPhotTables Computed.\n\n");
 }
   
