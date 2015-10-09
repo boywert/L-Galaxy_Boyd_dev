@@ -241,7 +241,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].Vvir = get_virial_velocity(halonr);
   Gal[p].Mvir = get_virial_mass(halonr);
   Gal[p].Rvir = get_virial_radius(halonr);
-   if(Gal[p].Vmax == 0.) */
+  if(Gal[p].Vmax == 0.) */
      printf("found vmax = 0, mass Vvir %f Mvir %f Rvir %f\n",Gal[p].Vvir, Gal[p].Mvir, Gal[p].Rvir); 
   
   Gal[p].MergeSat = 0.0;
