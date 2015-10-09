@@ -529,17 +529,19 @@ void SN_feedback(int p, int centralgal, double stars, char feedback_location[])
 	  }
 	  else if(FeedbackRecipe == 1)//the ejected material is assumed to have V_SN
 	    {
-
 		  SN_Energy = .5 * stars * (EtaSNcode * EnergySNcode);
 		  Reheat_Energy = .5 * reheated_mass * EjectVvir * EjectVvir;
-
+		  
 		  ejected_mass = (SN_Energy - Reheat_Energy)/(0.5 * FeedbackEjectionEfficiency*(EtaSNcode * EnergySNcode));
-
+		  
 		  //if VSN^2<Vvir^2 nothing is ejected
 		  if(FeedbackEjectionEfficiency*(EtaSNcode * EnergySNcode)<EjectVvir*EjectVvir)
-		  		ejected_mass =0.0;
-	     }
-
+		    ejected_mass =0.0;
+	    }
+	  else if(FeedbackRecipe == 10) // no SN feedback
+	    ejected_mass = 0.0;
+	  
+	  
 	  // Finished calculating mass exchanges, so just check that none are negative
 	  if (reheated_mass < 0.0) reheated_mass = 0.0;
 	  if (ejected_mass < 0.0) ejected_mass = 0.0;
