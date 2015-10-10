@@ -67,86 +67,40 @@ double infall_recipe(int centralgal, int ngal, double Zcurr)
     infallingMass = reionization_modifier * BaryonFrac * Gal[centralgal].Mvir - tot_mass;
   }
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
-  else if(ReionizationOn == 3)
+  else if(ReionizationOn == 3) // Ionize all the time
     {
-      if(Gal[centralgal].Xfrac3d > 0.5)
-	{
-	  if(Gal[centralgal].HaloM_Crit200 < 0.01*Hubble_h)
-	    reionization_modifier = 0.;
-	  else
-	    reionization_modifier = 1.;
-	}
-      else
-	{
-	  reionization_modifier = 1.0;
-	}
-      infallingMass = reionization_modifier * (BaryonFrac * Gal[centralgal].Mvir - tot_mass);
-      // printf("re_modifier:%f\n",Gal[centralgal].Xfrac3d,reionization_modifier);
-    }
-  else if(ReionizationOn == 4)
-    {
-      if(Gal[centralgal].Xfrac3d > 0.5)
-	{
-	  if(Gal[centralgal].HaloM_Crit200 < 0.1*Hubble_h)
-	    reionization_modifier = 0.;
-	  else
-	    reionization_modifier = 1.;
-	}
-      else
-	{
-	  reionization_modifier = 1.0;
-	}
-      // printf("re_modifier:%f\n",Gal[centralgal].Xfrac3d,reionization_modifier);
-      infallingMass = reionization_modifier * (BaryonFrac * Gal[centralgal].Mvir - tot_mass);
-    }
-    else if(ReionizationOn == 7)
-    {
-      if(Gal[centralgal].Xfrac3d > 0.5)
-	{
-	  if(Gal[centralgal].HaloM_Crit200 < 0.01*Hubble_h)
-	    reionization_modifier = 0.;
-	  else
-	    reionization_modifier = 1.;
-	}
-      else
-	{
-	  reionization_modifier = 1.0;
-	}
-      infallingMass = reionization_modifier*BaryonFrac*Gal[centralgal].Mvir - tot_mass;
-      // printf("re_modifier:%f\n",Gal[centralgal].Xfrac3d,reionization_modifier);
-    }
-  else if(ReionizationOn == 8)
-    {
-      if(Gal[centralgal].Xfrac3d > 0.5)
-	{
-	  if(Gal[centralgal].HaloM_Crit200 < 0.1*Hubble_h)
-	    reionization_modifier = 0.;
-	  else
-	    reionization_modifier = 1.;
-	}
-      else
-	{
-	  reionization_modifier = 1.0;
-	}
-      // printf("re_modifier:%f\n",Gal[centralgal].Xfrac3d,reionization_modifier);
-      infallingMass = reionization_modifier*BaryonFrac*Gal[centralgal].Mvir - tot_mass;
-    }
-  else if(ReionizationOn == 5){
-    if(Gal[centralgal].Xfrac3d > 0.5){
       if(Gal[centralgal].HaloM_Crit200 < m1)
 	reionization_modifier = 0.;
       else if(Gal[centralgal].HaloM_Crit200 >= m1 && Gal[centralgal].HaloM_Crit200 <= m2)
 	reionization_modifier = log10(Gal[centralgal].HaloM_Crit200/m1)/log10(m2/m1);
       else
 	reionization_modifier = 1.0;
+      infallingMass = reionization_modifier * (BaryonFrac * Gal[centralgal].Mvir) - tot_mass;
     }
-    else{
+  else if(ReionizationOn == 7) { // Cut off at m=8
+    if(Gal[centralgal].Xfrac3d > 0.5) {
+      if(Gal[centralgal].HaloM_Crit200 < 0.01*Hubble_h)
+	reionization_modifier = 0.;
+      else
+	reionization_modifier = 1.;
+    }
+    else
       reionization_modifier = 1.0;
+    infallingMass = reionization_modifier*BaryonFrac*Gal[centralgal].Mvir - tot_mass;
+  }
+  else if(ReionizationOn == 8) {
+    if(Gal[centralgal].Xfrac3d > 0.5) { // Cut off at m=9
+      if(Gal[centralgal].HaloM_Crit200 < 0.1*Hubble_h)
+	reionization_modifier = 0.;
+      else
+	reionization_modifier = 1.;
     }
-    infallingMass = reionization_modifier * (BaryonFrac * Gal[centralgal].Mvir - tot_mass);
+    else
+      reionization_modifier = 1.0;
+    infallingMass = reionization_modifier*BaryonFrac*Gal[centralgal].Mvir - tot_mass;
   }
   else if(ReionizationOn == 6){
-    if(Gal[centralgal].Xfrac3d > 0.5){
+    if(Gal[centralgal].Xfrac3d > 0.5) {
       if(Gal[centralgal].HaloM_Crit200 < m1)
 	reionization_modifier = 0.;
       else if(Gal[centralgal].HaloM_Crit200 >= m1 && Gal[centralgal].HaloM_Crit200 <= m2)
@@ -154,7 +108,7 @@ double infall_recipe(int centralgal, int ngal, double Zcurr)
       else
 	reionization_modifier = 1.0;
     }
-    else{
+    else {
       if(Gal[centralgal].HaloM_Crit200 < m1)
 	reionization_modifier = 0.;
       else
