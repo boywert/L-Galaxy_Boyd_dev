@@ -250,11 +250,11 @@ void setup_Spec_NPhotTables_onthefly() {
 	      FluxInputSSPConv = malloc(sizeof(double) * Grid_Length);
 	      for(i=0;i<Grid_Length;i++) {
 		if(i != Grid_Length-1) {
-		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e8));
-		    // * fabs((double)C/(lgrid[i]*1e8)-(double)C/(lgrid[i+1]*1e8));
+		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e8))
+		    * fabs((double)C/(lgrid[i]*1e8)-(double)C/(lgrid[i+1]*1e8));
 		} else {
-		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e8));
-		    // * fabs((double)C/(lgrid[i]*1e8)-(double)C/(lgrid[i-1]*1e8));
+		  FluxInputSSPConv[i]=FluxInputSSPOnGrid[i]*FluxFilterOnGrid[i]/(double)PLANCK/((double)C/(lgrid[i]*1e8))
+		    * fabs((double)C/(lgrid[i]*1e8)-(double)C/(lgrid[i-1]*1e8));
 		}
 	      }
 	      
