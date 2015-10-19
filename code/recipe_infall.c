@@ -422,4 +422,5 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	    }
 	}
     }
+  printf("hotgas = %lg\n", Gal[centralgal].HotGas);
 }
