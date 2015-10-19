@@ -363,8 +363,7 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
       //transfer_gas(Gal[centralgal],"Ejected",1.,"Hot",1.,(M_infalltoHot/Gal[centralgal].EjectedMass));
       
 	}
-
-      else
+      else if (infallingGas < 0.)
 	{
 	  HGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].HotGas;
 	  ZGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].MetalsHotGas;
@@ -423,4 +422,5 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	    }
 	}
     }
+  printf("hotgas = %lg\n",Gal[centralgal].HotGas);
 }
