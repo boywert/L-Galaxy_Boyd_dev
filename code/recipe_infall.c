@@ -422,5 +422,6 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	    }
 	}
     }
-  /* printf("infall = %lg, hotgas = %lg\n",infallingGas,Gal[centralgal].HotGas); */
+  if (Gal[centralgal].HotGas != Gal[centralgal].HotGas)
+    printf("infall = %lg, hotgas = %lg\n",infallingGas,Gal[centralgal].HotGas);
 }
