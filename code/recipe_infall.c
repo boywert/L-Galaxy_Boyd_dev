@@ -363,12 +363,10 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
       //transfer_gas(Gal[centralgal],"Ejected",1.,"Hot",1.,(M_infalltoHot/Gal[centralgal].EjectedMass));
 	 
 	}
-      else if (infallingGas < 0.)
+      else if (infallingGas < 0. && tot_mass > 0.)
 	{
 	  HGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].HotGas;
 	  ZGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].MetalsHotGas;
-      
-      
 	  Gal[centralgal].EjectedMass += min(Gal[centralgal].HotGas,HGMass_inter); 
 	  Gal[centralgal].MetalsEjectedMass += min(Gal[centralgal].MetalsHotGas,ZGMass_inter); 
 	  Gal[centralgal].MetalsHotGas -= min(Gal[centralgal].MetalsHotGas,ZGMass_inter);
@@ -419,9 +417,7 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	      Gal[centralgal].MetalsExcessMass += min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
 	      Gal[centralgal].MetalsEjectedMass -= min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
 	      Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
-	    }
-	   if (Gal[centralgal].HotGas != Gal[centralgal].HotGas)
-	    printf("infall = %lg, hotgas = %lg\n",infallingGas,Gal[centralgal].HotGas);
+	    } 
 	}
     }
 }
