@@ -333,9 +333,10 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
       if (infallingGas > 0.)
 	{
 	  Gal[centralgal].ExcessMass = max(Gal[centralgal].ExcessMass,infallingGas);
-      
-	  M_infalltoHot = (Gal[centralgal].HotGas/(Gal[centralgal].HotGas + Gal[centralgal].EjectedMass)) * infallingGas;
-      
+	  if(Gal[centralgal].HotGas > 0.)
+	    M_infalltoHot = (Gal[centralgal].HotGas/(Gal[centralgal].HotGas + Gal[centralgal].EjectedMass)) * infallingGas;
+	  else
+	    M_infalltoHot = infallingGas;
 	  if (Gal[centralgal].EjectedMass > 0.)
 	    {
 	      Gal[centralgal].MetalsEjectedMass += Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
@@ -422,5 +423,4 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	    }
 	}
     }
-  printf("hotgas = %lg\n", Gal[centralgal].HotGas);
 }
