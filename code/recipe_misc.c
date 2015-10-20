@@ -492,7 +492,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
       /* 			   fmet2 * (f1 * NPhotTables[metindex + 1][tabindex] + */
       /* 				    f2 * NPhotTables[metindex + 1][tabindex + 1]))); */
       if(PhotonsToAdd != PhotonsToAdd)
-	printf("Rank: %d x1 = %lg photon = %lg f1 = %lg metal = %lg gammatab = %lg\n",ThisTask,X1,PhotonsToAdd,f1,metalicity,NPhotTables[metindex][tabindex]);
+	printf("Rank: %d x1 = %lg photon = %lg f1 = %lg metal = %lg gammatab = %lg\n",ThisTask,X1,PhotonsToAdd,f1,metallicity,NPhotTables[metindex][tabindex]);
       Gal[p].ReionizePhot[outputbin] += PhotonsToAdd/STEPS;
    
 #endif // REIONIZEPHOTON
