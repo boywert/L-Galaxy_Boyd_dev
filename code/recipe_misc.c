@@ -650,7 +650,7 @@ double get_virial_radius(int halonr)
 
   /*get H for current z*/
   hubble_z = hubble_of_z(halonr);
-
+  printf("hubble_z = %lg\n",hubble_z);
   rhocrit = 3 * hubble_z * hubble_z / (8 * M_PI * G);
   fac = 1 / (200 * 4 * M_PI / 3.0 * rhocrit);
   return pow(get_virial_mass(halonr) * fac, 1.0 / 3);
