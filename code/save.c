@@ -144,8 +144,6 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
   o->DiskMass = g->DiskMass;
   o->BulgeMass = g->BulgeMass;
   o->HotGas = g->HotGas;
-  if(o->HotGas != o->HotGas)
-    printf("Hotgas = %lg\n",o->HotGas);
   o->BlackHoleMass = g->BlackHoleMass;
 #endif
 
