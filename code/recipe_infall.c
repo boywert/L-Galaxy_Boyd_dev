@@ -399,7 +399,8 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	  Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
 	} 
       }
+      if(Zfrac != Zfrac)
+	printf("zfrac = %lg\n",Zfrac);
     }
-  if(Zfrac != Zfrac)
-    printf("zfrac = %lg\n",Zfrac);
+
 }
