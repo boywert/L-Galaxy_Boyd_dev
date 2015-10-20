@@ -330,96 +330,76 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	}
       }
 
-      if (infallingGas > 0.)
-	{
-	  Gal[centralgal].ExcessMass = max(Gal[centralgal].ExcessMass,infallingGas);
-	  if(Gal[centralgal].HotGas > 0.)
-	    M_infalltoHot = (Gal[centralgal].HotGas/(Gal[centralgal].HotGas + Gal[centralgal].EjectedMass)) * infallingGas;
-	  else
-	    M_infalltoHot = infallingGas;
-	  if (Gal[centralgal].EjectedMass > 0.)
-	    {
-	      Gal[centralgal].MetalsEjectedMass += Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	      Gal[centralgal].MetalsExcessMass -= Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	      Gal[centralgal].EjectedMass += Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+      if (infallingGas > 0.) {
+	Gal[centralgal].ExcessMass = max(Gal[centralgal].ExcessMass,infallingGas);
+	if(Gal[centralgal].HotGas > 0.)
+	  M_infalltoHot = (Gal[centralgal].HotGas/(Gal[centralgal].HotGas + Gal[centralgal].EjectedMass)) * infallingGas;
+	else
+	  M_infalltoHot = infallingGas;
+	if (Gal[centralgal].EjectedMass > 0.){
+	  Gal[centralgal].MetalsEjectedMass += Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	  Gal[centralgal].MetalsExcessMass -= Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	  Gal[centralgal].EjectedMass += Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	      
+	  Gal[centralgal].ExcessMass -= Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	  Gal[centralgal].HotGas += M_infalltoHot;
+	  Gal[centralgal].MetalsHotGas += Gal[centralgal].MetalsEjectedMass * (M_infalltoHot/Gal[centralgal].EjectedMass);//infallingGas); //Gal[centralgal].EjectedMass);
+	  Gal[centralgal].MetalsEjectedMass -= Gal[centralgal].MetalsEjectedMass * (M_infalltoHot/Gal[centralgal].EjectedMass);//infallingGas);//Gal[centralgal].EjectedMass);
+	  Gal[centralgal].EjectedMass -= M_infalltoHot;//Gal[centralgal].EjectedMass * (M_infalltoHot/Gal[centralgal].EjectedMass);
+	}
+	else {
+	  Gal[centralgal].HotGas += Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	  Gal[centralgal].MetalsHotGas += Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	  Gal[centralgal].MetalsExcessMass -= Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	  Gal[centralgal].ExcessMass -= Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
+	}
 	  
-	      Gal[centralgal].ExcessMass -= Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	      Gal[centralgal].HotGas += M_infalltoHot;
-	      Gal[centralgal].MetalsHotGas += Gal[centralgal].MetalsEjectedMass * (M_infalltoHot/Gal[centralgal].EjectedMass);//infallingGas); //Gal[centralgal].EjectedMass);
-	      Gal[centralgal].MetalsEjectedMass -= Gal[centralgal].MetalsEjectedMass * (M_infalltoHot/Gal[centralgal].EjectedMass);//infallingGas);//Gal[centralgal].EjectedMass);
-	      Gal[centralgal].EjectedMass -= M_infalltoHot;//Gal[centralgal].EjectedMass * (M_infalltoHot/Gal[centralgal].EjectedMass);
-	    }
-      
-	  else
-	    {
-	      Gal[centralgal].HotGas += Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	      Gal[centralgal].MetalsHotGas += Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	      Gal[centralgal].MetalsExcessMass -= Gal[centralgal].MetalsExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	      Gal[centralgal].ExcessMass -= Gal[centralgal].ExcessMass * (infallingGas/Gal[centralgal].ExcessMass);
-	    }
-
-
-      //transfer_gas(Gal[centralgal],"Excess",1.,"Ejected",1.,(infallingGas/Gal[centralgal].ExcessMass));
-      //transfer_gas(Gal[centralgal],"Ejected",1.,"Hot",1.,(M_infalltoHot/Gal[centralgal].EjectedMass));
+	//transfer_gas(Gal[centralgal],"Excess",1.,"Ejected",1.,(infallingGas/Gal[centralgal].ExcessMass));
+	//transfer_gas(Gal[centralgal],"Ejected",1.,"Hot",1.,(M_infalltoHot/Gal[centralgal].EjectedMass));
 	 
+      }
+      else if (infallingGas < 0. && tot_mass > 0.) {
+	HGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].HotGas;
+	ZGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].MetalsHotGas;
+	Gal[centralgal].EjectedMass += min(Gal[centralgal].HotGas,HGMass_inter); 
+	Gal[centralgal].MetalsEjectedMass += min(Gal[centralgal].MetalsHotGas,ZGMass_inter); 
+	Gal[centralgal].MetalsHotGas -= min(Gal[centralgal].MetalsHotGas,ZGMass_inter);
+	Gal[centralgal].HotGas -= min(Gal[centralgal].HotGas,HGMass_inter);
+	  
+	Mass_diff = Gal[centralgal].EjectedMass + infallingGas;
+	
+	if (Mass_diff > 0.) {
+	  Gal[centralgal].ExcessMass += min(Gal[centralgal].EjectedMass,(- infallingGas));
+	  if (Gal[centralgal].EjectedMass > 0.)
+	    Zfrac = - (infallingGas/Gal[centralgal].EjectedMass);
+	  else
+	    Zfrac = 0.;  
+	  Gal[centralgal].MetalsExcessMass += min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
+	  Gal[centralgal].MetalsEjectedMass -= min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
+	  Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
 	}
-      else if (infallingGas < 0. && tot_mass > 0.)
-	{
-	  HGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].HotGas;
-	  ZGMass_inter = - (infallingGas/tot_mass)*Gal[centralgal].MetalsHotGas;
-	  Gal[centralgal].EjectedMass += min(Gal[centralgal].HotGas,HGMass_inter); 
-	  Gal[centralgal].MetalsEjectedMass += min(Gal[centralgal].MetalsHotGas,ZGMass_inter); 
-	  Gal[centralgal].MetalsHotGas -= min(Gal[centralgal].MetalsHotGas,ZGMass_inter);
-	  Gal[centralgal].HotGas -= min(Gal[centralgal].HotGas,HGMass_inter);
-	  
-	  Mass_diff = Gal[centralgal].EjectedMass + infallingGas;
-	  
-	  if (Mass_diff > 0.)
-	    {
-	      Gal[centralgal].ExcessMass += min(Gal[centralgal].EjectedMass,(- infallingGas));
-	      if (Gal[centralgal].EjectedMass > 0.)
-		{
-		  Zfrac = - (infallingGas/Gal[centralgal].EjectedMass);
-		}
-	      else
-		{
-		  Zfrac = 0.;
-		}
-	      Gal[centralgal].MetalsExcessMass += min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
-	      Gal[centralgal].MetalsEjectedMass -= min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
-	      Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
-	    }
-	  
-	  else if(Mass_diff < 0.)
-	    {
-	      Gal[centralgal].EjectedMass += min(Gal[centralgal].HotGas,(- Mass_diff)); 
-	      if (Gal[centralgal].MetalsHotGas > 0. && Gal[centralgal].HotGas > 0.0)
-		{
-		  ZfracHG = - (Mass_diff/Gal[centralgal].HotGas);
-		}
-	      else
-		{
-		  Zfrac = 0.;
-		}
-	      Gal[centralgal].MetalsEjectedMass += min(Gal[centralgal].MetalsHotGas,Gal[centralgal].MetalsHotGas*ZfracHG); 
-	      Gal[centralgal].MetalsHotGas -= min(Gal[centralgal].MetalsHotGas,Gal[centralgal].MetalsHotGas*ZfracHG);
-	      Gal[centralgal].HotGas -= min(Gal[centralgal].HotGas,(- Mass_diff));
+	else if(Mass_diff < 0.) {
+	  Gal[centralgal].EjectedMass += min(Gal[centralgal].HotGas,(- Mass_diff)); 
+	  if (Gal[centralgal].MetalsHotGas > 0. && Gal[centralgal].HotGas > 0.0)
+	    ZfracHG = - (Mass_diff/Gal[centralgal].HotGas);
+	  else
+	    Zfrac = 0.;
+	  Gal[centralgal].MetalsEjectedMass += min(Gal[centralgal].MetalsHotGas,Gal[centralgal].MetalsHotGas*ZfracHG); 
+	  Gal[centralgal].MetalsHotGas -= min(Gal[centralgal].MetalsHotGas,Gal[centralgal].MetalsHotGas*ZfracHG);
+	  Gal[centralgal].HotGas -= min(Gal[centralgal].HotGas,(- Mass_diff));
 
-	      Gal[centralgal].ExcessMass += min(Gal[centralgal].EjectedMass,(- infallingGas));
-	      if (Gal[centralgal].MetalsEjectedMass > 0.)
-		{
-		  Zfrac = - (Mass_diff/Gal[centralgal].EjectedMass);
-		}
-	      else
-		{
-		  Zfrac = 0.;
-		}
-	      Gal[centralgal].MetalsExcessMass += min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
-	      Gal[centralgal].MetalsEjectedMass -= min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
-	      Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
-	    } 
-	}
+	  Gal[centralgal].ExcessMass += min(Gal[centralgal].EjectedMass,(- infallingGas));
+	  if (Gal[centralgal].MetalsEjectedMass > 0.0 )
+	    Zfrac = - (Mass_diff/Gal[centralgal].EjectedMass);
+	  else
+	    Zfrac = 0.;
+	 
+	  Gal[centralgal].MetalsExcessMass += min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
+	  Gal[centralgal].MetalsEjectedMass -= min(Gal[centralgal].MetalsEjectedMass,(Zfrac*Gal[centralgal].MetalsEjectedMass));
+	  Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
+	} 
+      }
     }
-  if(Gal[centralgal].HotGas != Gal[centralgal].HotGas)
-    printf("infall = %lg hotgas = %lg\n", infallingGas, Gal[centralgal].HotGas);
+  if(Zfrac != Zfrac)
+    printf("zfrac = %lg\n",Zfrac);
 }
