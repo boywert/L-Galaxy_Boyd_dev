@@ -96,7 +96,7 @@ double get_metaldependent_cooling_rate(double logTemp, double logZ)
   double get_rate(int tab, double logTemp);
   double rate1, rate2, rate;
 
-
+  printf("logtemp = %lg logz = %lg\n",logTemp,logZ);
   if(logZ < metallicities[0])
     logZ = metallicities[0];
 
