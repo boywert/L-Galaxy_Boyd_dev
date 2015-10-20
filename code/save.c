@@ -517,9 +517,7 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
     }
 #ifdef REIONIZEPHOTON
   // printf("photon/baryons = %lg\n", g->ReionizePhot[n]/(g->HaloM_Crit200*1.e10*0.166/0.7*1.9891e30/1.672e-27));
-  o->NPhotReion = log10(g->ReionizePhot[n]);
-  if(o->Sfr!= o->Sfr)
-    printf("%lg\n",o->Sfr);
+  o->NPhotReion = log10(g->ReionizePhot[n]+1.);
 #endif 
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   o->Xfrac3d = g->Xfrac3d;
