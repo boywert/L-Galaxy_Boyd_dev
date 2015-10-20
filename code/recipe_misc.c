@@ -241,7 +241,7 @@ void init_galaxy(int p, int halonr)
   Gal[p].Vvir = get_virial_velocity(halonr);
   Gal[p].Mvir = get_virial_mass(halonr);
   Gal[p].Rvir = get_virial_radius(halonr);
-  printf("found vmax = 0, mass Vvir %f Mvir %f Rvir %f\n",Gal[p].Vvir, Gal[p].Mvir, Gal[p].Rvir); 
+  printf("vmax = %lg, mass Vvir %f Mvir %f Rvir %f\n",Gal[p].Vmax,Gal[p].Vvir, Gal[p].Mvir, Gal[p].Rvir); 
   
   Gal[p].MergeSat = 0.0;
   Gal[p].InfallSnap = Halo[halonr].SnapNum;
@@ -652,7 +652,7 @@ double get_virial_radius(int halonr)
   hubble_z = hubble_of_z(halonr);
 
   rhocrit = 3 * hubble_z * hubble_z / (8 * M_PI * G);
-  fac = 1 / (200 * 4 * M_PI / 3.0 * rhocrit); 
+  fac = 1 / (200 * 4 * M_PI / 3.0 * rhocrit);
   return pow(get_virial_mass(halonr) * fac, 1.0 / 3);
 }
 
