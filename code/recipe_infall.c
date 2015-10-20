@@ -390,10 +390,10 @@ void add_infall_to_hot(int centralgal, int ngal, double infallingGas) {
 	      Gal[centralgal].EjectedMass -= min(Gal[centralgal].EjectedMass,(- infallingGas));
 	    }
 	  
-	  else
+	  else if(Mass_diff < 0.)
 	    {
 	      Gal[centralgal].EjectedMass += min(Gal[centralgal].HotGas,(- Mass_diff)); 
-	      if (Gal[centralgal].MetalsHotGas > 0.)
+	      if (Gal[centralgal].MetalsHotGas > 0. && Gal[centralgal].HotGas > 0.0)
 		{
 		  ZfracHG = - (Mass_diff/Gal[centralgal].HotGas);
 		}
