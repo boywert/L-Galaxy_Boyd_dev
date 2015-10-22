@@ -330,7 +330,7 @@ void deal_with_galaxy_merger(int p, int merger_centralgal, int centralgal, doubl
     
   for(i = 0; i < MAXSNAPS; i++) 
     if(time - Age[i] >= 0.)
-      Gal[merger_centralgal].CumulativeSFR[i] += Gal[p].CumulativeSFR[mergesnap]
+      Gal[merger_centralgal].CumulativeSFR[i] += Gal[p].CumulativeSFR[mergesnap];
   
 #endif
   mass_checks("deal_with_galaxy_merger #2",p);

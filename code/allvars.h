@@ -541,7 +541,7 @@ struct GALAXY_OUTPUT
   float Xfrac3d;
 #endif
 #ifdef CUMULATIVESFR
-  float CumulativeSFR
+  float CumulativeSFR;
 #endif
   
 #ifdef INDIVIDUAL_ELEMENTS
