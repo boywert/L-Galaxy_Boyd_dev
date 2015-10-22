@@ -210,7 +210,7 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
   o->EjectedMass = CORRECTDBFLOAT(g->EjectedMass);
   //o->ExcessMass = CORRECTDBFLOAT(g->ExcessMass);
   o->ExcessMass = g->ExcessMass;
-  //o->BlackHoleGas = g->BlackHoleGas;
+  o->BlackHoleGas = g->BlackHoleGas;
 
   for(j = 0; j < 3; j++)
     {

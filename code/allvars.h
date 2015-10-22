@@ -540,7 +540,9 @@ struct GALAXY_OUTPUT
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   float Xfrac3d;
 #endif
-
+#ifdef CUMULATIVESFR
+  float CumulativeSFR
+#endif
   
 #ifdef INDIVIDUAL_ELEMENTS
   struct elements sfh_ElementsDiskMass[SFH_NBIN];
@@ -839,7 +841,10 @@ struct GALAXY			/* Galaxy data */
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   float Xfrac3d;
 #endif
-  
+
+#ifdef CUMULATIVESFR
+  double CumulativeSFR[MAXSNAPS];
+#endif
 } *Gal, *HaloGal;
 
 

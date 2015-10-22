@@ -457,6 +457,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 	    metindex = 4;		// reset met index to use only solar metallicity
      
       age = time - NumToTime(ListOutputSnaps[outputbin]);
+      Gal[p].Lum[j][outputbin] += LuminosityToAdd
       /* For rest-frame, there is no K-correction on magnitudes,
        * hence the 0 in LumTables[j][metindex][0][tabindex] */
       for(j = 0; j < NMAG; j++)
@@ -482,7 +483,7 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
 	        Gal[p].YLum[j][outputbin] += LuminosityToAdd;
         }
 #ifdef REIONIZEPHOTON
-
+      
       
       PhotonsToAdd = X1 * (fmet1 * (f1 * NPhotTables[metindex][tabindex] +
 				    f2 * NPhotTables[metindex][tabindex + 1]) +
@@ -492,10 +493,9 @@ void add_to_luminosities(int p, double mstars, double time, double metallicity)
       /* 				    f2 * NPhotTables[metindex][tabindex + 1]) + */
       /* 			   fmet2 * (f1 * NPhotTables[metindex + 1][tabindex] + */
       /* 				    f2 * NPhotTables[metindex + 1][tabindex + 1]))); */
-      if(PhotonsToAdd != PhotonsToAdd)
-	printf("Rank: %d x1 = %lg photon = %lg f1 = %lg metal = %lg gammatab = %lg\n",ThisTask,X1,PhotonsToAdd,f1,metallicity,NPhotTables[metindex][tabindex]);
-      Gal[p].ReionizePhot[outputbin] += PhotonsToAdd/STEPS;
-   
+      /* if(PhotonsToAdd != PhotonsToAdd) */
+      /* 	printf("Rank: %d x1 = %lg photon = %lg f1 = %lg metal = %lg gammatab = %lg\n",ThisTask,X1,PhotonsToAdd,f1,metallicity,NPhotTables[metindex][tabindex]); */
+      Gal[p].ReionizePhot[outputbin] += PhotonsToAdd;
 #endif // REIONIZEPHOTON
     }
 #endif //OUTPUT_REST_MAGS

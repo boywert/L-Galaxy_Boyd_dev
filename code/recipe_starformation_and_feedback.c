@@ -157,7 +157,15 @@ void starformation(int p, int centralgal, double time, double dt, int nstep)
     	if (stars > 0.)
     		SN_feedback(p, centralgal, stars, "ColdGas");
   #endif
-
+	
+#ifdef CUMULATIVESFR
+  int i;
+  for(i=0;i<MAXSNAPS;i++) {
+    if(time-Age[i] >= 0.0) {
+      Gal[p].CumulativeSFR[i] += stars;
+    }
+  }
+#endif
 
 #ifdef COMPUTE_SPECPHOT_PROPERTIES
 #ifndef POST_PROCESS_MAGS

@@ -317,9 +317,22 @@ void deal_with_galaxy_merger(int p, int merger_centralgal, int centralgal, doubl
      from satellite disk to central bulge). In a major merger (dealt at the
      make_bulge_from_burst) the disk of the central (now made up of central and
      satellite will be moved to the bulge). Any new stars formed will go to the bulge */
-
+  
   add_galaxies_together(merger_centralgal, p);
-
+#ifdef CUMULATIVESFR
+  int mergesnap;
+  int i;
+  for(i=0;i<MAXSNAPS;i++)
+    if(time - Age[i] >= 0) {
+      mergesnap = i;
+      break;
+    }
+    
+  for(i = 0; i < MAXSNAPS; i++) 
+    if(time - Age[i] >= 0.)
+      Gal[merger_centralgal].CumulativeSFR[i] += Gal[p].CumulativeSFR[mergesnap]
+  
+#endif
   mass_checks("deal_with_galaxy_merger #2",p);
   mass_checks("deal_with_galaxy_merger #2",merger_centralgal);
   mass_checks("deal_with_galaxy_merger #2",centralgal);
@@ -673,7 +686,11 @@ double collisional_starburst_recipe(double mass_ratio, int merger_centralgal, in
         mstars = Gal[merger_centralgal].ColdGas;
 #endif
 
-
+#ifdef CUMULATIVESFR
+  int i;
+  for(i=Gal[merger_centralgal].SnapNum;i<MAXSNAPS;i++) 
+    Gal[merger_centralgal].CumulativeSFR[i] += mstars;
+#endif
 
   /*  update the star formation rate */
 #ifdef SAVE_MEMORY
