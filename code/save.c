@@ -522,6 +522,9 @@ void prepare_galaxy_for_output(int n, struct GALAXY *g, struct GALAXY_OUTPUT *o)
 #if defined(READXFRAC) || defined(WITHRADIATIVETRANSFER)
   o->Xfrac3d = g->Xfrac3d;
 #endif
+#ifdef CUMULATIVESFR
+  o->CumulativeSFR = g->CumulativeSFR[ListOutputSnaps[n]];
+#endif
 
 #endif //OUTPUT_REST_MAGS
 #ifdef OUTPUT_OBS_MAGS
