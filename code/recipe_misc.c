@@ -624,6 +624,7 @@ double get_virial_mass(int halonr)
 
 double get_virial_velocity(int halonr)
 {
+  printf("G = %g\n",G);
   return sqrt(G * get_virial_mass(halonr) / get_virial_radius(halonr));
 }
 
