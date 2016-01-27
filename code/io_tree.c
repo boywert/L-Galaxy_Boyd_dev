@@ -175,13 +175,12 @@ void load_tree_hdf5(int filenr) {
     TreeNgals[i] = TreeNgals[i - 1] + Ntrees;
   if(Ntrees)
     TreeFirstHalo[0] = 0;
-  for(i = 1; i < Ntrees; i++) {
+  for(i = 1; i < Ntrees; i++) 
     TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
 }
 #endif //HDF5_INPUT
   
-void load_tree_table(int filenr)
-{
+void load_tree_table(int filenr) {
   int i,j, n, totNHalos, SnapShotInFileName;
   char buf[1000];
 #ifdef READXFRAC
