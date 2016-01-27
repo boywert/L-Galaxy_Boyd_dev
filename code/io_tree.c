@@ -114,6 +114,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   
   inttype = H5Tcopy (H5T_STD_I32LE);
   floattype = H5Tcopy (H5T_IEEE_F32LE);
+  doubletype = H5Tcopy (H5T_IEEE_F64LE);
   float3type = H5Tarray_create (H5T_IEEE_F32LE, 1, dim3);
   longtype = H5Tcopy (H5T_STD_I64LE);
   
@@ -160,11 +161,38 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   space = H5Dget_space (dset);
   ndims = H5Sget_simple_extent_dims (space, dims, NULL);
 
-  Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * (*totNHalos));
-  
+  Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * (*totNHalos));  
   status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_Data);
-  H5Dclose(dset);
 
+#ifdef LOADIDS
+  halo_ids_datatype = H5Tcreate (H5T_COMPOUND, sizeof (struct halo_ids_data));
+  status = H5Tinsert (halo_ids_datatype, "HaloID", HOFFSET (struct halo_ids_data, HaloID),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "FileTreeNr", HOFFSET (struct halo_ids_data, FileTreeNr),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "FirstProgenitorID", HOFFSET (struct halo_ids_data, FirstProgenitor),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "LastProgenitorID", HOFFSET (struct halo_ids_data, LastProgenitor),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "NextProgenitorID", HOFFSET (struct halo_ids_data, NextProgenitor),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "DescendantID", HOFFSET (struct halo_ids_data, Descendant),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "FirstHaloInFOFgroupID", HOFFSET (struct halo_ids_data, FirstHaloInFOFgroup),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "NextHaloInFOFgroupID", HOFFSET (struct halo_ids_data, NextHaloInFOFgroup),
+  		      longtype);
+  status = H5Tinsert (halo_ids_datatype, "Redshift", HOFFSET (struct halo_ids_data, Redshift),
+  		      doubletype);
+  status = H5Tinsert (halo_ids_datatype, "", HOFFSET (struct halo_ids_data, PeanoKey),
+  		      inttype);
+  status = H5Tinsert (halo_ids_datatype, "", HOFFSET (struct halo_ids_data, dummy),
+  		      inttype);
+  HaloIDs_Data = mymalloc("HaloIDs_Data", sizeof(struct halo_ids_data) * (*totNHalos));  
+  status = H5Dread (dset, halo_ids_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, HaloIDs_Data);
+#endif
+  H5Dclose(dset);
+  
   dset = H5Dopen (file, "/MergerTrees/NHalosInTree", H5P_DEFAULT);
   space = H5Dget_space (dset);
   ndims = H5Sget_simple_extent_dims (space, dims, NULL);
@@ -178,6 +206,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     TreeFirstHalo[0] = 0;
   for(i = 1; i < Ntrees; i++) 
     TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
+
 }
 #endif //HDF5_INPUT
   
@@ -294,7 +323,7 @@ void load_tree_table(int filenr) {
       printf("\nTask %d done loading tree_dbids_%d\n", ThisTask, filenr);
 #endif // PARALLEL
 
-#endif // LOADID
+#endif // LOADIDS
 #endif // PRELOAD_TREES
 #else // HDF5_INPUT
       printf("using HDF5_INPUT\n");
