@@ -94,7 +94,6 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   native_type=H5Tget_native_type(dtype, H5T_DIR_DEFAULT);
   
   if (class == H5T_COMPOUND) {
-    printf ("Dataset Class - H5T_COMPOUND:\n");
     nmembs = H5Tget_nmembers(native_type);
     for (i=0; i < nmembs ; i++) {
       memb_id = H5Tget_member_type(native_type, i);
