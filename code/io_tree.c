@@ -103,7 +103,8 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	printf ("  Member %i:  Type is H5T_IEEE_F32LE\n", i);
       else if  (H5Tequal (memb_id, H5T_STD_I64LE))
 	printf ("  Member %i:  Type is  H5T_STD_I64LE\n", i);
-
+      else if  (H5Tequal (memb_id, H5T_IEEE_F64LE))
+	printf ("  Member %i:  Type is  H5T_IEEE_F64LE\n", i);
       memb_cls = H5Tget_member_class (native_type, i);
       if (memb_cls == H5T_ARRAY) {
 	printf ("  Member %i:  Type is  H5T_ARRAY\n", i);
