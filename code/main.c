@@ -177,7 +177,6 @@ int main(int argc, char **argv)
 
 #endif //MCMC
       free_tree_table();
-      printf("done free table\n");
       //if temporary directory given as argument
        if(argc == 3)
          {

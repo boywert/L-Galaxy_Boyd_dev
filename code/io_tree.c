@@ -61,8 +61,9 @@
  *  (TotSnaps * Ntrees); OffsetIDs_snaptree (TotSnaps * Ntrees);
  *  CountIDs_halo - Number of Ids per halo (NtotHalos); OffsetIDs_halo
  *  (int). */
+
 #ifdef HDF5_INPUT
-void load_tree_hdf5(int filenr) {
+void load_tree_hdf5(int filenr, int *totNHalos) {
   char buf[2048];
   hid_t       file, vehicletype, colortype, sensortype, sensorstype, loctype,
     strtype,inttype,floattype,float3type,longtype, halo_datatype, rsensortype, rsensorstype, space, dset,
@@ -74,12 +75,11 @@ void load_tree_hdf5(int filenr) {
   hsize_t dims[1] = {0}; 
   hsize_t dim3[1] = {3};
   int i,ndims,nmembs;
-  int totNHalos;
   sprintf(buf, "%s/treedata/trees_%d.hdf5", SimulationDir, filenr);
   file = H5Fopen (buf, H5F_ACC_RDONLY, H5P_DEFAULT);
   merger_t = H5Gopen (file, "/MergerTrees", H5P_DEFAULT);
   attr = H5Aopen(merger_t, "NHalos", H5P_DEFAULT);
-  status  = H5Aread(attr, H5T_NATIVE_INT, &totNHalos);
+  status  = H5Aread(attr, H5T_NATIVE_INT, totNHalos);
   H5Aclose(attr);
   attr = H5Aopen(merger_t, "NTrees", H5P_DEFAULT);
   status  = H5Aread(attr, H5T_NATIVE_INT, &Ntrees);
@@ -160,7 +160,7 @@ void load_tree_hdf5(int filenr) {
   space = H5Dget_space (dset);
   ndims = H5Sget_simple_extent_dims (space, dims, NULL);
 
-  Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
+  Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * (*totNHalos));
   
   status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_Data);
   H5Dclose(dset);
@@ -204,111 +204,107 @@ void load_tree_table(int filenr) {
 #else
   //if def MCMC and PARALLEL only task 0 reads the representative treefile, then broadcasts
   if(ThisTask==0)
-  {
-  	 printf("\nTask %d reading trees_%d\n", ThisTask, filenr);
+    {
+      printf("\nTask %d reading trees_%d\n", ThisTask, filenr);
 #endif
 #endif
 
-  SnapShotInFileName=LastDarkMatterSnapShot;
+      SnapShotInFileName=LastDarkMatterSnapShot;
 
 #ifdef MCMC
 #ifdef MR_PLUS_MRII
-  SnapShotInFileName=LastDarkMatterSnapShot_MRII;
+      SnapShotInFileName=LastDarkMatterSnapShot_MRII;
 #endif
 #endif
 
 #ifdef LOADIDS
 #ifndef MRII
-  sprintf(buf, "%s/treedata/tree_dbids_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
+      sprintf(buf, "%s/treedata/tree_dbids_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #else
-  sprintf(buf, "%s/treedata/tree_sf1_dbids_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
+      sprintf(buf, "%s/treedata/tree_sf1_dbids_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #endif
-  if(!(treedbids_file = fopen(buf, "r")))
-    {
-      char sbuf[1000];
-      sprintf(sbuf, "can't open file `%s'\n", buf);
-      terminate(sbuf);
-    }
+      if(!(treedbids_file = fopen(buf, "r")))
+	{
+	  char sbuf[1000];
+	  sprintf(sbuf, "can't open file `%s'\n", buf);
+	  terminate(sbuf);
+	}
 #endif
 
 #ifndef HDF5_INPUT
-  printf("no HDF5_INPUT\n");
+      printf("no HDF5_INPUT\n");
 #ifndef MRII
-  sprintf(buf, "%s/treedata/trees_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
+      sprintf(buf, "%s/treedata/trees_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #else
-  sprintf(buf, "%s/treedata/trees_sf1_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
+      sprintf(buf, "%s/treedata/trees_sf1_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #endif
 
 
-  if(!(tree_file = fopen(buf, "r")))
-    {
-      char sbuf[1000];
-      sprintf(sbuf, "can't open file place `%s'\n", buf);
-      terminate(sbuf);
-    }
+      if(!(tree_file = fopen(buf, "r")))
+	{
+	  char sbuf[1000];
+	  sprintf(sbuf, "can't open file place `%s'\n", buf);
+	  terminate(sbuf);
+	}
 
-  //read header on trees_** file
-  myfread(&Ntrees, 1, sizeof(int), tree_file);
-  myfread(&totNHalos, 1, sizeof(int), tree_file);
+      //read header on trees_** file
+      myfread(&Ntrees, 1, sizeof(int), tree_file);
+      myfread(&totNHalos, 1, sizeof(int), tree_file);
 
-  TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
-  TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
-  TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
-  for(n = 1; n < NOUT; n++)
-    TreeNgals[n] = TreeNgals[n - 1] + Ntrees;
+      TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
+      TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
+      TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
+      for(n = 1; n < NOUT; n++)
+	TreeNgals[n] = TreeNgals[n - 1] + Ntrees;
 
+      myfread(TreeNHalos, Ntrees, sizeof(int), tree_file);
 
-
-  myfread(TreeNHalos, Ntrees, sizeof(int), tree_file);
-
-  if(Ntrees)
-    TreeFirstHalo[0] = 0;
-  for(i = 1; i < Ntrees; i++) {
-    TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
-  }
+      if(Ntrees)
+	TreeFirstHalo[0] = 0;
+      for(i = 1; i < Ntrees; i++) {
+	TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
+      }
 
 #ifdef PRELOAD_TREES
-  Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
-  myfseek(tree_file, sizeof(int) * (2 + Ntrees), SEEK_SET);
-  myfread(Halo_Data, totNHalos, sizeof(struct halo_data), tree_file);
-  /* for(i=0;i<totNHalos;i++) { */
-  /*     printf("ID:%d\n",i); */
-  /*     printf("\t Treenr: %d\n",Halo_Data[i].) */
-  /*     printf("\t FirstProgenitor: %d\n",Halo_Data[i].FirstProgenitor); */
-  /*     printf("\t NextProgenitor: %d\n",Halo_Data[i].NextProgenitor); */
-  /*     printf("\t Vmax: %0.8f\n",Halo_Data[i].Vmax); */
-  /*     printf("\t M200b: %0.8f\n",Halo_Data[i].M_Mean200); */
-  /*     printf("\t M200c: %0.8f\n",Halo_Data[i].M_Crit200); */
-  /*     printf("\t M_tophap: %0.8f\n",Halo_Data[i].M_TopHat); */
-  /* } */
+      Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
+      myfseek(tree_file, sizeof(int) * (2 + Ntrees), SEEK_SET);
+      myfread(Halo_Data, totNHalos, sizeof(struct halo_data), tree_file);
+      /* for(i=0;i<totNHalos;i++) { */
+      /*     printf("ID:%d\n",i); */
+      /*     printf("\t Treenr: %d\n",Halo_Data[i].) */
+      /*     printf("\t FirstProgenitor: %d\n",Halo_Data[i].FirstProgenitor); */
+      /*     printf("\t NextProgenitor: %d\n",Halo_Data[i].NextProgenitor); */
+      /*     printf("\t Vmax: %0.8f\n",Halo_Data[i].Vmax); */
+      /*     printf("\t M200b: %0.8f\n",Halo_Data[i].M_Mean200); */
+      /*     printf("\t M200c: %0.8f\n",Halo_Data[i].M_Crit200); */
+      /*     printf("\t M_tophap: %0.8f\n",Halo_Data[i].M_TopHat); */
+      /* } */
 
 #ifdef PARALLEL
-  printf("\nTask %d done loading trees_%d\n", ThisTask, filenr);
+      printf("\nTask %d done loading trees_%d\n", ThisTask, filenr);
 #endif
 
 #ifdef LOADIDS
-  HaloIDs_Data = mymalloc("HaloIDs_Data", sizeof(struct halo_ids_data) * totNHalos);
-  myfseek(treedbids_file, 0, SEEK_SET);
-  myfread(HaloIDs_Data, totNHalos, sizeof(struct halo_ids_data), treedbids_file);
-  //for(i=0;i<totNHalos;i++)
-  //	printf("id=%lld\n",HaloIDs_Data[i].FirstHaloInFOFgroup);
+      HaloIDs_Data = mymalloc("HaloIDs_Data", sizeof(struct halo_ids_data) * totNHalos);
+      myfseek(treedbids_file, 0, SEEK_SET);
+      myfread(HaloIDs_Data, totNHalos, sizeof(struct halo_ids_data), treedbids_file);
+      //for(i=0;i<totNHalos;i++)
+      //	printf("id=%lld\n",HaloIDs_Data[i].FirstHaloInFOFgroup);
 #ifdef PARALLEL
-  printf("\nTask %d done loading tree_dbids_%d\n", ThisTask, filenr);
+      printf("\nTask %d done loading tree_dbids_%d\n", ThisTask, filenr);
 #endif // PARALLEL
 
 #endif // LOADID
 #endif // PRELOAD_TREES
 #else // HDF5_INPUT
-  printf("using HDF5_INPUT\n");
-  load_tree_hdf5(filenr);
+      printf("using HDF5_INPUT\n");
+      load_tree_hdf5(filenr);
 #endif // HDF5_INPUT
 
-
-
-  //if MCMC is turned only Task 0 reads the file and then broadcasts
+      //if MCMC is turned only Task 0 reads the file and then broadcasts
 #ifdef PARALLEL
 #ifdef MCMC
-  } // end if ThisTask==0
+    } // end if ThisTask==0
 
   MPI_Barrier(MPI_COMM_WORLD);
 
@@ -316,27 +312,27 @@ void load_tree_table(int filenr) {
   MPI_Bcast(&totNHalos,sizeof(int), MPI_BYTE, 0, MPI_COMM_WORLD);
 
   if(ThisTask>0)
-  	TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
+    TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
 
   MPI_Bcast(TreeNHalos,sizeof(int)*Ntrees, MPI_BYTE, 0, MPI_COMM_WORLD);
 
   if(ThisTask>0)
-  {
-  	TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
-  	for(n = 1; n < NOUT; n++)
-  		TreeNgals[n] = TreeNgals[n - 1] + Ntrees;
+    {
+      TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
+      for(n = 1; n < NOUT; n++)
+	TreeNgals[n] = TreeNgals[n - 1] + Ntrees;
 
-  	TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
-  	if(Ntrees)
-  		TreeFirstHalo[0] = 0;
-    /*Define a variable containing the number you have to jump to
-     * get from one firshalo to the next. */
-  	for(i = 1; i < Ntrees; i++)
-  		TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
+      TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
+      if(Ntrees)
+	TreeFirstHalo[0] = 0;
+      /*Define a variable containing the number you have to jump to
+       * get from one firshalo to the next. */
+      for(i = 1; i < Ntrees; i++)
+	TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
 
-  	Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
-  	HaloIDs_Data = mymalloc("HaloIDs_Data", sizeof(struct halo_ids_data) * totNHalos);
-  }
+      Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
+      HaloIDs_Data = mymalloc("HaloIDs_Data", sizeof(struct halo_ids_data) * totNHalos);
+    }
 
   MPI_Bcast(HaloIDs_Data,totNHalos* sizeof(struct halo_ids_data), MPI_BYTE, 0, MPI_COMM_WORLD);
 
@@ -346,20 +342,20 @@ void load_tree_table(int filenr) {
 
   //MPI_BCast has a limit of 2Gb so everything needs to be passed in smaller chunks
   for(ii=0;ii<Nmessages;ii++)
-  {
-  	//if next chunk is outside of array size, just pass whats left and then exit the loop
-   	if((ii+1)*HaloChunks>totNHalos)
+    {
+      //if next chunk is outside of array size, just pass whats left and then exit the loop
+      if((ii+1)*HaloChunks>totNHalos)
    	{
-   		MPI_Bcast(&Halo_Data[ii*HaloChunks],bytes-ii*HaloChunks* sizeof(struct halo_data), MPI_BYTE, 0, MPI_COMM_WORLD);
-   		break;
+	  MPI_Bcast(&Halo_Data[ii*HaloChunks],bytes-ii*HaloChunks* sizeof(struct halo_data), MPI_BYTE, 0, MPI_COMM_WORLD);
+	  break;
    	}
-   	else
-   		MPI_Bcast(&Halo_Data[ii*HaloChunks],HaloChunks* sizeof(struct halo_data), MPI_BYTE, 0, MPI_COMM_WORLD);
-   }
+      else
+	MPI_Bcast(&Halo_Data[ii*HaloChunks],HaloChunks* sizeof(struct halo_data), MPI_BYTE, 0, MPI_COMM_WORLD);
+    }
 
 
   if(ThisTask==0)
-  	printf("all tree data has now been broadcasted\n");
+    printf("all tree data has now been broadcasted\n");
 #endif //MCMC
 #endif //PARALLEL
 
@@ -449,16 +445,17 @@ void free_tree_table(void)
 #ifdef UPDATETYPETWO
   myfree(TreeAuxData);
   /*myfree(TreeAuxVel);
-  myfree(TreeAuxPos);
-  myfree(TreeAuxIds);
-  myfree(TreeAuxHeader);*/
+    myfree(TreeAuxPos);
+    myfree(TreeAuxIds);
+    myfree(TreeAuxHeader);*/
 #endif
-
+#ifndef HDF5_INPUT
 #ifdef LOADIDS
   fclose(treedbids_file);
 #endif
 
   fclose(tree_file);
+#endif
 }
 
 
@@ -495,7 +492,7 @@ void load_tree(int nr)
 #ifdef PRELOAD_TREES
   Halo = Halo_Data + TreeFirstHalo[nr];
   /*for(i=0;i<TreeNHalos[nr];i++)
-  	printf("vel=%f\n",Halo[i].Vel[1]);*/
+    printf("vel=%f\n",Halo[i].Vel[1]);*/
 #ifdef LOADIDS
   HaloIDs = HaloIDs_Data + TreeFirstHalo[nr];
 #endif
