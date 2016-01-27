@@ -64,7 +64,8 @@
 
 #ifdef HDF5_INPUT
 void load_tree_hdf5(int filenr, int *totNHalos) {
-  char buf[2048];
+  char buf[2048], memb_name[1000];
+  
   hid_t       file, vehicletype, colortype, sensortype, sensorstype, loctype,
     strtype,inttype,floattype,doubletype,float3type,longtype, halo_datatype, halo_ids_datatype, rsensortype, rsensorstype, space, dset,
     group, dtype, memb_id,native_type, stid;
@@ -97,6 +98,8 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     nmembs = H5Tget_nmembers(native_type);
     for (i=0; i < nmembs ; i++) {
       memb_id = H5Tget_member_type(native_type, i);
+      memb_name = H5Tget_member_name( native_type, i);
+      printf("Member: %s\n",memb_name);
       if (H5Tequal (memb_id, H5T_STD_I32LE))
 	printf ("  Member %i:  Type is H5T_STD_I32LE\n", i);
       else if (H5Tequal (memb_id, H5T_IEEE_F32LE))
