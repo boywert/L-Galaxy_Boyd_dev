@@ -61,8 +61,6 @@
  *  CountIDs_halo - Number of Ids per halo (NtotHalos); OffsetIDs_halo
  *  (int). */
 #ifdef HDF5_INPUT
-#ifndef PRELOAD_TREES
-#endif
 void load_tree_hdf5(int filenr) {
   char buf[2048];
   hid_t       file, vehicletype, colortype, sensortype, sensorstype, loctype,
@@ -233,7 +231,6 @@ void load_tree_table(int filenr)
 #endif
 
 #ifndef HDF5_INPUT
-
 #ifndef MRII
   sprintf(buf, "%s/treedata/trees_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #else
@@ -264,8 +261,6 @@ void load_tree_table(int filenr)
 
   if(Ntrees)
     TreeFirstHalo[0] = 0;
-  /*Define a variable containing the number you have to jump to
-   * get from one firshalo to the next. */
   for(i = 1; i < Ntrees; i++) {
     TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
   }
@@ -284,9 +279,6 @@ void load_tree_table(int filenr)
   /*     printf("\t M200c: %0.8f\n",Halo_Data[i].M_Crit200); */
   /*     printf("\t M_tophap: %0.8f\n",Halo_Data[i].M_TopHat); */
   /* } */
-#else // HDF5_INPUT
-  load_tree_hdf5(filenr);
-#endif // HDF5_INPUT
 
 #ifdef PARALLEL
   printf("\nTask %d done loading trees_%d\n", ThisTask, filenr);
@@ -300,9 +292,17 @@ void load_tree_table(int filenr)
   //	printf("id=%lld\n",HaloIDs_Data[i].FirstHaloInFOFgroup);
 #ifdef PARALLEL
   printf("\nTask %d done loading tree_dbids_%d\n", ThisTask, filenr);
-#endif
+#endif // PARALLEL
+
 #endif // LOADID
+
 #endif // PRELOAD_TREES
+
+#else // HDF5_INPUT
+  load_tree_hdf5(filenr);
+#endif // HDF5_INPUT
+
+
 
   //if MCMC is turned only Task 0 reads the file and then broadcasts
 #ifdef PARALLEL
@@ -359,8 +359,10 @@ void load_tree_table(int filenr)
 
   if(ThisTask==0)
   	printf("all tree data has now been broadcasted\n");
-#endif
-#endif
+#endif //MCMC
+#endif //PARALLEL
+
+  
 #ifdef READXFRAC
   Xfrac_Data = mymalloc("Xfrac_Data", sizeof(float) * totNHalos);
   memset(Xfrac_Data, 10.0, sizeof(float) * totNHalos);
