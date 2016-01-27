@@ -9,6 +9,9 @@
 
 #include "allvars.h"
 #include "proto.h"
+#ifdef HDF5_INPUT
+#include "hdf5.h"
+#endif
 
 #ifdef PARALLEL
 #include <mpi.h>
@@ -57,6 +60,127 @@
  *  (TotSnaps * Ntrees); OffsetIDs_snaptree (TotSnaps * Ntrees);
  *  CountIDs_halo - Number of Ids per halo (NtotHalos); OffsetIDs_halo
  *  (int). */
+#ifdef HDF5_INPUT
+#ifndef PRELOAD_TREES
+#endif
+void load_tree_hdf5(int filenr) {
+  char buf[2048];
+  hid_t       file, vehicletype, colortype, sensortype, sensorstype, loctype,
+    strtype,inttype,floattype,float3type,longtype, halo_datatype, rsensortype, rsensorstype, space, dset,
+    group, dtype, memb_id,native_type, stid;
+  hid_t merger_t,attr;
+  H5T_class_t  memb_cls, class;
+  herr_t      status;
+  size_t size;
+  hsize_t dims[1] = {0}; 
+  hsize_t dim3[1] = {3};
+  int i,ndims,nmembs;
+  
+  sprintf(buf, "%s/treedata/trees_%d.hdf5", SimulationDir, SnapShotInFileName, filenr);
+  file = H5Fopen (buf, H5F_ACC_RDONLY, H5P_DEFAULT);
+  merger_t = H5Gopen (file, "/MergerTrees", H5P_DEFAULT);
+  attr = H5Aopen(merger_t, "NHalos", H5P_DEFAULT);
+  status  = H5Aread(attr, H5T_NATIVE_INT, &totNHalos);
+  H5Aclose(attr);
+  attr = H5Aopen(merger_t, "NTrees", H5P_DEFAULT);
+  status  = H5Aread(attr, H5T_NATIVE_INT, &Ntrees);
+  H5Aclose(attr);
+  dset = H5Dopen (file, "/MergerTrees/Halo", H5P_DEFAULT);
+  dtype = H5Dget_type(dset);
+  class = H5Tget_class (dtype);
+  native_type=H5Tget_native_type(dtype, H5T_DIR_DEFAULT);
+  
+  if (class == H5T_COMPOUND) {
+    printf ("Dataset Class - H5T_COMPOUND:\n");
+    nmembs = H5Tget_nmembers(native_type);
+    for (i=0; i < nmembs ; i++) {
+      memb_id = H5Tget_member_type(native_type, i);
+      if (H5Tequal (memb_id, H5T_STD_I32LE))
+	printf ("  Member %i:  Type is H5T_STD_I32LE\n", i);
+      else if (H5Tequal (memb_id, H5T_IEEE_F32LE))
+	printf ("  Member %i:  Type is H5T_IEEE_F32LE\n", i);
+      else if  (H5Tequal (memb_id, H5T_STD_I64LE))
+	printf ("  Member %i:  Type is  H5T_STD_I64LE\n", i);
+
+      memb_cls = H5Tget_member_class (native_type, i);
+      if (memb_cls == H5T_ARRAY) {
+	printf ("  Member %i:  Type is  H5T_ARRAY\n", i);
+      }
+      status = H5Tclose(memb_id);
+    }
+  }
+  
+  inttype = H5Tcopy (H5T_STD_I32LE);
+  floattype = H5Tcopy (H5T_IEEE_F32LE);
+  float3type = H5Tarray_create (H5T_IEEE_F32LE, 1, dim3);
+  longtype = H5Tcopy (H5T_STD_I64LE);
+  
+  halo_datatype = H5Tcreate (H5T_COMPOUND, sizeof (struct halo_data));
+  status = H5Tinsert (halo_datatype, "Descendant", HOFFSET (struct halo_data, Descendant),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "FirstProgenitor", HOFFSET (struct halo_data, FirstProgenitor),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "NextProgenitor", HOFFSET (struct halo_data, NextProgenitor),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "FirstHaloInFOFgroup", HOFFSET (struct halo_data, FirstHaloInFOFgroup),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "NextHaloInFOFgroup", HOFFSET (struct halo_data, NextHaloInFOFgroup),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "Len", HOFFSET (struct halo_data, Len),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "M_Mean200", HOFFSET (struct halo_data, M_Mean200),
+  		      floattype);
+  status = H5Tinsert (halo_datatype, "M_Crit200", HOFFSET (struct halo_data, M_Crit200),
+  		      floattype);
+  status = H5Tinsert (halo_datatype, "M_TopHat", HOFFSET (struct halo_data, M_TopHat),
+  		      floattype);
+  status = H5Tinsert (halo_datatype, "Pos", HOFFSET (struct halo_data, Pos),
+  		      float3type);
+  status = H5Tinsert (halo_datatype, "Vel", HOFFSET (struct halo_data, Vel),
+  		      float3type);
+  status = H5Tinsert (halo_datatype, "VelDisp", HOFFSET (struct halo_data, VelDisp),
+  		      floattype);
+  status = H5Tinsert (halo_datatype, "Vmax", HOFFSET (struct halo_data, Vmax),
+  		      floattype);
+  status = H5Tinsert (halo_datatype, "Spin", HOFFSET (struct halo_data, Spin),
+  		      float3type);
+  status = H5Tinsert (halo_datatype, "MostBoundID", HOFFSET (struct halo_data, MostBoundID),
+  		      longtype);
+  status = H5Tinsert (halo_datatype, "SnapNum", HOFFSET (struct halo_data, SnapNum),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "FileNr", HOFFSET (struct halo_data, FileNr),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "SubhaloIndex", HOFFSET (struct halo_data, SubhaloIndex),
+  		      inttype);
+  status = H5Tinsert (halo_datatype, "SubHalfMass", HOFFSET (struct halo_data, SubHalfMass),
+  		      inttype);
+  
+  space = H5Dget_space (dset);
+  ndims = H5Sget_simple_extent_dims (space, dims, NULL);
+  Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
+  status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_data);
+  H5Dclose(dset);
+
+  dset = H5Dopen (file, "/MergerTrees/NHalosInTree", H5P_DEFAULT);
+  space = H5Dget_space (dset);
+  ndims = H5Sget_simple_extent_dims (space, dims, NULL);
+
+  TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
+  TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
+  TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
+
+  status = H5Dread (dset, H5T_STD_I32LE, H5S_ALL, H5S_ALL, H5P_DEFAULT, TreeNHalos);
+  H5Dclose(dset);
+
+  for(i = 1; i < NOUT; i++)
+    TreeNgals[n] = TreeNgals[i - 1] + Ntrees;
+  if(Ntrees)
+    TreeFirstHalo[0] = 0;
+  for(i = 1; i < Ntrees; i++) {
+    TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
+}
+#endif //HDF5_INPUT
+  
 void load_tree_table(int filenr)
 {
   int i,j, n, totNHalos, SnapShotInFileName;
@@ -108,12 +232,14 @@ void load_tree_table(int filenr)
     }
 #endif
 
+#ifndef HDF5_INPUT
 
 #ifndef MRII
   sprintf(buf, "%s/treedata/trees_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #else
   sprintf(buf, "%s/treedata/trees_sf1_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #endif
+
 
   if(!(tree_file = fopen(buf, "r")))
     {
@@ -148,7 +274,6 @@ void load_tree_table(int filenr)
   Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
   myfseek(tree_file, sizeof(int) * (2 + Ntrees), SEEK_SET);
   myfread(Halo_Data, totNHalos, sizeof(struct halo_data), tree_file);
-
   /* for(i=0;i<totNHalos;i++) { */
   /*     printf("ID:%d\n",i); */
   /*     printf("\t Treenr: %d\n",Halo_Data[i].) */
@@ -158,8 +283,11 @@ void load_tree_table(int filenr)
   /*     printf("\t M200b: %0.8f\n",Halo_Data[i].M_Mean200); */
   /*     printf("\t M200c: %0.8f\n",Halo_Data[i].M_Crit200); */
   /*     printf("\t M_tophap: %0.8f\n",Halo_Data[i].M_TopHat); */
-    
   /* } */
+#else // HDF5_INPUT
+  load_tree_hdf5(filenr);
+#endif // HDF5_INPUT
+
 #ifdef PARALLEL
   printf("\nTask %d done loading trees_%d\n", ThisTask, filenr);
 #endif
@@ -173,8 +301,8 @@ void load_tree_table(int filenr)
 #ifdef PARALLEL
   printf("\nTask %d done loading tree_dbids_%d\n", ThisTask, filenr);
 #endif
-#endif
-#endif
+#endif // LOADID
+#endif // PRELOAD_TREES
 
   //if MCMC is turned only Task 0 reads the file and then broadcasts
 #ifdef PARALLEL
