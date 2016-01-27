@@ -231,6 +231,7 @@ void load_tree_table(int filenr)
 #endif
 
 #ifndef HDF5_INPUT
+  printf("no HDF5_INPUT\n");
 #ifndef MRII
   sprintf(buf, "%s/treedata/trees_%03d.%d", SimulationDir, SnapShotInFileName, filenr);
 #else
@@ -299,6 +300,7 @@ void load_tree_table(int filenr)
 #endif // PRELOAD_TREES
 
 #else // HDF5_INPUT
+  printf("using HDF5_INPUT\n");
   load_tree_hdf5(filenr);
 #endif // HDF5_INPUT
 
