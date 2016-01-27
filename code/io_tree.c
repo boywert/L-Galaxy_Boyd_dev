@@ -298,7 +298,7 @@ void load_tree_table(int filenr) {
 #endif // PRELOAD_TREES
 #else // HDF5_INPUT
       printf("using HDF5_INPUT\n");
-      load_tree_hdf5(filenr);
+      load_tree_hdf5(filenr, &totNHalos);
 #endif // HDF5_INPUT
 
       //if MCMC is turned only Task 0 reads the file and then broadcasts
