@@ -75,7 +75,7 @@ void load_tree_hdf5(int filenr) {
   hsize_t dim3[1] = {3};
   int i,ndims,nmembs;
   
-  sprintf(buf, "%s/treedata/trees_%d.hdf5", SimulationDir, SnapShotInFileName, filenr);
+  sprintf(buf, "%s/treedata/trees_%d.hdf5", SimulationDir, filenr);
   file = H5Fopen (buf, H5F_ACC_RDONLY, H5P_DEFAULT);
   merger_t = H5Gopen (file, "/MergerTrees", H5P_DEFAULT);
   attr = H5Aopen(merger_t, "NHalos", H5P_DEFAULT);
@@ -193,7 +193,7 @@ void load_tree_table(int filenr)
   float *xfrac;
 #endif
 #endif
-load_tree_hdf5(filenr);
+
 #ifdef  UPDATETYPETWO
   load_all_auxdata(filenr);
 #endif
