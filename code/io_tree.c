@@ -84,6 +84,9 @@ void load_tree_hdf5(int filenr) {
   attr = H5Aopen(merger_t, "NTrees", H5P_DEFAULT);
   status  = H5Aread(attr, H5T_NATIVE_INT, &Ntrees);
   H5Aclose(attr);
+  TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
+  TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
+  TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
   dset = H5Dopen (file, "/MergerTrees/Halo", H5P_DEFAULT);
   dtype = H5Dget_type(dset);
   class = H5Tget_class (dtype);
@@ -156,10 +159,9 @@ void load_tree_hdf5(int filenr) {
   
   space = H5Dget_space (dset);
   ndims = H5Sget_simple_extent_dims (space, dims, NULL);
-  TreeNHalos = mymalloc("TreeNHalos", sizeof(int) * Ntrees);
-  TreeFirstHalo = mymalloc("TreeFirstHalo", sizeof(int) * Ntrees);
-  TreeNgals[0] = mymalloc("TreeNgals[n]", NOUT * sizeof(int) * Ntrees);
+
   Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
+  
   status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_Data);
   H5Dclose(dset);
 
@@ -169,7 +171,7 @@ void load_tree_hdf5(int filenr) {
 
   status = H5Dread (dset, H5T_STD_I32LE, H5S_ALL, H5S_ALL, H5P_DEFAULT, TreeNHalos);
   H5Dclose(dset);
-
+  H5Fclose(file)
   for(i = 1; i < NOUT; i++)
     TreeNgals[i] = TreeNgals[i - 1] + Ntrees;
   if(Ntrees)
