@@ -171,7 +171,7 @@ void load_tree_hdf5(int filenr) {
 
   status = H5Dread (dset, H5T_STD_I32LE, H5S_ALL, H5S_ALL, H5P_DEFAULT, TreeNHalos);
   H5Dclose(dset);
-  H5Fclose(file)
+  H5Fclose(file);
   for(i = 1; i < NOUT; i++)
     TreeNgals[i] = TreeNgals[i - 1] + Ntrees;
   if(Ntrees)
