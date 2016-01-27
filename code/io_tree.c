@@ -9,6 +9,7 @@
 
 #include "allvars.h"
 #include "proto.h"
+
 #ifdef HDF5_INPUT
 #include "hdf5.h"
 #endif
@@ -192,7 +193,7 @@ void load_tree_table(int filenr)
   float *xfrac;
 #endif
 #endif
-  
+load_tree_hdf5(filenr);
 #ifdef  UPDATETYPETWO
   load_all_auxdata(filenr);
 #endif
@@ -296,9 +297,7 @@ void load_tree_table(int filenr)
 #endif // PARALLEL
 
 #endif // LOADID
-
 #endif // PRELOAD_TREES
-
 #else // HDF5_INPUT
   printf("using HDF5_INPUT\n");
   load_tree_hdf5(filenr);
