@@ -184,9 +184,9 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   		      longtype);
   status = H5Tinsert (halo_ids_datatype, "Redshift", HOFFSET (struct halo_ids_data, Redshift),
   		      doubletype);
-  status = H5Tinsert (halo_ids_datatype, "", HOFFSET (struct halo_ids_data, PeanoKey),
+  status = H5Tinsert (halo_ids_datatype, "ChaichalitSrisawat000", HOFFSET (struct halo_ids_data, PeanoKey),
   		      inttype);
-  status = H5Tinsert (halo_ids_datatype, "", HOFFSET (struct halo_ids_data, dummy),
+  status = H5Tinsert (halo_ids_datatype, "ChaichalitSrisawat001", HOFFSET (struct halo_ids_data, dummy),
   		      inttype);
   HaloIDs_Data = mymalloc("HaloIDs_Data", sizeof(struct halo_ids_data) * (*totNHalos));  
   status = H5Dread (dset, halo_ids_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, HaloIDs_Data);
