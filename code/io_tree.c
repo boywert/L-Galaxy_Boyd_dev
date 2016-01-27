@@ -157,7 +157,7 @@ void load_tree_hdf5(int filenr) {
   space = H5Dget_space (dset);
   ndims = H5Sget_simple_extent_dims (space, dims, NULL);
   Halo_Data = mymalloc("Halo_Data", sizeof(struct halo_data) * totNHalos);
-  status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_data);
+  status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_Data);
   H5Dclose(dset);
 
   dset = H5Dopen (file, "/MergerTrees/NHalosInTree", H5P_DEFAULT);
