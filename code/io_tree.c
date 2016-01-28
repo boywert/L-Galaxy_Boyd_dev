@@ -227,6 +227,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   k = 0;
   if((fd = fopen(HDF5_field_file, "r"))) {
     while(fgets(buf, 2048, fd) != NULL) {
+      k++;
       printf("k = %d\n",k);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
@@ -248,7 +249,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	errorFlag = 1;
       }
     }
-    // fclose(fd);
+    fclose(fd);
   }
   else {
     printf("Parameter file %s not found.\n", HDF5_field_file);
