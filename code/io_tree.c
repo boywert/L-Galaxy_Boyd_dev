@@ -254,7 +254,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     errorFlag = 1;
   }
   for(i = 0; i < nt; i++) {
-    if(found_input[i]) {
+    if(!found_input[i]) {
       printf("Error. I miss a value for tag '%s' in parameter file '%s'.\n", tag[i], HDF5_field_file);
       errorFlag = 1;
     }
