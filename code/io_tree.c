@@ -235,7 +235,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       for(i = 0, j = -1; i < nt; i++)
 	if(strcmp(buf1, tag[i]) == 0) {
 	  j = i;
-	  //tag[i][0] = 0;
+	  tag[i][0] = 'i';
 	  break;
 	}
       if(j >= 0) {
