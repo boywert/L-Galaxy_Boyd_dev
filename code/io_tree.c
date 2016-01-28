@@ -74,10 +74,11 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   size_t size;
   hsize_t dims[1] = {0}; 
   hsize_t dim3[1] = {3};
-  int i,j,k,errorFlag=0,ndims,nmembs;
+  int i,j,errorFlag=0,ndims,nmembs;
 
 #define HDFFIELDS 300
   void *addr[HDFFIELDS];
+  int found[HDFFIELDS];
   char tag[HDFFIELDS][100];
   int  nt = 0;
   FILE *fd;
@@ -116,7 +117,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   char HaloIDs_Data_MainLeafID[256];
   char HaloIDs_Data_Redshift[256];
   char HaloIDs_Data_PeanoKey[256];
-
+  memset(found,0,HDFFIELDS);
   /* define the parameter tags - see HDF5FieldFormatFile */
   strcpy(tag[nt], "MergerTree_group_loc");
   addr[nt] = MergerTree_group_loc;
@@ -224,16 +225,13 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   addr[nt] = HaloIDs_Data_PeanoKey;
   nt++;
   /* end parameter tags */
-  k = 0;
+
   if((fd = fopen(HDF5_field_file, "r"))) {
     while(fgets(buf, 2048, fd) != NULL) {
-      k++;
-      printf("k = %d\n",k);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
       if((buf1[0] == '%') | (buf1[0] == '#'))
 	continue;
-      printf("%s %s %s\n",buf1,buf2,buf3);
       for(i = 0, j = -1; i < nt; i++)
 	if(strcmp(buf1, tag[i]) == 0) {
 	  j = i;
@@ -286,7 +284,11 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       memb_id = H5Tget_member_type(native_type, i);
       memb_name = H5Tget_member_name( native_type, i);
       printf("Member: %s\n",memb_name);
-      if (H5Tequal (memb_id, H5T_STD_I32LE))
+      for(j=0;j<nt;j++) {
+	if(strcmp(addr, memb_name) == 0)
+	  printf("%s => %s\n",tag[j],addr[j])
+      }
+      If (H5Tequal (memb_id, H5T_STD_I32LE))
 	printf ("  Member %i:  Type is H5T_STD_I32LE\n", i);
       else if (H5Tequal (memb_id, H5T_IEEE_F32LE))
 	printf ("  Member %i:  Type is H5T_IEEE_F32LE\n", i);
