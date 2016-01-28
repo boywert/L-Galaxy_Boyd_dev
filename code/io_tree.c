@@ -74,7 +74,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   size_t size;
   hsize_t dims[1] = {0}; 
   hsize_t dim3[1] = {3};
-  int i,j,k,errorFlag,ndims,nmembs;
+  int i,j,k,errorFlag=0,ndims,nmembs;
 
 #define HDFFIELDS 300
   void *addr[HDFFIELDS];
