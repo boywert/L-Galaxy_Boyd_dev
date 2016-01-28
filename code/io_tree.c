@@ -80,6 +80,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   void *addr[HDFFIELDS];
   int found_input[HDFFIELDS],found_hdf5[HDFFIELDS];
   char tag[HDFFIELDS][100];
+  hid_t data_type[HDFFIELDS];
   int  nt = 0;
   FILE *fd;
   char MergerTree_group_loc[256];
@@ -117,8 +118,17 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   char HaloIDs_Data_MainLeafID[256];
   char HaloIDs_Data_Redshift[256];
   char HaloIDs_Data_PeanoKey[256];
+  
   memset(found_input,0,HDFFIELDS);
   memset(found_hdf5,0,HDFFIELDS);
+  inttype = H5Tcopy (H5T_STD_I32LE);
+  floattype = H5Tcopy (H5T_IEEE_F32LE);
+  doubletype = H5Tcopy (H5T_IEEE_F64LE);
+  float3type = H5Tarray_create (H5T_IEEE_F32LE, 1, dim3);
+  longtype = H5Tcopy (H5T_STD_I64LE);
+  halo_datatype = H5Tcreate (H5T_COMPOUND, sizeof (struct halo_data));
+  halo_ids_datatype = H5Tcreate (H5T_COMPOUND, sizeof (struct halo_ids_data));
+  
   /* define the parameter tags - see HDF5FieldFormatFile */
   strcpy(tag[nt], "MergerTree_group_loc");
   addr[nt] = MergerTree_group_loc;
@@ -137,93 +147,123 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   nt++;
   strcpy(tag[nt], "Halo_Data_Descendant");
   addr[nt] = Halo_Data_Descendant;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_FirstProgenitor");
   addr[nt] = Halo_Data_FirstProgenitor;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_NextProgenitor");
   addr[nt] = Halo_Data_NextProgenitor;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_FirstHaloInFOFgroup");
   addr[nt] = Halo_Data_FirstHaloInFOFgroup;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_NextHaloInFOFgroup");
   addr[nt] = Halo_Data_NextHaloInFOFgroup;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_Len");
   addr[nt] = Halo_Data_Len;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_M_Mean200");
   addr[nt] = Halo_Data_M_Mean200;
+  data_type[nt] = floattype;
   nt++;
   strcpy(tag[nt], "Halo_Data_M_Crit200");
   addr[nt] = Halo_Data_M_Crit200;
+  data_type[nt] = floattype;
   nt++;
   strcpy(tag[nt], "Halo_Data_M_TopHat");
   addr[nt] = Halo_Data_M_TopHat;
+  data_type[nt] = floattype;
   nt++;
   strcpy(tag[nt], "Halo_Data_Pos");
   addr[nt] = Halo_Data_Pos;
+  data_type[nt] = float3type;
   nt++;
   strcpy(tag[nt], "Halo_Data_Vel");
   addr[nt] = Halo_Data_Vel;
+  data_type[nt] = float3type;
   nt++;
   strcpy(tag[nt], "Halo_Data_VelDisp");
   addr[nt] = Halo_Data_VelDisp;
+  data_type[nt] = floattype;
   nt++;
   strcpy(tag[nt], "Halo_Data_Vmax");
   addr[nt] = Halo_Data_Vmax;
+  data_type[nt] = floattype;
   nt++;
   strcpy(tag[nt], "Halo_Data_Spin");
   addr[nt] = Halo_Data_Spin;
+  data_type[nt] = float3type;
   nt++;
   strcpy(tag[nt], "Halo_Data_MostBoundID");
   addr[nt] = Halo_Data_MostBoundID;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "Halo_Data_SnapNum");
   addr[nt] = Halo_Data_SnapNum;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_FileNr");
   addr[nt] = Halo_Data_FileNr;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_SubhaloIndex");
   addr[nt] = Halo_Data_SubhaloIndex;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "Halo_Data_SubHalfMass");
   addr[nt] = Halo_Data_SubHalfMass;
+  data_type[nt] = inttype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_HaloID");
   addr[nt] = HaloIDs_Data_HaloID;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_FileTreeNr");
   addr[nt] = HaloIDs_Data_FileTreeNr;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_FirstProgenitor");
   addr[nt] = HaloIDs_Data_FirstProgenitor;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_LastProgenitor");
   addr[nt] = HaloIDs_Data_LastProgenitor;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_NextProgenitor");
   addr[nt] = HaloIDs_Data_NextProgenitor;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_Descendant");
   addr[nt] = HaloIDs_Data_Descendant;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_FirstHaloInFOFgroup");
   addr[nt] = HaloIDs_Data_FirstHaloInFOFgroup;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_NextHaloInFOFgroup");
   addr[nt] = HaloIDs_Data_NextHaloInFOFgroup;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_MainLeafID");
   addr[nt] = HaloIDs_Data_MainLeafID;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_Redshift");
   addr[nt] = HaloIDs_Data_Redshift;
+  data_type[nt] = floattype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_PeanoKey");
   addr[nt] = HaloIDs_Data_PeanoKey;
+  data_type[nt] = inttype;
   nt++;
   /* end parameter tags */
 
@@ -286,8 +326,12 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       memb_name = H5Tget_member_name( native_type, i);
       printf("Member: %s\n",memb_name);
       for(j=0;j<nt;j++) {
-	if(strcmp(addr[j], memb_name) == 0)
-	   printf("%s => %s => %s\n",tag[j], addr[j], memb_name);
+	if(strcmp(addr[j], memb_name) == 0) {
+	  if(H5Tequal (memb_id, data_type[j]))
+	    printf("%s => %s => %s\n",tag[j], addr[j], memb_name);
+	  else
+	    printf("Expect different datatype for %s\n",memb_name);
+	}
       }
       if (H5Tequal (memb_id, H5T_STD_I32LE))
 	printf ("  Member %i:  Type is H5T_STD_I32LE\n", i);
@@ -305,13 +349,6 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     }
   }
   
-  inttype = H5Tcopy (H5T_STD_I32LE);
-  floattype = H5Tcopy (H5T_IEEE_F32LE);
-  doubletype = H5Tcopy (H5T_IEEE_F64LE);
-  float3type = H5Tarray_create (H5T_IEEE_F32LE, 1, dim3);
-  longtype = H5Tcopy (H5T_STD_I64LE);
-  
-  halo_datatype = H5Tcreate (H5T_COMPOUND, sizeof (struct halo_data));
   status = H5Tinsert (halo_datatype, "Descendant", HOFFSET (struct halo_data, Descendant),
   		      inttype);
   status = H5Tinsert (halo_datatype, "FirstProgenitor", HOFFSET (struct halo_data, FirstProgenitor),
@@ -358,7 +395,6 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   status = H5Dread (dset, halo_datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, Halo_Data);
 
 #ifdef LOADIDS
-  halo_ids_datatype = H5Tcreate (H5T_COMPOUND, sizeof (struct halo_ids_data));
   status = H5Tinsert (halo_ids_datatype, "HaloID", HOFFSET (struct halo_ids_data, HaloID),
   		      longtype);
   status = H5Tinsert (halo_ids_datatype, "FileTreeNr", HOFFSET (struct halo_ids_data, FileTreeNr),
