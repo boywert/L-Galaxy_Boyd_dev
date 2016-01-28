@@ -230,6 +230,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       fgets(buf, 1000, fd);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
+      printf("%s %s %s\n",buf1,buf2,buf3);
       if((buf1[0] == '%') | (buf1[0] == '#'))
 	continue;
       for(i = 0, j = -1; i < nt; i++)
@@ -238,13 +239,12 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	  tag[i][0] = 0;
 	  break;
 	}
-	  
       if(j >= 0) {
 	strcpy(addr[j], buf2);
 	break;
       }
       else {
-	printf("Error in file %s:   Tag '%s' not allowed or multiple defined.\n", HDF5_field_file, buf1);
+	printf("Error in file %s: Tag '%s' not allowed or multiple defined.\n", HDF5_field_file, buf1);
 	errorFlag = 1;
       }
     }
@@ -259,10 +259,10 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       printf("Error. I miss a value for tag '%s' in parameter file '%s'.\n", tag[i], HDF5_field_file);
       errorFlag = 1;
     }
-  }
-      
+  }    
   if(errorFlag)
     terminate("parameterfile incorrect");
+
   sprintf(buf, "%s/treedata/trees_%d.hdf5", SimulationDir, filenr);
   file = H5Fopen (buf, H5F_ACC_RDONLY, H5P_DEFAULT);
   merger_t = H5Gopen (file, "/MergerTrees", H5P_DEFAULT);
