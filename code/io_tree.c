@@ -325,22 +325,21 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       memb_id = H5Tget_member_type(native_type, i);
       memb_name = H5Tget_member_name( native_type, i);
       if (H5Tequal (memb_id, H5T_STD_I32LE))
-	printf ("Member %i:  Type is H5T_STD_I32LE\n", i);
+	printf ("Member %i:%s  Type is H5T_STD_I32LE\n", i,memb_name);
       else if (H5Tequal (memb_id, H5T_IEEE_F32LE))
-	printf ("Member %i:  Type is H5T_IEEE_F32LE\n", i);
+	printf ("Member %i:%s  Type is H5T_IEEE_F32LE\n", i,memb_name);
       else if  (H5Tequal (memb_id, H5T_STD_I64LE))
-	printf ("Member %i:  Type is  H5T_STD_I64LE\n", i);
+	printf ("Member %i:%s  Type is  H5T_STD_I64LE\n", i,memb_name);
       else if  (H5Tequal (memb_id, H5T_IEEE_F64LE))
-	printf ("Member %i:  Type is  H5T_IEEE_F64LE\n", i);
+	printf ("Member %i:%s  Type is  H5T_IEEE_F64LE\n", i,memb_name);
       memb_cls = H5Tget_member_class (native_type, i);
       if (memb_cls == H5T_ARRAY) {
-	printf ("Member %i:  Type is  H5T_ARRAY\n", i);
+	printf ("Member %i:%s  Type is  H5T_ARRAY\n", i,memb_name);
       }
       for(j=0;j<nt;j++) {
 	if(strcmp(addr[j], memb_name) == 0) {
+	  found_hdf5[j] = 1;
 	  if(H5Tequal (memb_id, data_type[j]))
-	    printf("%s : %s => %s\n",tag[j], addr[j], memb_name);
-	  else if (memb_cls == H5T_ARRAY)
 	    printf("%s : %s => %s\n",tag[j], addr[j], memb_name);
 	  else {
 	    printf("Expect different datatype for %s\n",memb_name);
