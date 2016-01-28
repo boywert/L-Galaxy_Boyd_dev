@@ -16,8 +16,8 @@ NHalosInTree_dataset_loc	/MergerTrees/NHalosInTree
 Halo_Data_Descendant		Descendant		#int Descendant;
 Halo_Data_FirstProgenitor	FirstProgenitor		#int FirstProgenitor;
 Halo_Data_NextProgenitor	NextProgenitor		#int NextProgenitor;
-Halo_Data_FirstHaloInFOFgroup	MainHalo		#int FirstHaloInFOFgroup;
-Halo_Data_NextHaloInFOFgroup	NextHalo		#int NextHaloInFOFgroup;
+Halo_Data_FirstHaloInFOFgroup	FirstHaloInFOFgroup	#int FirstHaloInFOFgroup;
+Halo_Data_NextHaloInFOFgroup	NextHaloInFOFgroup	#int NextHaloInFOFgroup;
 Halo_Data_Len			Len			#int Len;
 Halo_Data_M_Mean200		M_Mean200	        #float M_Mean200;
 Halo_Data_M_Crit200		M_Crit200        	#float M_Crit200;
