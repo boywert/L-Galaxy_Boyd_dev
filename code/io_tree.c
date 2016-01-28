@@ -286,7 +286,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       printf("Member: %s\n",memb_name);
       for(j=0;j<nt;j++) {
 	if(strcmp(addr[j], memb_name) == 0)
-	   printf("%s => %s ::: %s\n",tag[j], addr[j],memb_name);
+	   printf("%s => %s => %s\n",tag[j][0], addr[j], memb_name);
       }
       if (H5Tequal (memb_id, H5T_STD_I32LE))
 	printf ("  Member %i:  Type is H5T_STD_I32LE\n", i);
