@@ -340,7 +340,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	if(strcmp(addr[j], memb_name) == 0) {
 	  found_hdf5[j] = 1;
 	  if(H5Tequal (memb_id, data_type[j]))
-	    printf("%s : %s => %s\n",tag[j], addr[j], memb_name);
+	    printf("%s : %s (FOUND)\n",tag[j], addr[j]);
 	  else {
 	    printf("Expect different datatype for %s\n",memb_name);
 	    terminate("Different datatype used in HDF5 file.");
@@ -350,6 +350,15 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       status = H5Tclose(memb_id);
     }
   }
+  errorFlag = 0;
+  for(i = 0; i < nt; i++) {
+    if(!found_hdf5[i]) {
+      printf("Error. I miss a value for tag '%s' in HDF5 input file '%s'.\n", addr[i], buf);
+      errorFlag = 1;
+    }
+  }    
+  if(errorFlag)
+    terminate("HDF5 file/format file incorrect.");
   
   status = H5Tinsert (halo_datatype, "Descendant", HOFFSET (struct halo_data, Descendant),
   		      inttype);
