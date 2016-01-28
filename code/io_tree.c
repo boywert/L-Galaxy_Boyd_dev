@@ -353,7 +353,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   errorFlag = 0;
   for(i = 5; i < nt; i++) {
     if(!found_hdf5[i]) {
-      printf("Error. I miss a value for tag '%s' in HDF5 input file '%s'.\n All values will be set to 0.", addr[i], buf);
+      printf("Error. I miss a value for tag '%s' in HDF5 input file '%s'.\nAll values will be set to 0.\n", addr[i], buf);
     }
   }    
 
