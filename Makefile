@@ -36,9 +36,9 @@ include My_Makefile_compilers
 
 
 
-LIBS   =   -g $(LDFLAGS) -lm  $(GSL_LIBS)  $(RLIBS) -lgsl -lgslcblas -lhdf5
+LIBS   =   -g $(LDFLAGS) -lm  $(GSL_LIBS)  $(RLIBS) $(HDF5_LIBS) -lgsl -lgslcblas -lhdf5
 
-CFLAGS =   -g $(OPTIONS) $(OPT) -DCOMPILETIMESETTINGS=\""$(OPT)"\" $(OPTIMIZE) $(GSL_INCL)
+CFLAGS =   -g $(OPTIONS) $(OPT) -DCOMPILETIMESETTINGS=\""$(OPT)"\" $(OPTIMIZE) $(GSL_INCL) $(HDF5_INCL)
 
 $(EXEC): $(OBJS) 
 	$(CC) $(OPTIMIZE) $(OBJS) $(LIBS)   -o  $(EXEC)  
