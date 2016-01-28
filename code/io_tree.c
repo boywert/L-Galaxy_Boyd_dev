@@ -229,8 +229,8 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       *buf = 0;
       fgets(buf, 1000, fd);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
-	continue;	  
-      if((buf1[0] == '%') | (buf1[1] == '#'))
+	continue;
+      if((buf1[0] == '%') | (buf1[0] == '#'))
 	continue;
       for(i = 0, j = -1; i < nt; i++)
 	if(strcmp(buf1, tag[i]) == 0) {
