@@ -226,10 +226,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   /* end parameter tags */
   k = 0;
   if((fd = fopen(HDF5_field_file, "r"))) {
-    while(!feof(fd)) {
-      k++;
-      *buf = 0;
-      fgets(buf, 2048, fd);
+    while(fgets(buf, 2048, fd) != NULL) {
       printf("k = %d\n",k);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
