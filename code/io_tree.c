@@ -231,6 +231,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
       printf("%s %s %s\n",buf1,buf2,buf3);
+      printf("nt = %d\n",nt);
       if((buf1[0] == '%') | (buf1[0] == '#'))
 	continue;
       for(i = 0, j = -1; i < nt; i++)
