@@ -358,43 +358,43 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   }    
 
   
-  status = H5Tinsert (halo_datatype, "Descendant", HOFFSET (struct halo_data, Descendant),
+  status = H5Tinsert (halo_datatype, Halo_Data_Descendant, HOFFSET (struct halo_data, Descendant),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "FirstProgenitor", HOFFSET (struct halo_data, FirstProgenitor),
+  status = H5Tinsert (halo_datatype, Halo_Data_FirstProgenitor, HOFFSET (struct halo_data, FirstProgenitor),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "NextProgenitor", HOFFSET (struct halo_data, NextProgenitor),
+  status = H5Tinsert (halo_datatype, Halo_Data_NextProgenitor, HOFFSET (struct halo_data, NextProgenitor),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "FirstHaloInFOFgroup", HOFFSET (struct halo_data, FirstHaloInFOFgroup),
+  status = H5Tinsert (halo_datatype, Halo_Data_FirstHaloInFOFgroup, HOFFSET (struct halo_data, FirstHaloInFOFgroup),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "NextHaloInFOFgroup", HOFFSET (struct halo_data, NextHaloInFOFgroup),
+  status = H5Tinsert (halo_datatype, Halo_Data_NextHaloInFOFgroup, HOFFSET (struct halo_data, NextHaloInFOFgroup),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "Len", HOFFSET (struct halo_data, Len),
+  status = H5Tinsert (halo_datatype, Halo_Data_Len, HOFFSET (struct halo_data, Len),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "M_Mean200", HOFFSET (struct halo_data, M_Mean200),
+  status = H5Tinsert (halo_datatype, Halo_Data_M_Mean200, HOFFSET (struct halo_data, M_Mean200),
   		      floattype);
-  status = H5Tinsert (halo_datatype, "M_Crit200", HOFFSET (struct halo_data, M_Crit200),
+  status = H5Tinsert (halo_datatype, Halo_Data_M_Crit200, HOFFSET (struct halo_data, M_Crit200),
   		      floattype);
-  status = H5Tinsert (halo_datatype, "M_TopHat", HOFFSET (struct halo_data, M_TopHat),
+  status = H5Tinsert (halo_datatype, Halo_Data_M_TopHat, HOFFSET (struct halo_data, M_TopHat),
   		      floattype);
-  status = H5Tinsert (halo_datatype, "Pos", HOFFSET (struct halo_data, Pos),
+  status = H5Tinsert (halo_datatype, Halo_Data_Pos, HOFFSET (struct halo_data, Pos),
   		      float3type);
-  status = H5Tinsert (halo_datatype, "Vel", HOFFSET (struct halo_data, Vel),
+  status = H5Tinsert (halo_datatype, Halo_Data_Vel, HOFFSET (struct halo_data, Vel),
   		      float3type);
-  status = H5Tinsert (halo_datatype, "VelDisp", HOFFSET (struct halo_data, VelDisp),
+  status = H5Tinsert (halo_datatype, Halo_Data_VelDisp, HOFFSET (struct halo_data, VelDisp),
   		      floattype);
-  status = H5Tinsert (halo_datatype, "Vmax", HOFFSET (struct halo_data, Vmax),
+  status = H5Tinsert (halo_datatype, Halo_Data_Vmax, HOFFSET (struct halo_data, Vmax),
   		      floattype);
-  status = H5Tinsert (halo_datatype, "Spin", HOFFSET (struct halo_data, Spin),
+  status = H5Tinsert (halo_datatype, Halo_Data_Spin, HOFFSET (struct halo_data, Spin),
   		      float3type);
-  status = H5Tinsert (halo_datatype, "MostBoundID", HOFFSET (struct halo_data, MostBoundID),
+  status = H5Tinsert (halo_datatype, Halo_Data_MostBoundID, HOFFSET (struct halo_data, MostBoundID),
   		      longtype);
-  status = H5Tinsert (halo_datatype, "SnapNum", HOFFSET (struct halo_data, SnapNum),
+  status = H5Tinsert (halo_datatype, Halo_Data_SnapNum, HOFFSET (struct halo_data, SnapNum),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "FileNr", HOFFSET (struct halo_data, FileNr),
+  status = H5Tinsert (halo_datatype, Halo_Data_FileNr, HOFFSET (struct halo_data, FileNr),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "SubhaloIndex", HOFFSET (struct halo_data, SubhaloIndex),
+  status = H5Tinsert (halo_datatype, Halo_Data_SubhaloIndex, HOFFSET (struct halo_data, SubhaloIndex),
   		      inttype);
-  status = H5Tinsert (halo_datatype, "SubHalfMass", HOFFSET (struct halo_data, SubHalfMass),
+  status = H5Tinsert (halo_datatype, Halo_Data_SubHalfMass, HOFFSET (struct halo_data, SubHalfMass),
   		      inttype);
   
   space = H5Dget_space (dset);
