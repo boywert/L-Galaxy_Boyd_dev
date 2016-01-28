@@ -242,7 +242,6 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	}
       if(j >= 0) {
 	strcpy(addr[j], buf2);
-	break;
       }
       else {
 	printf("Error in file %s: Tag '%s' not allowed or multiple defined.\n", HDF5_field_file, buf1);
