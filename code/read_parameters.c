@@ -259,7 +259,11 @@ void read_parameter_file(char *fname)
   strcpy(tag[nt], "Hubble_h_OriginalCosm");
   addr[nt] = &Hubble_h_OriginalCosm;
   id[nt++] = DOUBLE;
-
+#ifdef HDF5_INPUT
+  strcpy(tag[nt], "HDF5_field_file");
+  addr[nt] = HDF5_field_file;
+  id[nt++] = STRING;
+#endif
 #ifdef MR_PLUS_MRII  //OPTION for MCMC
   //MR
   strcpy(tag[nt], "FileWithZList_MR");
