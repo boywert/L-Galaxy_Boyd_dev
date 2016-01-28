@@ -227,13 +227,12 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   if((fd = fopen(HDF5_field_file, "r"))) {
     while(!feof(fd)) {
       *buf = 0;
-      fgets(buf, 1000, fd);
+      fgets(buf, 2048, fd);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
-      printf("%s %s %s\n",buf1,buf2,buf3);
-      printf("nt = %d\n",nt);
       if((buf1[0] == '%') | (buf1[0] == '#'))
 	continue;
+      printf("%s %s %s\n",buf1,buf2,buf3);
       for(i = 0, j = -1; i < nt; i++)
 	if(strcmp(buf1, tag[i]) == 0) {
 	  j = i;
