@@ -64,7 +64,7 @@
 
 #ifdef HDF5_INPUT
 void load_tree_hdf5(int filenr, int *totNHalos) {
-  char buf[2048], *memb_name;
+  char buf[2048], buf1[200], buf2[200], buf3[200], *memb_name;
   hid_t       file, inttype, floattype, doubletype, float3type, longtype,
     halo_datatype, halo_ids_datatype, space, dset,
     group, dtype, memb_id,native_type, stid;
@@ -75,6 +75,196 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   hsize_t dims[1] = {0}; 
   hsize_t dim3[1] = {3};
   int i,ndims,nmembs;
+
+#define HDFFIELDS 300
+  void *addr[HDFFIELDS];
+  char tag[HDFFIELDS][100];
+  int  nt = 0;
+  FILE *fd;
+  char MergerTree_group_loc[256];
+  char NTrees_loc[256];
+  char NHalos_loc[256];
+  char MergerTree_dataset_loc[256];
+  char NHalosInTree_dataset_loc[256];
+  char Halo_Data_Descendant[256];
+  char Halo_Data_FirstProgenitor[256];
+  char Halo_Data_NextProgenitor[256];
+  char Halo_Data_FirstHaloInFOFgroup[256];
+  char Halo_Data_NextHaloInFOFgroup[256];
+  char Halo_Data_Len[256];
+  char Halo_Data_M_Mean200[256];
+  char Halo_Data_M_Crit200[256];
+  char Halo_Data_M_TopHat[256];
+  char Halo_Data_Pos[256];
+  char Halo_Data_Vel[256];
+  char Halo_Data_VelDisp[256];
+  char Halo_Data_Vmax[256];
+  char Halo_Data_Spin[256];
+  char Halo_Data_MostBoundID[256];
+  char Halo_Data_SnapNum[256];
+  char Halo_Data_FileNr[256];
+  char Halo_Data_SubhaloIndex[256];
+  char Halo_Data_SubHalfMass[256];
+  char HaloIDs_Data_HaloID[256];
+  char HaloIDs_Data_FileTreeNr[256];
+  char HaloIDs_Data_FirstProgenitor[256];
+  char HaloIDs_Data_LastProgenitor[256];
+  char HaloIDs_Data_NextProgenitor[256];
+  char HaloIDs_Data_Descendant[256];
+  char HaloIDs_Data_FirstHaloInFOFgroup[256];
+  char HaloIDs_Data_NextHaloInFOFgroup[256];
+  char HaloIDs_Data_MainLeafID[256];
+  char HaloIDs_Data_Redshift[256];
+  char HaloIDs_Data_PeanoKey[256];
+
+  /* define the parameter tags - see HDF5FieldFormatFile */
+  strcpy(tag[nt], "MergerTree_group_loc");
+  addr[nt] = MergerTree_group_loc;
+  nt++;
+  strcpy(tag[nt], "NTrees_loc");
+  addr[nt] = NTrees_loc;
+  nt++;
+  strcpy(tag[nt], "NHalos_loc");
+  addr[nt] = NHalos_loc;
+  nt++;
+  strcpy(tag[nt], "MergerTree_dataset_loc");
+  addr[nt] = MergerTree_dataset_loc;
+  nt++;
+  strcpy(tag[nt], "NHalosInTree_dataset_loc");
+  addr[nt] = NHalosInTree_dataset_loc;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_Descendant");
+  addr[nt] = Halo_Data_Descendant;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_FirstProgenitor");
+  addr[nt] = Halo_Data_FirstProgenitor;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_NextProgenitor");
+  addr[nt] = Halo_Data_NextProgenitor;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_FirstHaloInFOFgroup");
+  addr[nt] = Halo_Data_FirstHaloInFOFgroup;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_NextHaloInFOFgroup");
+  addr[nt] = Halo_Data_NextHaloInFOFgroup;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_Len");
+  addr[nt] = Halo_Data_Len;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_M_Mean200");
+  addr[nt] = Halo_Data_M_Mean200;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_M_Crit200");
+  addr[nt] = Halo_Data_M_Crit200;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_M_TopHat");
+  addr[nt] = Halo_Data_M_TopHat;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_Pos");
+  addr[nt] = Halo_Data_Pos;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_Vel");
+  addr[nt] = Halo_Data_Vel;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_VelDisp");
+  addr[nt] = Halo_Data_VelDisp;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_Vmax");
+  addr[nt] = Halo_Data_Vmax;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_Spin");
+  addr[nt] = Halo_Data_Spin;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_MostBoundID");
+  addr[nt] = Halo_Data_MostBoundID;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_SnapNum");
+  addr[nt] = Halo_Data_SnapNum;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_FileNr");
+  addr[nt] = Halo_Data_FileNr;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_SubhaloIndex");
+  addr[nt] = Halo_Data_SubhaloIndex;
+  nt++;
+  strcpy(tag[nt], "Halo_Data_SubHalfMass");
+  addr[nt] = Halo_Data_SubHalfMass;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_HaloID");
+  addr[nt] = HaloIDs_Data_HaloID;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_FileTreeNr");
+  addr[nt] = HaloIDs_Data_FileTreeNr;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_FirstProgenitor");
+  addr[nt] = HaloIDs_Data_FirstProgenitor;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_LastProgenitor");
+  addr[nt] = HaloIDs_Data_LastProgenitor;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_NextProgenitor");
+  addr[nt] = HaloIDs_Data_NextProgenitor;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_Descendant");
+  addr[nt] = HaloIDs_Data_Descendant;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_FirstHaloInFOFgroup");
+  addr[nt] = HaloIDs_Data_FirstHaloInFOFgroup;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_NextHaloInFOFgroup");
+  addr[nt] = HaloIDs_Data_NextHaloInFOFgroup;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_MainLeafID");
+  addr[nt] = HaloIDs_Data_MainLeafID;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_Redshift");
+  addr[nt] = HaloIDs_Data_Redshift;
+  nt++;
+  strcpy(tag[nt], "HaloIDs_Data_PeanoKey");
+  addr[nt] = HaloIDs_Data_PeanoKey;
+  nt++;
+  /* end parameter tags */
+  if((fd = fopen(HDF5_field_file, "r"))) {
+    while(!feof(fd)) {
+      *buf = 0;
+      fgets(buf, 1000, fd);
+      if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
+	continue;
+	  
+      if((buf1[0] == '%') || (buf1[1] == '#'))
+	continue;
+	  
+      for(i = 0, j = -1; i < nt; i++)
+	if(strcmp(buf1, tag[i]) == 0) {
+	  j = i;
+	  tag[i][0] = 0;
+	  break;
+	}
+	  
+      if(j >= 0) {
+	strcpy(addr[j], buf2);
+	break;
+      }
+      else {
+	printf("Error in file %s:   Tag '%s' not allowed or multiple defined.\n", HDF5_field_file, buf1);
+	errorFlag = 1;
+      }
+    }
+    fclose(fd);
+  }
+  else {
+    printf("Parameter file %s not found.\n", HDF5_field_file);
+    errorFlag = 1;
+  }
+  for(i = 0; i < nt; i++) {
+    if(*tag[i]) {
+      printf("Error. I miss a value for tag '%s' in parameter file '%s'.\n", tag[i], fname);
+      errorFlag = 1;
+    }
+  }
+      
+  if(errorFlag)
+    terminate("parameterfile incorrect");
   sprintf(buf, "%s/treedata/trees_%d.hdf5", SimulationDir, filenr);
   file = H5Fopen (buf, H5F_ACC_RDONLY, H5P_DEFAULT);
   merger_t = H5Gopen (file, "/MergerTrees", H5P_DEFAULT);
@@ -208,7 +398,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     TreeFirstHalo[0] = 0;
   for(i = 1; i < Ntrees; i++) 
     TreeFirstHalo[i] = TreeFirstHalo[i - 1] + TreeNHalos[i - 1];
-
+#undef HDFFIELDS
 }
 #endif //HDF5_INPUT
   

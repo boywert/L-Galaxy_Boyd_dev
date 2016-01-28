@@ -295,6 +295,10 @@ FILE *FdGalTreeSFH;
 FILE *FdGalDumps[NOUT];
 
 
+#ifdef HDF5_INPUT
+char HDF5_field_file[1024];
+#endif
+
 /* for reionization modelling */
 #ifdef READXFRAC
 float *Xfrac_Data;

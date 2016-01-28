@@ -1227,6 +1227,9 @@ extern FILE *FdGalTree;
 extern FILE *FdGalTreeSFH;
 extern FILE *FdGalDumps[NOUT];
 
+#ifdef HDF5_INPUT
+extern char HDF5_field_file[1024];
+#endif
 
 /* For Reionization data */
 #ifdef READXFRAC
