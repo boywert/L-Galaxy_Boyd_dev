@@ -78,7 +78,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 
 #define HDFFIELDS 300
   void *addr[HDFFIELDS];
-  int found[HDFFIELDS];
+  int found_input[HDFFIELDS],found_hdf5[HDFFIELDS];
   char tag[HDFFIELDS][100];
   int  nt = 0;
   FILE *fd;
@@ -117,7 +117,8 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   char HaloIDs_Data_MainLeafID[256];
   char HaloIDs_Data_Redshift[256];
   char HaloIDs_Data_PeanoKey[256];
-  memset(found,0,HDFFIELDS);
+  memset(found_input,0,HDFFIELDS);
+  memset(found_hdf5,0,HDFFIELDS);
   /* define the parameter tags - see HDF5FieldFormatFile */
   strcpy(tag[nt], "MergerTree_group_loc");
   addr[nt] = MergerTree_group_loc;
@@ -235,7 +236,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
       for(i = 0, j = -1; i < nt; i++)
 	if(strcmp(buf1, tag[i]) == 0) {
 	  j = i;
-	  tag[i][0] = 'i';
+	  found_input[i] = 1;
 	  break;
 	}
       if(j >= 0) {
@@ -253,7 +254,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     errorFlag = 1;
   }
   for(i = 0; i < nt; i++) {
-    if(*tag[i]) {
+    if(found_input[i]) {
       printf("Error. I miss a value for tag '%s' in parameter file '%s'.\n", tag[i], HDF5_field_file);
       errorFlag = 1;
     }
