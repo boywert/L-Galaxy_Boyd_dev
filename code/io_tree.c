@@ -227,6 +227,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   k = 0;
   if((fd = fopen(HDF5_field_file, "r"))) {
     while(!feof(fd)) {
+      k++;
       *buf = 0;
       fgets(buf, 2048, fd);
       printf("k = %d\n",k);
@@ -249,7 +250,6 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	printf("Error in file %s: Tag '%s' not allowed or multiple defined.\n", HDF5_field_file, buf1);
 	errorFlag = 1;
       }
-      k++;
     }
     fclose(fd);
   }
