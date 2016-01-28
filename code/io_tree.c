@@ -247,7 +247,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_FirstHaloInFOFgroup");
   addr[nt] = HaloIDs_Data_FirstHaloInFOFgroup;
-  data_type[nt] = doubletype;
+  data_type[nt] = longtype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_NextHaloInFOFgroup");
   addr[nt] = HaloIDs_Data_NextHaloInFOFgroup;
