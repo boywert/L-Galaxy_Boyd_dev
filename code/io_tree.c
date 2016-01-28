@@ -253,10 +253,12 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   addr[nt] = HaloIDs_Data_NextHaloInFOFgroup;
   data_type[nt] = longtype;
   nt++;
+#infdef MRII
   strcpy(tag[nt], "HaloIDs_Data_MainLeafID");
   addr[nt] = HaloIDs_Data_MainLeafID;
   data_type[nt] = longtype;
   nt++;
+#endif
   strcpy(tag[nt], "HaloIDs_Data_Redshift");
   addr[nt] = HaloIDs_Data_Redshift;
   data_type[nt] = doubletype;
