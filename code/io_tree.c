@@ -259,7 +259,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_Redshift");
   addr[nt] = HaloIDs_Data_Redshift;
-  data_type[nt] = floattype;
+  data_type[nt] = doubletype;
   nt++;
   strcpy(tag[nt], "HaloIDs_Data_PeanoKey");
   addr[nt] = HaloIDs_Data_PeanoKey;
@@ -324,13 +324,14 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
     for (i=0; i < nmembs ; i++) {
       memb_id = H5Tget_member_type(native_type, i);
       memb_name = H5Tget_member_name( native_type, i);
-      printf("Member: %s\n",memb_name);
       for(j=0;j<nt;j++) {
 	if(strcmp(addr[j], memb_name) == 0) {
 	  if(H5Tequal (memb_id, data_type[j]))
-	    printf("%s => %s => %s\n",tag[j], addr[j], memb_name);
-	  else
+	    printf("%s : %s => %s\n",tag[j], addr[j], memb_name);
+	  else {
 	    printf("Expect different datatype for %s\n",memb_name);
+	    terminate("Different datatype used in HDF5 file.")
+	  }
 	}
       }
       if (H5Tequal (memb_id, H5T_STD_I32LE))
