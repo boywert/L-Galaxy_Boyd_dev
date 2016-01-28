@@ -74,7 +74,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   size_t size;
   hsize_t dims[1] = {0}; 
   hsize_t dim3[1] = {3};
-  int i,j,errorFlag,ndims,nmembs;
+  int i,j,k,errorFlag,ndims,nmembs;
 
 #define HDFFIELDS 300
   void *addr[HDFFIELDS];
@@ -224,11 +224,12 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
   addr[nt] = HaloIDs_Data_PeanoKey;
   nt++;
   /* end parameter tags */
+  k = 0;
   if((fd = fopen(HDF5_field_file, "r"))) {
     while(!feof(fd)) {
       *buf = 0;
-      fgets(buf, 200, fd);
-      printf("buf = %s\n",buf);
+      fgets(buf, 2048, fd);
+      printf("k = %d\n",k);
       if(sscanf(buf, "%s%s%s", buf1, buf2, buf3) < 2)
 	continue;
       if((buf1[0] == '%') | (buf1[0] == '#'))
@@ -248,6 +249,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	printf("Error in file %s: Tag '%s' not allowed or multiple defined.\n", HDF5_field_file, buf1);
 	errorFlag = 1;
       }
+      k++;
     }
     fclose(fd);
   }
