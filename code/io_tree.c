@@ -65,9 +65,8 @@
 #ifdef HDF5_INPUT
 void load_tree_hdf5(int filenr, int *totNHalos) {
   char buf[2048], *memb_name;
-  
-  hid_t       file, vehicletype, colortype, sensortype, sensorstype, loctype,
-    strtype,inttype,floattype,doubletype,float3type,longtype, halo_datatype, halo_ids_datatype, rsensortype, rsensorstype, space, dset,
+  hid_t       file, inttype, floattype, doubletype, float3type, longtype,
+    halo_datatype, halo_ids_datatype, space, dset,
     group, dtype, memb_id,native_type, stid;
   hid_t merger_t,attr;
   H5T_class_t  memb_cls, class;

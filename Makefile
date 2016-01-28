@@ -56,7 +56,7 @@ tidy:
 # use next target to generate metadata about the result files
 # uses -E compiler option to preprocess the allvars.h file, stores result in allvars.i
 # then calls awk scripts from ./awk/ folder to extract cleand-up version of GALAXY_OUTPUT struct
-# and generate different representations of use for post-processing the result 	
+	# and generate different representations of use for post-processing the result 	
 metadata:
 	${CC_MD} ${OPT} ${CFLAGS} -E ./code/allvars.h -o ./code/allvars.i
 	awk -f ./awk/extractGALAXY_OUTPUT.awk ./code/allvars.i |awk -f ./awk/GALAXY_OUTPUT_2_TypeString.awk > ./awk/L-Galaxies_Types.txt

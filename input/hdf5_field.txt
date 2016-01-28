@@ -1,0 +1,52 @@
+# This file specifies the field in the HDF5 input with corresponding structure in Lgalaxy
+
+# MergerTree group location
+MergerTree_group_loc		/MergerTrees
+
+# NTrees location (inside MergerTree group as an attribute)
+NTrees_loc			NTrees
+
+# NHalos location (inside MergerTree group as an attribute)
+NHalos_loc			NHalos
+
+# MergerTree data location
+MergerTree_dataset_loc		/MergerTrees/Halo
+
+# NHalosInTree data location
+NHalosInTree_dataset_loc	/MergerTrees/NHalosInTree
+
+# Halo_Data: struct halo_data in allvar.h
+# Name				Value			#Description
+Halo_Data_Descendant		Descendant		#int Descendant;
+Halo_Data_FirstProgenitor	FirstProgenitor		#int FirstProgenitor;
+Halo_Data_NextProgenitor	NextProgenitor		#int NextProgenitor;
+Halo_Data_FirstHaloInFOFgroup	MainHalo		#int FirstHaloInFOFgroup;
+Halo_Data_NextHaloInFOFgroup	NextHalo		#int NextHaloInFOFgroup;
+Halo_Data_Len			Len			#int Len;
+Halo_Data_M_Mean200		M_Mean200	        #float M_Mean200;
+Halo_Data_M_Crit200		M_Crit200        	#float M_Crit200;
+Halo_Data_M_TopHat		M_TopHat        	#float M_TopHat;
+Halo_Data_Pos			Pos			#float Pos[3];
+Halo_Data_Vel			Vel			#float Vel[3];
+Halo_Data_VelDisp		VelDisp			#float VelDisp;
+Halo_Data_Vmax			Vmax			#float Vmax;
+Halo_Data_Spin			Spin			#float Spin[3];
+Halo_Data_MostBoundID		MostBoundID		#long long MostBoundID;
+Halo_Data_SnapNum		SnapNum			#int SnapNum;
+Halo_Data_FileNr		FileNr			#int FileNr;
+Halo_Data_SubhaloIndex		SubhaloIndex		#int SubhaloIndex;
+Halo_Data_SubHalfMass		SubHalfMass		#float SubHalfMass;
+
+# HaloIDs_Data: struct halo_ids_data in allvar.h
+# Name				Value			#Description
+HaloIDs_Data_HaloID		HaloID			#long long HaloID;
+HaloIDs_Data_FileTreeNr		FileTreeNr		#long long FileTreeNr;
+HaloIDs_Data_FirstProgenitor	FirstProgenitorID	#long long FirstProgenitor;
+HaloIDs_Data_LastProgenitor	LastProgenitorID	#long long LastProgenitor;
+HaloIDs_Data_NextProgenitor	NextProgenitorID	#long long NextProgenitor;
+HaloIDs_Data_Descendant		DescendantID		#long long Descendant;
+HaloIDs_Data_FirstHaloInFOFgroup	FirstHaloInFOFgroupID		#long long FirstHaloInFOFgroup;
+HaloIDs_Data_NextHaloInFOFgroup		NextHaloInFOFgroupID		#long long NextHaloInFOFgroup;
+HaloIDs_Data_MainLeafID		MainLeafID		#long long MainLeafID; (MRII only)
+HaloIDs_Data_Redshift		Redshift		#double    Redshift;
+HaloIDs_Data_PeanoKey		PeanoKey		#int       PeanoKey;
