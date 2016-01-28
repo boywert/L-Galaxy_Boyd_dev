@@ -2,16 +2,12 @@
 
 # MergerTree group location
 MergerTree_group_loc		/MergerTrees
-
 # NTrees location (inside MergerTree group as an attribute)
 NTrees_loc			NTrees
-
 # NHalos location (inside MergerTree group as an attribute)
 NHalos_loc			NHalos
-
 # MergerTree data location
 MergerTree_dataset_loc		/MergerTrees/Halo
-
 # NHalosInTree data location
 NHalosInTree_dataset_loc	/MergerTrees/NHalosInTree
 
