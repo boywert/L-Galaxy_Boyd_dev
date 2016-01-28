@@ -248,7 +248,7 @@ void load_tree_hdf5(int filenr, int *totNHalos) {
 	errorFlag = 1;
       }
     }
-    fclose(fd);
+    // fclose(fd);
   }
   else {
     printf("Parameter file %s not found.\n", HDF5_field_file);
